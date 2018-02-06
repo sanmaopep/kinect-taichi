@@ -3,6 +3,8 @@
 #include<NuiApi.h>
 #include<opencv2\opencv.hpp>
 
+#include"angle.hpp"
+
 using namespace std;
 using namespace cv;
 
@@ -40,6 +42,10 @@ int main(int argc, char *argv[])
 	//4、开始读取骨骼跟踪数据   
 	while (1)
 	{
+		// 清屏
+		system("cls");
+
+
 		NUI_SKELETON_FRAME skeletonFrame = { 0 };  //骨骼帧的定义   
 		bool bFoundSkeleton = false;
 
@@ -50,6 +56,7 @@ int main(int argc, char *argv[])
 			hr = NuiSkeletonGetNextFrame(0, &skeletonFrame);
 			if (SUCCEEDED(hr))
 			{
+				
 				//NUI_SKELETON_COUNT是检测到的骨骼数（即，跟踪到的人数）  
 				for (int i = 0; i < NUI_SKELETON_COUNT; i++)
 				{
@@ -65,11 +72,15 @@ int main(int argc, char *argv[])
 
 			if (!bFoundSkeleton)
 			{
+				printf("没有发现任何人\n");
 				continue;
 			}
 
 			//4.4、平滑骨骼帧，消除抖动  
 			NuiTransformSmooth(&skeletonFrame, NULL);
+
+			
+			
 			skeletonImage.setTo(0);
 
 			for (int i = 0; i < NUI_SKELETON_COUNT; i++)
@@ -79,6 +90,9 @@ int main(int argc, char *argv[])
 				if (skeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED &&
 					skeletonFrame.SkeletonData[i].eSkeletonPositionTrackingState[NUI_SKELETON_POSITION_SHOULDER_CENTER] != NUI_SKELETON_POSITION_NOT_TRACKED)
 				{
+					// 计算角度
+					float angle = taiji::getJointCosAngle(skeletonFrame.SkeletonData[i], NUI_SKELETON_POSITION_ELBOW_LEFT);
+					printf("左边肘关节角度：%f\n", angle);
 					float fx, fy;
 					//拿到所有跟踪到的关节点的坐标，并转换为我们的深度空间的坐标，因为我们是在深度图像中  
 					//把这些关节点标记出来的  

@@ -134,9 +134,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="keyframe.hpp" />
     <ClInclude Include="feature.hpp" />
-    <ClInclude Include="dtw.hpp" />
+    <ClInclude Include="algorithms.hpp" />
+    <ClInclude Include="angle.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -23,10 +23,10 @@
     <ClInclude Include="feature.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="keyframe.hpp">
+    <ClInclude Include="algorithms.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="dtw.hpp">
+    <ClInclude Include="angle.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

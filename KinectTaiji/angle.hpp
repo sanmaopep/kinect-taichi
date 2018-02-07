@@ -1,11 +1,9 @@
 #pragma once
 
-#include<cmath>
-#include<NuiApi.h>
+#include"stadfx.h"
 
 namespace taiji {
-
-	// 获得一个关节的前后角度
+	// 获得一个关节的前后关节
 	void getJointRelation(const int& joint,int* jointBefore,int* jointAfter) {
 		switch (joint)
 		{
@@ -82,6 +80,30 @@ namespace taiji {
 				+ vectorBefore.z * vectorAfter.z;
 		float cos = mutiple / sqrt(len1*len2);
 		return acos(cos)* 180.0 / 3.14159;
+	}
+
+	// 根据Orientation获得欧拉角
+	Vector4 getEulerAngle(const NUI_SKELETON_BONE_ROTATION& rotation) {
+		Vector4 ret;
+		Matrix4 m = rotation.rotationMatrix;
+
+		float sy = sqrt(m.M11*m.M11 + m.M21*m.M21);
+
+		if (!(sy < 1e-6)) {
+			ret.x = atan2(m.M32, m.M33);
+			ret.y = atan2(m.M31, sy);
+			ret.z = atan2(m.M21, m.M11);
+		}
+		else
+		{
+			ret.x = atan2(m.M23, m.M22);
+			ret.y = atan2(m.M31, sy);
+			ret.z = 0;
+		}
+		ret.x = ret.x * 180 / 3.14159;
+		ret.y = ret.y * 180 / 3.14159;
+		ret.z = ret.z * 180 / 3.14159;
+		return ret;
 	}
 
 }

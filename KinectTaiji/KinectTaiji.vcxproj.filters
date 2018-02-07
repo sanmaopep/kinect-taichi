@@ -29,5 +29,11 @@
     <ClInclude Include="angle.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="stadfx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="constant.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

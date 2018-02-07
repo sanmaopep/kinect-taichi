@@ -1,7 +1,6 @@
 #pragma once
-#include "feature.hpp"
-#include<NuiApi.h>
-#include<cstdio>
+#include"stadfx.h"
+#include"feature.hpp"
 
 namespace taiji {
 

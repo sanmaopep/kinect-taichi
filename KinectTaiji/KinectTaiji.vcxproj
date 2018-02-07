@@ -134,9 +134,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="constant.h" />
     <ClInclude Include="feature.hpp" />
     <ClInclude Include="algorithms.hpp" />
     <ClInclude Include="angle.hpp" />
+    <ClInclude Include="stadfx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

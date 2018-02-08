@@ -17,6 +17,9 @@ namespace taiji {
 	class Feature {
 	public:
 		// 构造函数，获取一个feature
+		Feature() {
+			// 什么也不做
+		}
 		Feature(NUI_SKELETON_FRAME& skeletonFrame) {
 			int SKELETON_INDEX = 0;
 			this->frameNum = skeletonFrame.dwFrameNumber;
@@ -93,7 +96,6 @@ namespace taiji {
 			}
 			printf("#################################################################\n");
 		}
-
 		// 获得欧氏空间上的向量，用于计算相似度
 		void getVector() {
 			

@@ -87,17 +87,18 @@ namespace taiji {
 		Vector4 ret;
 		Matrix4 m = rotation.rotationMatrix;
 
-		float sy = sqrt(m.M11*m.M11 + m.M21*m.M21);
+		float sy = sqrt(m.M32*m.M32 + m.M33*m.M33);
+
 
 		if (!(sy < 1e-6)) {
 			ret.x = atan2(m.M32, m.M33);
-			ret.y = atan2(m.M31, sy);
+			ret.y = atan2(-m.M31, sy);
 			ret.z = atan2(m.M21, m.M11);
 		}
 		else
 		{
-			ret.x = atan2(m.M23, m.M22);
-			ret.y = atan2(m.M31, sy);
+			ret.x = atan2(-m.M23, m.M22);
+			ret.y = atan2(-m.M31, sy);
 			ret.z = 0;
 		}
 		ret.x = ret.x * 180 / 3.14159;

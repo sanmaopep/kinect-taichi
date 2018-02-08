@@ -138,7 +138,9 @@
     <ClInclude Include="feature.hpp" />
     <ClInclude Include="algorithms.hpp" />
     <ClInclude Include="angle.hpp" />
+    <ClInclude Include="IO.hpp" />
     <ClInclude Include="stadfx.h" />
+    <ClInclude Include="testcases.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

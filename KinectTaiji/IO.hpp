@@ -4,7 +4,6 @@
 
 using namespace std;
 
-// 数据格式规定，一行为一帧
 const int FEATURE_CHAR_LEN = sizeof(taiji::Feature) / sizeof(char);
 
 class IO

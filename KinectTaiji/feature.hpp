@@ -1,11 +1,14 @@
 #pragma once
 #include"stadfx.h"
 #include"angle.hpp"
+#include"keyframes.hpp"
 
 using namespace std;
 using namespace cv;
 
 namespace taiji {
+
+	typedef vector<float> FEATURE_VEC;
 
 	typedef struct _EULER_ANGLE{
 		int startJoint;
@@ -16,10 +19,7 @@ namespace taiji {
 	// 特征提取
 	class Feature {
 	public:
-		// 构造函数，获取一个feature
-		Feature() {
-			// 什么也不做
-		}
+		Feature() {}
 		Feature(NUI_SKELETON_FRAME& skeletonFrame) {
 			int SKELETON_INDEX = 0;
 			this->frameNum = skeletonFrame.dwFrameNumber;
@@ -63,7 +63,6 @@ namespace taiji {
 				}
 			}	
 		}
-		// 打印结果
 		void print() {
 			printf("#################################################################\n");
 			cout << "NO. "<<this->frameNum << endl;
@@ -97,8 +96,37 @@ namespace taiji {
 			printf("#################################################################\n");
 		}
 		// 获得欧氏空间上的向量，用于计算相似度
-		void getVector() {
+		FEATURE_VEC getVector() {
+			FEATURE_VEC vRet;
+			vRet.push_back(this->jointAngles[NUI_SKELETON_POSITION_KNEE_LEFT]);
+			vRet.push_back(this->jointAngles[NUI_SKELETON_POSITION_KNEE_RIGHT]);
+			vRet.push_back(this->jointAngles[NUI_SKELETON_POSITION_ELBOW_LEFT]);
+			vRet.push_back(this->jointAngles[NUI_SKELETON_POSITION_ELBOW_RIGHT]);
+
+			return vRet;
+		}
+		FEATURE_VEC getSimpleVector() {
+			FEATURE_VEC vRet;
+			vRet.push_back(this->jointAngles[NUI_SKELETON_POSITION_KNEE_LEFT]);
+			vRet.push_back(this->jointAngles[NUI_SKELETON_POSITION_KNEE_RIGHT]);
+			vRet.push_back(this->jointAngles[NUI_SKELETON_POSITION_ELBOW_LEFT]);
+			vRet.push_back(this->jointAngles[NUI_SKELETON_POSITION_ELBOW_RIGHT]);
 			
+			return vRet;
+		}
+		// 计算欧氏距离
+		static float E_Distance(const FEATURE_VEC& vec1,const FEATURE_VEC& vec2) {
+			int size = vec1.size();
+			if (size != vec2.size()) {
+				return -1;
+			}
+			
+			float sum = 0,diff;
+			for (int i = 0; i < size; i++) {
+				diff = vec1[i] - vec2[i];
+				sum += diff * diff;
+			}
+			return sqrt(sum);
 		}
 		Mat getSkeletonImage() {
 			Mat skeletonImage;

@@ -141,6 +141,7 @@
     <ClInclude Include="IO.hpp" />
     <ClInclude Include="stadfx.h" />
     <ClInclude Include="testcases.hpp" />
+    <ClInclude Include="keyframes.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

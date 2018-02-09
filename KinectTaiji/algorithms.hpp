@@ -4,13 +4,7 @@
 
 namespace taiji {
 
-	// 提取序列中的关键帧
-	void extractKeyFrame(Feature* features, int len) {
-
-
-	}
-
-	// 动作分割
+	// 动作识别
 	void sliceMotions() {
 
 	}

@@ -10,7 +10,8 @@ namespace taiji {
 	}
 
 	// DTW Ëã·¨
-	void dtw() {
+	float dtwDistance(const vector<Feature>& seq1, const vector<Feature>& seq2) {
+
 
 	}
 

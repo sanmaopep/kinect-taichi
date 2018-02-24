@@ -21,11 +21,17 @@ namespace KinectCSharp.core
 
         public List<Feature> featureBuffer;
 
-        public delegate void FeatureReady(Feature feature);
-
+        public delegate void FeatureReadyDelegate(Feature feature);
+        public FeatureReadyDelegate featureReady;
 
         public KinectControl()
         {
+        }
+
+        // 提供sensor访问
+        public KinectSensor getSensor()
+        {
+            return this.sensor;
         }
 
         // 收到一个帧的事件处理函数
@@ -38,10 +44,27 @@ namespace KinectCSharp.core
             {
                 if (skeletonFrame != null)
                 {
+                    feature.frameNum = skeletonFrame.FrameNumber;
                     skeletons = new Skeleton[skeletonFrame.SkeletonArrayLength];
                     skeletonFrame.CopySkeletonDataTo(skeletons);
+
+                    // 找到第一个有数据的骨骼，并存入feature
+                    if (skeletons.Length != 0)
+                    {
+                        foreach (Skeleton skel in skeletons)
+                        {
+                            if (skel.TrackingState == SkeletonTrackingState.Tracked)
+                            {
+                                feature.skeleton = skel;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
+            feature.ok = (feature.skeleton != null);
+
+            this.featureReady(feature);
             // 如果开启录制
             if (this.record)
             {
@@ -64,7 +87,7 @@ namespace KinectCSharp.core
         }
 
         // 初始化Kinect设备
-        private void InitializeFaculty()
+        public void InitializeFaculty()
         {
             // 确保设备只会被启动一次
             if (KinectControl.sensorOpen)
@@ -80,22 +103,36 @@ namespace KinectCSharp.core
                     this.sensor = potentialSensor;
                     break;
                 }
-                if (null != this.sensor)
-                {
-                    // Turn on the skeleton stream to receive skeleton frames
-                    this.sensor.SkeletonStream.Enable();
-                    this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
+            }
+            if (null != this.sensor)
+            {
+                // Turn on the skeleton stream to receive skeleton frames
+                TransformSmoothParameters parameters = new TransformSmoothParameters();
+                parameters.Smoothing = 0.2f;
+                parameters.Correction = 0.8f;
+                parameters.Prediction = 0.0f;
+                parameters.JitterRadius = 0.5f;
+                this.sensor.SkeletonStream.Enable(parameters);
+                this.sensor.SkeletonFrameReady += this.SensorSkeletonFrameReady;
 
-                    // Start the sensor!
-                    try
-                    {
-                        this.sensor.Start();
-                    }
-                    catch (IOException)
-                    {
-                        this.sensor = null;
-                    }
+                // Start the sensor!
+                try
+                {
+                    this.sensor.Start();
                 }
+                catch (IOException)
+                {
+                    this.sensor = null;
+                }
+            }
+        }
+
+        // 停止设备
+        public void stopFaculty()
+        {
+            if(null != this.sensor)
+            {
+                this.sensor.Stop();
             }
         }
 

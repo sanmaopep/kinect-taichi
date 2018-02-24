@@ -10,6 +10,15 @@ namespace KinectCSharp
 
     class Feature
     {
+        public Int64 frameNum;
+        public bool ok;
+        public Skeleton skeleton;
+
+        public Feature()
+        {
+
+        }
+
         
     }
 }

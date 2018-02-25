@@ -11,6 +11,7 @@ namespace KinectCSharp.core
     using System.IO;
     using System.Collections;
     using KinectCSharp.util;
+    using System.Windows;
 
 
     class KinectControl
@@ -92,6 +93,7 @@ namespace KinectCSharp.core
             // 确保设备只会被启动一次
             if (KinectControl.sensorOpen)
             {
+                MessageBox.Show("设备已启动");
                 return;
             }
             KinectControl.sensorOpen = true;
@@ -125,6 +127,10 @@ namespace KinectCSharp.core
                     this.sensor = null;
                 }
             }
+            else
+            {
+                MessageBox.Show("没有找到设备");
+            }
         }
 
         // 停止设备
@@ -133,7 +139,14 @@ namespace KinectCSharp.core
             if(null != this.sensor)
             {
                 this.sensor.Stop();
+                KinectControl.sensorOpen = false;
             }
+        }
+
+        // 是否启动设备
+        public bool isSensorOpen()
+        {
+            return KinectControl.sensorOpen;
         }
 
         // TODO 从文件加载
@@ -142,7 +155,6 @@ namespace KinectCSharp.core
             FileStream fs = new FileStream(filePath, FileMode.Open);
 
             fs.Close();
-            Console.WriteLine("文件读取成功");
         }
 
         // TODO 保存到文件
@@ -155,7 +167,12 @@ namespace KinectCSharp.core
                 fs.Write(btData, 0, btData.Length);
             }
             fs.Close();
-            Console.WriteLine("文件保存成功");
+        }
+
+        // TODO 播放缓存内容（调用featureReady的委托）
+        public void playBuffer()
+        {
+
         }
 
         // 清空缓存

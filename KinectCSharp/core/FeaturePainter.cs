@@ -66,10 +66,6 @@ namespace KinectCSharp.core
             return this.imageSrouce;
         }
 
-        public void drawBackground()
-        {
-        }
-
         private void FeatureReady(Feature feature)
         {
             using (DrawingContext dc = this.drawingGroup.Open())

@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace KinectCSharp.core
 {
-    class Angle
+    using Microsoft.Kinect;
+
+    class JointAngle
     {
+        
+    }
+
+    class EulerAngle
+    {
+
     }
 }

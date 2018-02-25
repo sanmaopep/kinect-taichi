@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KinectCSharp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="524" Width="596" Closing="WindowClosing" Loaded="WindowLoaded">
+        Title="MainWindow" Height="524" Width="774" Closing="WindowClosing" Loaded="WindowLoaded">
     <Grid>
-        <Image Name="Image" HorizontalAlignment="Left" Height="240" Margin="0,10,-121.333,-169.333" VerticalAlignment="Top" Width="320" Grid.Column="1" Grid.ColumnSpan="2" OpacityMask="Black"/>
-        <TextBlock Name="TextConsole" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="0,255,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="0.338,0.164" Height="230" Width="320" FontWeight="Bold" Foreground="Black"/>
+        <Image Name="Image" HorizontalAlignment="Left" Height="240" Margin="0,0,-121.333,-169.333" VerticalAlignment="Top" Width="320" Grid.Column="1" Grid.ColumnSpan="2" OpacityMask="Black"/>
+        <TextBlock Name="TextConsole" HorizontalAlignment="Left" Margin="0,245,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="0.338,0.164" Height="240" Width="320" FontWeight="Bold" Foreground="Black" Padding="10"/>
+        <Button x:Name="btnKinectControl" Content="关闭Kinect" HorizontalAlignment="Left" Margin="344,30,0,0" VerticalAlignment="Top" Width="75" Click="btnKinectControlClick"/>
     </Grid>
 </Window>

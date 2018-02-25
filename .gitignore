@@ -260,5 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 
-// Kinect 录制文件
+// Kinect record data
 *.dat

@@ -45,11 +45,34 @@ namespace KinectCSharp
             // 初始化Kinect
             kinectControl = new KinectControl();
             kinectControl.InitializeFaculty();
+            kinectControl.featureReady += this.featureReady;
 
             // 初始化渲染
             featurePainter = new FeaturePainter(kinectControl);
             Image.Source = featurePainter.getImageSource();
-            featurePainter.drawBackground();
+        }
+
+        // feature准备好的委托
+        private void featureReady(Feature feature)
+        {
+            // 获得信息
+            string info = "测试信息" + feature.frameNum;
+            TextConsole.Text = info;
+        }
+
+        // Kinect开启关闭控制
+        private void btnKinectControlClick(object sender, RoutedEventArgs e)
+        {
+            if (kinectControl.isSensorOpen())
+            {
+                kinectControl.stopFaculty();
+                btnKinectControl.Content = "启动Kinect";
+            }
+            else
+            {
+                kinectControl.InitializeFaculty();
+                btnKinectControl.Content = "关闭Kinect";
+            }
         }
     }
 }

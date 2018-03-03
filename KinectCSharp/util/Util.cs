@@ -12,7 +12,16 @@ namespace KinectCSharp.util
 
     class Util
     {
+        // 相互转换
+        public static float toFloat(double a)
+        {
+            return float.Parse(a.ToString());
+        }
 
+        public static double toDouble(float a)
+        {
+            return double.Parse(a.ToString());
+        }
         /// <summary> 
         /// 将一个object对象序列化，返回一个byte[]         
         /// </summary> 

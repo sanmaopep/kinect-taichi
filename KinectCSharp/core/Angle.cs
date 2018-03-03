@@ -35,6 +35,10 @@ namespace KinectCSharp.core
         public JointAngle(Skeleton skeleton)
         {
             this.skeleton = skeleton;
+            if(skeleton == null)
+            {
+                return;
+            }
             caculateXYZ();
 
             ElobwLeft = getAngle(JointType.ElbowLeft, JointType.WristLeft, JointType.ShoulderLeft);
@@ -52,14 +56,16 @@ namespace KinectCSharp.core
         public string print()
         {
             string ret = "";
-            ret += "左肘：" + ElobwLeft;
-            ret += "右肘：" + ElobwRight;
-            ret += "左膝：" + KneeLeft;
-            ret += "右膝：" + KneeRight;
-            ret += "左肩：" + ShoulderLeft.X + " " + ShoulderLeft.Y + " " + ShoulderLeft.Z;
-            ret += "右肩：" + ShoulderRight.X + " " + ShoulderRight.Y + " " + ShoulderRight.Z;
-            ret += "左腿：" + HipLeft.X + " " + HipLeft.Y + " " + HipLeft.Z;
-            ret += "右腿：" + HipRight.X + " " + HipRight.Y + " " + HipRight.Z;
+            ret += "左肘：" + Math.Round(ElobwLeft) + "\n";
+            ret += "右肘：" + Math.Round(ElobwRight) + "\n";
+            ret += "左膝：" + Math.Round(KneeLeft) + "\n";
+            ret += "右膝：" + Math.Round(KneeRight) + "\n";
+            ret += "脖子：" + Math.Round(Head) + "\n";
+            ret += "腰部：" + Math.Round(Spine) + "\n";
+            ret += "左肩：" + Math.Round(ShoulderLeft.X) + " " + Math.Round(ShoulderLeft.Y) + " " + Math.Round(ShoulderLeft.Z) + "\n";
+            ret += "右肩：" + Math.Round(ShoulderRight.X) + " " + Math.Round(ShoulderRight.Y) + " " + Math.Round(ShoulderRight.Z) + "\n";
+            ret += "左腿：" + Math.Round(HipLeft.X) + " " + Math.Round(HipLeft.Y) + " " + Math.Round(HipLeft.Z) + "\n";
+            ret += "右腿：" + Math.Round(HipRight.X) + " " + Math.Round(HipRight.Y) + " " + Math.Round(HipRight.Z) + "\n";
 
             return ret;
         }
@@ -90,6 +96,7 @@ namespace KinectCSharp.core
                     if (bottomDeterminant == 0)
                     {
                         // 坐标系计算错误
+                        z.X = z.Y = z.Z = 1;
                         return;
                     }
                     z.X = 1;

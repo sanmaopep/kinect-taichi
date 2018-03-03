@@ -56,8 +56,7 @@ namespace KinectCSharp
         private void featureReady(Feature feature)
         {
             // 获得信息
-            string info = "测试信息" + feature.frameNum;
-            TextConsole.Text = info;
+            TextConsole.Text = feature.print();
         }
 
         // Kinect开启关闭控制

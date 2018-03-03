@@ -65,6 +65,7 @@ namespace KinectCSharp.core
             }
             feature.ok = (feature.skeleton != null);
 
+            feature.caculateAngle();
             this.featureReady(feature);
             // 如果开启录制
             if (this.record)

@@ -58,7 +58,6 @@ namespace KinectCSharp.core
             this.drawingGroup = new DrawingGroup();
             this.imageSrouce = new DrawingImage(this.drawingGroup);
 
-            this.kinectControl.featureReady += this.FeatureReady;
         }
 
         public DrawingImage getImageSource()
@@ -66,7 +65,7 @@ namespace KinectCSharp.core
             return this.imageSrouce;
         }
 
-        private void FeatureReady(Feature feature)
+        public void paint(Feature feature)
         {
             using (DrawingContext dc = this.drawingGroup.Open())
             {
@@ -187,10 +186,7 @@ namespace KinectCSharp.core
         {
             // Convert point to depth space.  
             // We are not using depth directly, but we do want the points in our 640x480 output resolution.
-            DepthImagePoint depthPoint = this
-                .kinectControl
-                .getSensor()
-                .CoordinateMapper
+            DepthImagePoint depthPoint = util.Util.GetCoordinateMapper()
                 .MapSkeletonPointToDepthPoint(skelpoint, DepthImageFormat.Resolution320x240Fps30);
             return new Point(depthPoint.X, depthPoint.Y);
         }

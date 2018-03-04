@@ -4,6 +4,6 @@
 
 int main(int argc, char *argv[])
 {
-	return testFeature();
-	// return testIORead();
+	// return testFeature();
+	return testIORead();
 }

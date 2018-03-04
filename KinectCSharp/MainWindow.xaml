@@ -9,6 +9,11 @@
     <Grid>
         <Image Name="Image" HorizontalAlignment="Left" Height="240" Margin="0,0,-121.333,-169.333" VerticalAlignment="Top" Width="320" Grid.Column="1" Grid.ColumnSpan="2" OpacityMask="Black"/>
         <TextBlock Name="TextConsole" HorizontalAlignment="Left" Margin="0,245,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="0.338,0.164" Height="240" Width="320" FontWeight="Bold" Foreground="Black" Padding="10"/>
+        <Button x:Name="btnRecordControl" Content="开始录制" HorizontalAlignment="Left" Margin="446,30,0,0" VerticalAlignment="Top" Width="75" Click="btnRecordControlClick"/>
         <Button x:Name="btnKinectControl" Content="关闭Kinect" HorizontalAlignment="Left" Margin="344,30,0,0" VerticalAlignment="Top" Width="75" Click="btnKinectControlClick"/>
+        <Button Content="保存到文件" HorizontalAlignment="Left" Margin="344,136,0,0" VerticalAlignment="Top" Width="75" Click="btnSaveClick"/>
+        <Button Content="从文件读取并播放" HorizontalAlignment="Left" Margin="436,136,0,0" VerticalAlignment="Top" Width="120" Click="btnReadClick"/>
+        <TextBox x:Name="tbFilePath" HorizontalAlignment="Left" Height="23" Margin="344,98,0,0" TextWrapping="Wrap" Text="../../motions/test.dat" VerticalAlignment="Top" Width="386"/>
+        <TextBlock x:Name="tbRecordState" HorizontalAlignment="Left" TextWrapping="Wrap" Text="缓存帧数：0" VerticalAlignment="Top" Margin="537,32,0,0" Height="19"/>
     </Grid>
 </Window>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace KinectCSharp.util
 {
     using System.IO;
+    using Microsoft.Kinect;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
 
@@ -22,6 +23,14 @@ namespace KinectCSharp.util
         {
             return double.Parse(a.ToString());
         }
+
+        public static CoordinateMapper GetCoordinateMapper()
+        {
+            byte[] parameters = new byte[12604];
+            CoordinateMapper coordinateMapper = new CoordinateMapper(parameters);
+            return coordinateMapper;
+        }
+
         /// <summary> 
         /// 将一个object对象序列化，返回一个byte[]         
         /// </summary> 

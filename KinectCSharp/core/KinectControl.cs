@@ -7,20 +7,25 @@ using System.Threading.Tasks;
 namespace KinectCSharp.core
 {
     using Microsoft.Kinect;
+    using System.Collections.ObjectModel;
     using Microsoft.Kinect.Toolkit;
     using System.IO;
-    using System.Collections;
     using KinectCSharp.util;
     using System.Windows;
 
+    // TODO 多台Kinect可考虑用OpenMultiSourceFrameReader 
+    // https://msdn.microsoft.com/en-us/library/microsoft.kinect.kinectsensor.openmultisourceframereader.aspx
 
+    // Kinect控制
     class KinectControl
     {
         private KinectSensor sensor;
-        private bool record = false;
+        // 控制是否存储到buffer
+        public bool record = false;
         private static bool sensorOpen = false;
+        public ReadOnlyCollection<byte> parameters;
 
-        public List<Feature> featureBuffer;
+        public List<Feature> featureBuffer = new List<Feature>();
 
         public delegate void FeatureReadyDelegate(Feature feature);
         public FeatureReadyDelegate featureReady;
@@ -64,28 +69,13 @@ namespace KinectCSharp.core
                 }
             }
             feature.ok = (feature.skeleton != null);
-
-            feature.caculateAngle();
+            // 测试
             this.featureReady(feature);
             // 如果开启录制
             if (this.record)
             {
                 this.featureBuffer.Add(feature);
             }
-        }
-
-        // 开始存储到Buffer
-        public bool openBuffer()
-        {
-            this.record = true;
-            return this.record;
-        }
-
-        // 停止存储到Buffer
-        public bool stopBuffer()
-        {
-            this.record = false;
-            return this.record;
         }
 
         // 初始化Kinect设备
@@ -97,7 +87,6 @@ namespace KinectCSharp.core
                 MessageBox.Show("设备已启动");
                 return;
             }
-            KinectControl.sensorOpen = true;
 
             foreach (var potentialSensor in KinectSensor.KinectSensors)
             {
@@ -109,6 +98,9 @@ namespace KinectCSharp.core
             }
             if (null != this.sensor)
             {
+                KinectControl.sensorOpen = true;
+                this.parameters = sensor.CoordinateMapper.ColorToDepthRelationalParameters;
+                Console.WriteLine("长度" + this.parameters.Count);
                 // Turn on the skeleton stream to receive skeleton frames
                 TransformSmoothParameters parameters = new TransformSmoothParameters();
                 parameters.Smoothing = 0.2f;
@@ -150,37 +142,45 @@ namespace KinectCSharp.core
             return KinectControl.sensorOpen;
         }
 
-        // TODO 从文件加载
+        // 从文件加载
         public void loadFromFile(string filePath)
         {
             FileStream fs = new FileStream(filePath, FileMode.Open);
+            Feature featureTemp = new Feature();
+            byte[] temp = featureTemp.getByte();
+
+            while (fs.Read(temp,0,temp.Length) == temp.Length)
+            {
+                // TODO BUG出在引用类型处理不当
+                featureTemp.parseByte(temp);
+                featureBuffer.Add(featureTemp.clone());
+            }
 
             fs.Close();
         }
 
-        // TODO 保存到文件
+        // 保存到文件
         public void saveToFile(string filePath)
         {
             FileStream fs = new FileStream(filePath, FileMode.Create);
             for(int i = 0;i < featureBuffer.Count; i++)
             {
-                byte[] btData = Util.ObjectToBytes(featureBuffer[i]);
+                byte[] btData = featureBuffer[i].getByte();
                 fs.Write(btData, 0, btData.Length);
             }
             fs.Close();
         }
 
-        // TODO 播放缓存内容（调用featureReady的委托）
-        public void playBuffer()
-        {
-
-        }
+        
 
         // 清空缓存
         public void emptyBuffer()
         {
             this.featureBuffer.Clear();
         }
+
+
+        
 
     }
 }

@@ -25,6 +25,7 @@ namespace KinectCSharp
     {
         private KinectControl kinectControl;
         private FeaturePainter featurePainter;
+        private KeyFrameExtract keyFrameExtract;
 
         // 多线程访问UI控件
         private readonly TaskScheduler _syncContextTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
@@ -41,6 +42,8 @@ namespace KinectCSharp
             {
                 btnKinectControl.Content = "启动Kinect";
             }
+
+            // 初始化Kmeans
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -120,7 +123,7 @@ namespace KinectCSharp
             try
             {
                 kinectControl.loadFromFile(filePath);
-                playFeatureBuffer();
+                playFeatureBuffer(kinectControl.featureBuffer);
             }
 
             catch (Exception exception)
@@ -129,21 +132,18 @@ namespace KinectCSharp
             }
         }
 
-        private async void playFeatureBuffer()
+        private async void playFeatureBuffer(List<Feature> list,int DELAY = 1000/60)
         {
-            // 播放一个帧的延迟
-            const int DELAY = 1000/30;
             // 关闭Kinect设备
             if (kinectControl.isSensorOpen())
             {
                 kinectControl.stopFaculty();
                 btnKinectControl.Content = "启动Kinect";
             }
-            int len = kinectControl.featureBuffer.Count;
-            Console.WriteLine(len);
+            int len = list.Count;
             for (int i = 0;i < len; i++)
             {
-                Feature curr = kinectControl.featureBuffer[i];
+                Feature curr = list[i];
                 await Task.Run(() => Thread.Sleep(DELAY));
                 featureReady(curr);
             }
@@ -161,6 +161,16 @@ namespace KinectCSharp
                 btnRecordControl.Content = "停止录制";
             }
             kinectControl.record = !kinectControl.record;
+        }
+
+        private void btnKmeansClick(object sender, RoutedEventArgs e)
+        {
+            if (keyFrameExtract == null)
+            {
+                keyFrameExtract = new KeyFrameExtract(this.kinectControl);
+            }
+            keyFrameExtract.OneInterationKMeans();
+            playFeatureBuffer(keyFrameExtract.caculateResultBuffer(),500);
         }
     }
 }

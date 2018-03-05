@@ -15,5 +15,6 @@
         <Button Content="从文件读取并播放" HorizontalAlignment="Left" Margin="436,136,0,0" VerticalAlignment="Top" Width="120" Click="btnReadClick"/>
         <TextBox x:Name="tbFilePath" HorizontalAlignment="Left" Height="23" Margin="344,98,0,0" TextWrapping="Wrap" Text="../../motions/test.dat" VerticalAlignment="Top" Width="386"/>
         <TextBlock x:Name="tbRecordState" HorizontalAlignment="Left" TextWrapping="Wrap" Text="缓存帧数：0" VerticalAlignment="Top" Margin="537,32,0,0" Height="19"/>
+        <Button Content="缓冲区数据KMeans迭代一次并播放" HorizontalAlignment="Left" Margin="344,181,0,0" VerticalAlignment="Top" Width="212" Click="btnKmeansClick"/>
     </Grid>
 </Window>

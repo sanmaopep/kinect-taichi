@@ -8,8 +8,6 @@ namespace KinectCSharp.core
 {
     using util;
 
-    
-
     class KeyFrameExtract
     {
         private List<Feature> originBuffer;
@@ -17,7 +15,7 @@ namespace KinectCSharp.core
         public List<int> kmeansCenterIndex = new List<int>(); // 质心的集合（迭代的结果）
         public List<List<int>> kmeansSet = new List<List<int>>();
         public readonly int CENTER_GAP = 30; // 每隔几帧提取一个初始化质心关键帧
-        public float timeRatio = 1;    // 时间的伸缩比例
+        public float timeRatio = 1;    // 时间的伸缩比例（时间影响因子）
         private int k;  // 聚心个数
 
         public KeyFrameExtract(KinectControl kinectControl)

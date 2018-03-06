@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KinectTaiji", "KinectTaiji\KinectTaiji.vcxproj", "{9D89F131-9400-451F-8447-76ED5C563385}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectCSharp", "KinectCSharp\KinectCSharp.csproj", "{48E95BA7-86C5-4F32-946D-C952FBDBD8ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectCore", "KinectCSharp\KinectCore.csproj", "{48E95BA7-86C5-4F32-946D-C952FBDBD8ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectCoreTest", "KinectCoreTest\KinectCoreTest.csproj", "{B651AECC-B722-40C8-8550-E9C68D190EB9}"
 EndProject
@@ -19,16 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9D89F131-9400-451F-8447-76ED5C563385}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{9D89F131-9400-451F-8447-76ED5C563385}.Debug|x64.ActiveCfg = Debug|x64
-		{9D89F131-9400-451F-8447-76ED5C563385}.Debug|x64.Build.0 = Debug|x64
-		{9D89F131-9400-451F-8447-76ED5C563385}.Debug|x86.ActiveCfg = Debug|Win32
-		{9D89F131-9400-451F-8447-76ED5C563385}.Debug|x86.Build.0 = Debug|Win32
-		{9D89F131-9400-451F-8447-76ED5C563385}.Release|Any CPU.ActiveCfg = Release|Win32
-		{9D89F131-9400-451F-8447-76ED5C563385}.Release|x64.ActiveCfg = Release|x64
-		{9D89F131-9400-451F-8447-76ED5C563385}.Release|x64.Build.0 = Release|x64
-		{9D89F131-9400-451F-8447-76ED5C563385}.Release|x86.ActiveCfg = Release|Win32
-		{9D89F131-9400-451F-8447-76ED5C563385}.Release|x86.Build.0 = Release|Win32
 		{48E95BA7-86C5-4F32-946D-C952FBDBD8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{48E95BA7-86C5-4F32-946D-C952FBDBD8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48E95BA7-86C5-4F32-946D-C952FBDBD8ED}.Debug|x64.ActiveCfg = Debug|Any CPU

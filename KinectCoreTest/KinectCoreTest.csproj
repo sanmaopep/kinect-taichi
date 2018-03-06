@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KinectCSharp\KinectCSharp.csproj">
+    <ProjectReference Include="..\KinectCSharp\KinectCore.csproj">
       <Project>{48e95ba7-86c5-4f32-946d-c952fbdbd8ed}</Project>
-      <Name>KinectCSharp</Name>
+      <Name>KinectCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

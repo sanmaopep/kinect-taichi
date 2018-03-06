@@ -14,7 +14,8 @@ namespace KinectCSharp.core
         private double[,] map;
         private double[,] dynamic;  // 动态规划，dynamic[i,j]代表到达i,j所用的最短路长度
         private int[,] road; // road[i,j]代表到达i,j之前的点(0斜对角，1->i-1,2->j-1)
-
+        private int[,] roadLen; // 代表到达i,j的路径长度
+        
         public DTW(List<Feature> seqA,List<Feature> seqB)
         {
             this.seqA = seqA;
@@ -22,6 +23,7 @@ namespace KinectCSharp.core
             map = new double[seqA.Count, seqB.Count];
             dynamic = new double[seqA.Count, seqB.Count];
             road = new int[seqA.Count, seqB.Count];
+            roadLen = new int[seqA.Count, seqB.Count];
         }
 
         // 计算相似度对比图
@@ -54,7 +56,7 @@ namespace KinectCSharp.core
                 sum += min;
             }
 
-            return sum;
+            return sum/seqB.Count;
         }
 
         // 动态规划最短路
@@ -68,24 +70,42 @@ namespace KinectCSharp.core
                     if(i == 0 && j == 0)
                     {
                         dynamic[i,j] = map[i,j];
+                        roadLen[i, j] = 1;
                         road[i, j] = -1;
                     }
                     else if(i == 0)
                     {
                         dynamic[i, j] = dynamic[i, j - 1] + map[i, j];
+                        roadLen[i, j] = roadLen[i, j - 1] + 1;
                         road[i, j] = 2;
                     }
                     else if(j == 0)
                     {
                         dynamic[i, j] = dynamic[i - 1, j] + map[i, j];
+                        roadLen[i, j] = roadLen[i - 1, j] + 1;
                         road[i, j] = 1;
                     }
                     else
                     {
-                        goodMinResult result = goodMin(dynamic[i - 1, j - 1],dynamic[i - 1, j], dynamic[i, j - 1]);
+                        goodMinResult result = goodMin(dynamic[i - 1, j - 1],
+                            dynamic[i - 1, j],
+                            dynamic[i, j - 1]);
                         road[i, j] = result.which;
                         dynamic[i, j] = result.min + map[i,j];
+                        switch (road[i, j])
+                        {
+                            case 0:
+                                roadLen[i, j] = roadLen[i - 1, j - 1] + 1;
+                                break;
+                            case 1:
+                                roadLen[i, j] = roadLen[i - 1, j] + 1;
+                                break;
+                            case 2:
+                                roadLen[i, j] = roadLen[i, j - 1] + 1;
+                                break;
+                        }
                     }
+
                 }
             }
         }
@@ -93,7 +113,7 @@ namespace KinectCSharp.core
         // 获得最终的最短路
         public double getFinalShortest()
         {
-            return dynamic[seqA.Count - 1, seqB.Count - 1];
+            return dynamic[seqA.Count - 1, seqB.Count - 1]/roadLen[seqA.Count - 1, seqB.Count - 1];
         }
 
         // 返回最大的数的下标和数字

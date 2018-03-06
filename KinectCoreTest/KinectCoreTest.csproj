@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KeyFrameExtractTests.cs" />
     <Compile Include="DTWTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

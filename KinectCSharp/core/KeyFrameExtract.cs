@@ -14,6 +14,8 @@ namespace KinectCSharp.core
         public List<Feature> resultBuffer = new List<Feature>();
         public List<int> kmeansCenterIndex = new List<int>(); // 质心的集合（迭代的结果）
         public List<List<int>> kmeansSet = new List<List<int>>();
+
+        // TODO 等时间采样确定k值和初始质心应该是存在问题的....
         public readonly int CENTER_GAP = 30; // 每隔几帧提取一个初始化质心关键帧
         public float timeRatio = 1;    // 时间的伸缩比例（时间影响因子）
         private int k;  // 聚心个数
@@ -110,7 +112,6 @@ namespace KinectCSharp.core
             // 不用计算平方就可以比大小，所以不用Math.sqrt
             return sum;
         }
-
 
         // 计算差的平方
         private double diffSquare(double a,double b)

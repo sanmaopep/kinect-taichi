@@ -8,7 +8,7 @@ namespace KinectCSharp.core
 {
     using util;
 
-    class KeyFrameExtract
+    public class KeyFrameExtract
     {
         private List<Feature> originBuffer;
         public List<Feature> resultBuffer = new List<Feature>();
@@ -87,10 +87,10 @@ namespace KinectCSharp.core
         public List<Feature> caculateResultBuffer()
         {
             resultBuffer.Clear();
-            Console.WriteLine("Kmeans帧数：");
+            // Console.WriteLine("Kmeans帧数：");
             for (int i = 0; i < kmeansCenterIndex.Count; i++)
             {
-                Console.WriteLine(kmeansCenterIndex[i]);
+                // Console.WriteLine(kmeansCenterIndex[i]);
                 resultBuffer.Add(originBuffer[kmeansCenterIndex[i]]);
             }
             return resultBuffer;
@@ -104,9 +104,8 @@ namespace KinectCSharp.core
             Feature b = originBuffer[bIndex];
 
             // TODO 等待添加
-            sum += diffSquare(aIndex * timeRatio, bIndex * timeRatio);
-            sum += diffSquare(a.jointAngle.ElobwLeft, b.jointAngle.ElobwLeft);
-            sum += diffSquare(a.jointAngle.ElobwRight, b.jointAngle.ElobwRight);
+            sum += Util.diffSquare(aIndex * timeRatio, bIndex * timeRatio);
+            sum += JointAngle.diffAngle(a.jointAngle, b.jointAngle);
 
             // 不用计算平方就可以比大小，所以不用Math.sqrt
             return sum;

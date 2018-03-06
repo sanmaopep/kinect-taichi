@@ -24,40 +24,20 @@ namespace KinectCSharp.util
             return double.Parse(a.ToString());
         }
 
-        public static CoordinateMapper GetCoordinateMapper()
+        // 计算差的平方
+        public static double diffSquare(double a, double b)
         {
-            byte[] parameters = new byte[12604];
-            CoordinateMapper coordinateMapper = new CoordinateMapper(parameters);
-            return coordinateMapper;
+            return (a - b) * (a - b);
+        }
+        public static double diffSquare(int a, int b)
+        {
+            return (a - b) * (a - b);
+        }
+        public static double diffSquare(float a, float b)
+        {
+            return util.Util.toDouble((a - b) * (a - b));
         }
 
-        /// <summary> 
-        /// 将一个object对象序列化，返回一个byte[]         
-        /// </summary> 
-        /// <param name="obj">能序列化的对象</param>         
-        /// <returns></returns> 
-        public static byte[] ObjectToBytes(object obj)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(ms, obj);
-                return ms.GetBuffer();
-            }
-        }
 
-        /// <summary> 
-        /// 将一个序列化后的byte[]数组还原         
-        /// </summary>
-        /// <param name="Bytes"></param>         
-        /// <returns></returns> 
-        public static object BytesToObject(byte[] Bytes)
-        {
-            using (MemoryStream ms = new MemoryStream(Bytes))
-            {
-                IFormatter formatter = new BinaryFormatter();
-                return formatter.Deserialize(ms);
-            }
-        }
     }
 }

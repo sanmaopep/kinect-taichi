@@ -10,7 +10,7 @@ namespace KinectCSharp.core
     using MathNet.Numerics.LinearAlgebra.Double;
     using util;
 
-    class JointAngle
+    public class JointAngle
     {
         // 人体骨架朝向机建立的三维坐标系
         private Skeleton skeleton;
@@ -68,6 +68,37 @@ namespace KinectCSharp.core
             ret += "右腿：" + Math.Round(HipRight.X) + " " + Math.Round(HipRight.Y) + " " + Math.Round(HipRight.Z) + "\n";
 
             return ret;
+        }
+
+        public static double diffAngle(JointAngle a,JointAngle b)
+        {
+            double sum = 0.0;
+            sum += Util.diffSquare(a.ElobwLeft, b.ElobwLeft);
+            sum += Util.diffSquare(a.ElobwRight, b.ElobwRight);
+            sum += Util.diffSquare(a.KneeLeft, b.KneeLeft);
+            sum += Util.diffSquare(a.KneeRight, b.KneeRight);
+            sum += Util.diffSquare(a.Head, b.Head);
+            sum += Util.diffSquare(a.KneeRight, b.KneeRight);
+
+            sum += Util.diffSquare(a.ShoulderLeft.X, b.ShoulderLeft.X);
+            sum += Util.diffSquare(a.ShoulderLeft.Y, b.ShoulderLeft.Y);
+            sum += Util.diffSquare(a.ShoulderLeft.Z, b.ShoulderLeft.Z);
+
+            sum += Util.diffSquare(a.ShoulderRight.X, b.ShoulderRight.X);
+            sum += Util.diffSquare(a.ShoulderRight.Y, b.ShoulderRight.Y);
+            sum += Util.diffSquare(a.ShoulderRight.Z, b.ShoulderRight.Z);
+
+            sum += Util.diffSquare(a.HipLeft.X, b.HipLeft.X);
+            sum += Util.diffSquare(a.HipLeft.Y, b.HipLeft.Y);
+            sum += Util.diffSquare(a.HipLeft.Z, b.HipLeft.Z);
+
+            sum += Util.diffSquare(a.HipRight.X, b.HipRight.X);
+            sum += Util.diffSquare(a.HipRight.Y, b.HipRight.Y);
+            sum += Util.diffSquare(a.HipRight.Z, b.HipRight.Z);
+
+
+            // 平方根自己开，方便加维度
+            return sum;
         }
 
         private void caculateXYZ()
@@ -129,6 +160,7 @@ namespace KinectCSharp.core
 
         private float getAngle(JointType curr,JointType before, JointType after)
         {
+            // Console.WriteLine(curr.ToString() + " " + before.ToString() + " " + after.ToString());
             return getAngle(getVector(curr, before), getVector(curr, after));
         }
 
@@ -137,8 +169,14 @@ namespace KinectCSharp.core
             float len1 = x.X * x.X + x.Y * x.Y + x.Z * x.Z;
             float len2 = y.X * y.X + y.Y * y.Y + y.Z * y.Z;
             float mutiple = x.X * y.X + x.Y * y.Y + x.Z * y.Z;
+            // 向量会出现为0的情况（重合？）
             double cos = Util.toDouble(mutiple) / Math.Sqrt(Util.toDouble(len1 * len2));
-            return Util.toFloat(Math.Acos(cos) * 180 / 3.14);
+            float result = Util.toFloat(Math.Acos(cos) * 180 / 3.14);
+            if (float.IsNaN(result))
+            {
+                return 0;
+            }
+            return result;
         }
 
         private Vector4 get3DAngle(JointType start,JointType end)
@@ -150,6 +188,5 @@ namespace KinectCSharp.core
             ret.Z = getAngle(bone, z);
             return ret;
         }
-
     }
 }

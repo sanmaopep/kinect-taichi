@@ -11,11 +11,13 @@ namespace KinectCSharp.core
     using Microsoft.Kinect;
 
     // 320x240 画布渲染
-    class FeaturePainter
+    public class FeaturePainter
     {
         private KinectControl kinectControl;
         private DrawingGroup drawingGroup;
         private DrawingImage imageSrouce;
+        private CoordinateMapper coordinateMapper;
+
 
         /// <summary>
         /// Thickness of drawn joint lines
@@ -57,7 +59,15 @@ namespace KinectCSharp.core
             this.kinectControl = kinectControl;
             this.drawingGroup = new DrawingGroup();
             this.imageSrouce = new DrawingImage(this.drawingGroup);
-
+            if (kinectControl.isSensorOpen())
+            {
+                this.coordinateMapper = kinectControl.getSensor().CoordinateMapper;
+            }
+            else
+            {
+                byte[] parameters = new byte[12604];
+                this.coordinateMapper = new CoordinateMapper(parameters);
+            }
         }
 
         public DrawingImage getImageSource()
@@ -186,7 +196,7 @@ namespace KinectCSharp.core
         {
             // Convert point to depth space.  
             // We are not using depth directly, but we do want the points in our 640x480 output resolution.
-            DepthImagePoint depthPoint = util.Util.GetCoordinateMapper()
+            DepthImagePoint depthPoint = coordinateMapper
                 .MapSkeletonPointToDepthPoint(skelpoint, DepthImageFormat.Resolution320x240Fps30);
             return new Point(depthPoint.X, depthPoint.Y);
         }

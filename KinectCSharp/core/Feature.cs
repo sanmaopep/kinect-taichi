@@ -10,7 +10,7 @@ namespace KinectCSharp.core
     using KinectCSharp.util;
     using System.IO;
 
-    class Feature
+    public class Feature
     {
         // 保存的信息
         public Int64 frameNum;
@@ -51,7 +51,10 @@ namespace KinectCSharp.core
         {
             string ret = "";
             ret += "帧数：" + frameNum.ToString()  + "\n";
-            ret += jointAngle.print();
+            if (jointAngle != null)
+            {
+                ret += jointAngle.print();
+            }
             return ret;
         }
 

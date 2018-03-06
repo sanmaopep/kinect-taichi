@@ -17,7 +17,7 @@ namespace KinectCSharp.core
     // https://msdn.microsoft.com/en-us/library/microsoft.kinect.kinectsensor.openmultisourceframereader.aspx
 
     // Kinect控制
-    class KinectControl
+    public class KinectControl
     {
         private KinectSensor sensor;
         // 控制是否存储到buffer
@@ -69,7 +69,7 @@ namespace KinectCSharp.core
                 }
             }
             feature.ok = (feature.skeleton != null);
-            // 测试
+            feature.caculateAngle();
             this.featureReady(feature);
             // 如果开启录制
             if (this.record)
@@ -99,8 +99,6 @@ namespace KinectCSharp.core
             if (null != this.sensor)
             {
                 KinectControl.sensorOpen = true;
-                this.parameters = sensor.CoordinateMapper.ColorToDepthRelationalParameters;
-                Console.WriteLine("长度" + this.parameters.Count);
                 // Turn on the skeleton stream to receive skeleton frames
                 TransformSmoothParameters parameters = new TransformSmoothParameters();
                 parameters.Smoothing = 0.2f;
@@ -151,12 +149,18 @@ namespace KinectCSharp.core
 
             while (fs.Read(temp,0,temp.Length) == temp.Length)
             {
-                // TODO BUG出在引用类型处理不当
                 featureTemp.parseByte(temp);
+                // 记住要注意深拷贝！！！
                 featureBuffer.Add(featureTemp.clone());
             }
 
             fs.Close();
+
+            // 计算角度
+            for(int i = 0;i < featureBuffer.Count; i++)
+            {
+                featureBuffer[i].caculateAngle();
+            }
         }
 
         // 保存到文件

@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 namespace KinectCSharp
 {
     using core;
+    using util;
     using System.Threading;
 
     /// <summary>
@@ -37,13 +38,12 @@ namespace KinectCSharp
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
+            // 做实验
             InitializeKinect();
             if (!kinectControl.isSensorOpen())
             {
                 btnKinectControl.Content = "启动Kinect";
             }
-
-            // 初始化Kmeans
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -66,7 +66,6 @@ namespace KinectCSharp
 
         private void featureReady(Feature feature)
         {
-            feature.caculateAngle();
             TextConsole.Text = feature.print();
             tbRecordState.Text = "缓存帧数：" + kinectControl.featureBuffer.Count;
             featurePainter.paint(feature);
@@ -171,6 +170,12 @@ namespace KinectCSharp
             }
             keyFrameExtract.OneInterationKMeans();
             playFeatureBuffer(keyFrameExtract.caculateResultBuffer(),500);
+        }
+
+        private void btnClearBufferClick(object sender, RoutedEventArgs e)
+        {
+            this.kinectControl.featureBuffer.Clear();
+            tbRecordState.Text = "缓存帧数：" + kinectControl.featureBuffer.Count;
         }
     }
 }

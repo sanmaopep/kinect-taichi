@@ -17,7 +17,7 @@ namespace KinectCSharp.core
 
         // TODO 等时间采样确定k值和初始质心应该是存在问题的....
         public readonly int CENTER_GAP = 30; // 每隔几帧提取一个初始化质心关键帧
-        public float timeRatio = 1;    // 时间的伸缩比例（时间影响因子）
+        public float timeRatio = 0.0F;    // 时间的伸缩比例（时间影响因子）
         private int k;  // 聚心个数
 
         public KeyFrameExtract(KinectControl kinectControl)
@@ -36,13 +36,13 @@ namespace KinectCSharp.core
                 kmeansSet.Add(new List<int>());
                 k++;
             }
-            // 把最后一个点也加入质心
-            if(originBuffer.Count % CENTER_GAP != 0)
-            {
-                kmeansCenterIndex.Add(originBuffer.Count -1);
-                kmeansSet.Add(new List<int>());
-                k++;
-            }
+            // 把最后一个点也加入质心 ?
+            //if(originBuffer.Count % CENTER_GAP != 0)
+            //{
+            //    kmeansCenterIndex.Add(originBuffer.Count -1);
+            //    kmeansSet.Add(new List<int>());
+            //    k++;
+            //}
         }
         
         // 进行一次迭代
@@ -73,15 +73,26 @@ namespace KinectCSharp.core
             // TODO 计算每一个集合新的质心(目前简单计算时间维度的中心)
             for(int i = 0;i < kmeansSet.Count; i++)
             {
-                int sum = 0;
+                List<JointAngle> temp = new List<JointAngle>();
                 for(int j = 0;j < kmeansSet[i].Count; j++)
                 {
-                    sum += kmeansSet[i][j];
+                    temp.Add(originBuffer[kmeansSet[i][j]].jointAngle);
                 }
-                if(sum != 0)
+                // 获得中心点
+                JointAngle avg = JointAngle.avgAngles(temp);
+                // 用原来buffer里面最相近的点代替
+                double minDistance = JointAngle.diffAngle(avg,originBuffer[0].jointAngle);
+                int minIndex = 0;
+                for(int j = 1;j < originBuffer.Count; j++)
                 {
-                    kmeansCenterIndex[i] = sum / kmeansSet[i].Count;
+                    double currDistance = JointAngle.diffAngle(avg, originBuffer[j].jointAngle);
+                    if (currDistance < minDistance)
+                    {
+                        minDistance = currDistance;
+                        minIndex = j;
+                    }
                 }
+                kmeansCenterIndex[i] = minIndex;
             }
             kmeansCenterIndex.Sort();
         }

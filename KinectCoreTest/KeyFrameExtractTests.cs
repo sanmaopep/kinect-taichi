@@ -13,6 +13,18 @@ namespace KinectCSharp.core.Tests
     {
         private const string FILE_PATH = "../../../MotionDataSet/";
 
+        [TestMethod()]
+        public void getDetailData()
+        {
+            // 获取详细数据
+            KinectControl kinectControl = new KinectControl();
+            kinectControl.loadFromFile(FILE_PATH + "motion1.dat");
+            Assert.AreNotEqual(kinectControl.featureBuffer.Count, 0);
+            for(int i = 0;i < kinectControl.featureBuffer.Count; i++)
+            {
+                Console.WriteLine(kinectControl.featureBuffer[i].jointAngle.printSimple());
+            }
+        }
 
         [TestMethod()]
         public void KeyFrameDiffTest()

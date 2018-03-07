@@ -53,6 +53,14 @@ namespace KinectCSharp.core
             HipRight = get3DAngle(JointType.HipRight, JointType.KneeRight);
         }
 
+        public JointAngle()
+        {
+            ElobwLeft = ElobwRight = KneeLeft = KneeRight = Head = Spine = 0;
+            Vector4 zero = new Vector4();
+            zero.X = zero.Y = zero.Z = 0;
+            ShoulderLeft = ShoulderRight = HipLeft = HipRight = zero;
+        }
+
         public string print()
         {
             string ret = "";
@@ -70,6 +78,84 @@ namespace KinectCSharp.core
             return ret;
         }
 
+        // 打印压缩的值
+        public string printSimple()
+        {
+            string ret = "";
+            ret += Math.Round(ElobwLeft) + ",";
+            ret += Math.Round(ElobwRight) + ",";
+            ret += Math.Round(KneeLeft) + ",";
+            ret += Math.Round(KneeRight) + ",";
+            ret += Math.Round(Head) + ",";
+            ret += Math.Round(Spine) + ",";
+            ret += Math.Round(ShoulderLeft.X) + "," + Math.Round(ShoulderLeft.Y) + "," + Math.Round(ShoulderLeft.Z) + ",";
+            ret += Math.Round(ShoulderRight.X) + "," + Math.Round(ShoulderRight.Y) + "," + Math.Round(ShoulderRight.Z) + ",";
+            ret += Math.Round(HipLeft.X) + "," + Math.Round(HipLeft.Y) + "," + Math.Round(HipLeft.Z) + ",";
+            ret += Math.Round(HipRight.X) + "," + Math.Round(HipRight.Y) + "," + Math.Round(HipRight.Z);
+            return ret;
+        }
+
+        // 平均关节数据
+        public static JointAngle avgAngles(List<JointAngle> jointAngles)
+        {
+            JointAngle jointAngle = new JointAngle();
+
+            if(jointAngles.Count == 0)
+            {
+                return jointAngle;
+            }
+
+            for(int i = 0;i < jointAngles.Count; i++)
+            {
+                jointAngle.ElobwLeft += jointAngles[i].ElobwLeft;
+                jointAngle.ElobwRight += jointAngles[i].ElobwRight;
+                jointAngle.KneeLeft += jointAngles[i].KneeLeft;
+                jointAngle.KneeRight += jointAngles[i].KneeRight;
+                jointAngle.Head += jointAngles[i].Head;
+                jointAngle.Spine += jointAngles[i].Spine;
+
+                jointAngle.ShoulderLeft.X += jointAngles[i].ShoulderLeft.X;
+                jointAngle.ShoulderLeft.Y += jointAngles[i].ShoulderLeft.Y;
+                jointAngle.ShoulderLeft.Z += jointAngles[i].ShoulderLeft.Z;
+
+                jointAngle.ShoulderRight.X += jointAngles[i].ShoulderRight.X;
+                jointAngle.ShoulderRight.Y += jointAngles[i].ShoulderRight.Y;
+                jointAngle.ShoulderRight.Z += jointAngles[i].ShoulderRight.Z;
+
+                jointAngle.HipLeft.X += jointAngles[i].HipLeft.X;
+                jointAngle.HipLeft.Y += jointAngles[i].HipLeft.Y;
+                jointAngle.HipLeft.Z += jointAngles[i].HipLeft.Z;
+
+                jointAngle.HipRight.X += jointAngles[i].HipRight.X;
+                jointAngle.HipRight.Y += jointAngles[i].HipRight.Y;
+                jointAngle.HipRight.Z += jointAngles[i].HipRight.Z;
+            }
+
+            jointAngle.ElobwLeft /= jointAngles.Count;
+            jointAngle.ElobwRight /= jointAngles.Count;
+            jointAngle.KneeLeft /= jointAngles.Count;
+            jointAngle.KneeRight /= jointAngles.Count;
+            jointAngle.Head /= jointAngles.Count;
+            jointAngle.Spine /= jointAngles.Count;
+
+            jointAngle.ShoulderLeft.X /= jointAngles.Count;
+            jointAngle.ShoulderLeft.Y /= jointAngles.Count;
+            jointAngle.ShoulderLeft.Z /= jointAngles.Count;
+
+            jointAngle.ShoulderRight.X /= jointAngles.Count;
+            jointAngle.ShoulderRight.Y /= jointAngles.Count;
+            jointAngle.ShoulderRight.Z /= jointAngles.Count;
+
+            jointAngle.HipLeft.X /= jointAngles.Count;
+            jointAngle.HipLeft.Y /= jointAngles.Count;
+            jointAngle.HipLeft.Z /= jointAngles.Count;
+
+            jointAngle.HipRight.X /= jointAngles.Count;
+            jointAngle.HipRight.Y /= jointAngles.Count;
+            jointAngle.HipRight.Z /= jointAngles.Count;
+
+            return jointAngle;
+        }
         public static double diffAngle(JointAngle a,JointAngle b)
         {
             double sum = 0.0;

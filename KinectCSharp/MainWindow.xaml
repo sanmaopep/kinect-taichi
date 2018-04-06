@@ -7,15 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="524" Width="774" Closing="WindowClosing" Loaded="WindowLoaded">
     <Grid>
+        <Image x:Name="PeopleImage" HorizontalAlignment="Left" Height="266" VerticalAlignment="Top" Width="455" OpacityMask="Black" Margin="312,0,0,0"/>
         <Image Name="Image" HorizontalAlignment="Left" Height="240" Margin="0,0,-121.333,-169.333" VerticalAlignment="Top" Width="320" Grid.Column="1" Grid.ColumnSpan="2" OpacityMask="Black"/>
         <TextBlock Name="TextConsole" HorizontalAlignment="Left" Margin="0,245,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="0.338,0.164" Height="240" Width="320" FontWeight="Bold" Foreground="Black" Padding="10"/>
-        <Button x:Name="btnRecordControl" Content="开始录制" HorizontalAlignment="Left" Margin="446,30,0,0" VerticalAlignment="Top" Width="75" Click="btnRecordControlClick"/>
-        <Button x:Name="btnKinectControl" Content="关闭Kinect" HorizontalAlignment="Left" Margin="344,30,0,0" VerticalAlignment="Top" Width="75" Click="btnKinectControlClick"/>
-        <Button Content="保存到文件" HorizontalAlignment="Left" Margin="344,136,0,0" VerticalAlignment="Top" Width="75" Click="btnSaveClick"/>
-        <Button Content="从文件读取并播放" HorizontalAlignment="Left" Margin="436,136,0,0" VerticalAlignment="Top" Width="120" Click="btnReadClick"/>
-        <TextBox x:Name="tbFilePath" HorizontalAlignment="Left" Height="23" Margin="344,95,0,0" TextWrapping="Wrap" Text="../../../MotionDataSet/test.dat" VerticalAlignment="Top" Width="386"/>
-        <TextBlock x:Name="tbRecordState" HorizontalAlignment="Left" TextWrapping="Wrap" Text="缓存帧数：0" VerticalAlignment="Top" Margin="537,32,0,0" Height="19"/>
-        <Button Content="缓冲区数据KMeans迭代一次并播放" HorizontalAlignment="Left" Margin="344,181,0,0" VerticalAlignment="Top" Width="212" Click="btnKmeansClick"/>
-        <Button x:Name="btnClearBuffer" Content="清空缓存" HorizontalAlignment="Left" Margin="626,30,0,0" VerticalAlignment="Top" Width="75" Click="btnClearBufferClick"/>
+        <Button x:Name="btnRecordControl" Content="开始录制" HorizontalAlignment="Left" Margin="414,288,0,0" VerticalAlignment="Top" Width="75" Click="btnRecordControlClick"/>
+        <Button x:Name="btnKinectControl" Content="关闭Kinect" HorizontalAlignment="Left" Margin="312,288,0,0" VerticalAlignment="Top" Width="75" Click="btnKinectControlClick"/>
+        <Button Content="保存到文件" HorizontalAlignment="Left" Margin="312,394,0,0" VerticalAlignment="Top" Width="75" Click="btnSaveClick"/>
+        <Button Content="从文件读取并播放" HorizontalAlignment="Left" Margin="404,394,0,0" VerticalAlignment="Top" Width="120" Click="btnReadClick"/>
+        <TextBox x:Name="tbFilePath" HorizontalAlignment="Left" Height="23" Margin="312,353,0,0" TextWrapping="Wrap" Text="../../../MotionDataSet/test.dat" VerticalAlignment="Top" Width="386"/>
+        <TextBlock x:Name="tbRecordState" HorizontalAlignment="Left" TextWrapping="Wrap" Text="缓存帧数：0" VerticalAlignment="Top" Margin="505,290,0,0" Height="19"/>
+        <Button Content="缓冲区数据KMeans迭代一次并播放" HorizontalAlignment="Left" Margin="312,439,0,0" VerticalAlignment="Top" Width="212" Click="btnKmeansClick"/>
+        <Button x:Name="btnClearBuffer" Content="清空缓存" HorizontalAlignment="Left" Margin="594,288,0,0" VerticalAlignment="Top" Width="75" Click="btnClearBufferClick"/>
     </Grid>
 </Window>

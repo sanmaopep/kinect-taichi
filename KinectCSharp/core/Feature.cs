@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KinectCSharp.core
 {
     using Microsoft.Kinect;
-    using KinectCSharp.util;
     using System.IO;
+    using System.Windows;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
 
     public class Feature
     {
@@ -17,6 +16,7 @@ namespace KinectCSharp.core
         public Skeleton skeleton;
         public bool ok;
         public JointAngle jointAngle;
+        public BackgroundRemoved backgroundRemoved;
 
         // 计算获得的信息
         public Feature()
@@ -38,6 +38,10 @@ namespace KinectCSharp.core
                 Joint joint = skeleton.Joints[(JointType)i];
                 ret.skeleton.Joints[(JointType)i] = joint;
             }
+
+            ret.backgroundRemoved = new BackgroundRemoved();
+            ret.backgroundRemoved.imageSource = backgroundRemoved.imageSource.Clone();
+            ret.backgroundRemoved.imageSource.Freeze();
             return ret;
         }
 
@@ -58,16 +62,27 @@ namespace KinectCSharp.core
             return ret;
         }
 
-        // 解析byte
-        public void parseByte(byte[] bytes)
+        /**
+         * 关于二进制数据的格式
+         * -------------20个关节重复-----------
+         * float 关节X坐标
+         * float 关节Y坐标
+         * float 关节Z坐标
+         * Int32 关节状态
+         * -----------------------------------
+         * Int64 当前帧数
+         * -----------------------------------
+         * Int32 二进制数据长度
+         * byte 前景的二进制数据
+         * */
+
+        // 解析byte(true代表解析没结束)
+        public bool parseFromStream(Stream stream)
         {
-            if(bytes.Length == 0)
-            {
-                return;
-            }
-            MemoryStream ms = new MemoryStream(bytes);
-            ms.Position = 0;
-            BinaryReader binaryReader = new BinaryReader(ms);
+            BinaryReader binaryReader = new BinaryReader(stream);
+
+            skeleton = new Skeleton();
+            backgroundRemoved = new BackgroundRemoved();
 
             const int JOINT_TYPE_LEN = 20;
             for (int i = 0; i < JOINT_TYPE_LEN; i++)
@@ -82,10 +97,15 @@ namespace KinectCSharp.core
                 joint.Position = skeletonPoint;
 
                 skeleton.Joints[(JointType)i] = joint;
-                frameNum = binaryReader.ReadInt64();
             }
+            frameNum = binaryReader.ReadInt64();
+            int count = binaryReader.ReadInt32();
+            byte[] data = binaryReader.ReadBytes(count);
+            backgroundRemoved.ParseFromBytes(data);
+            backgroundRemoved.imageSource.Freeze();
 
             ok = true;
+            return true;
         }
 
         // 获取二进制（用于写文件）
@@ -107,10 +127,71 @@ namespace KinectCSharp.core
                 binaryWriter.Write(joint.Position.Y);
                 binaryWriter.Write(joint.Position.Z);
                 binaryWriter.Write((Int32)joint.TrackingState);
-                binaryWriter.Write(frameNum);
             }
+            binaryWriter.Write(frameNum);
+
+            byte[] bytes = backgroundRemoved.getBuffer();
+            binaryWriter.Write(bytes.Count());
+            binaryWriter.Write(bytes);
 
             return ms.GetBuffer();
         }
     }
+
+    // 移除背景图片
+    public class BackgroundRemoved
+    {
+        // 直接存取rawPixelData会造成浪费大量空间，需要进行png数据压缩！
+        public BitmapSource imageSource;
+
+        public void ParseFromBytes(byte[] bytes)
+        {
+            using(MemoryStream ms = new MemoryStream(bytes))
+            {
+                // jpeg数据解码
+                BitmapDecoder decoder = new JpegBitmapDecoder(ms, 
+                    BitmapCreateOptions.PreservePixelFormat,
+                    BitmapCacheOption.OnLoad);
+                imageSource = decoder.Frames[0];
+            }
+        }
+
+        public void ParseRawData(int width,int height,byte[] rawPixelData)
+        {
+            // 读取Bitmap数据
+            WriteableBitmap foregroundBitmap;
+
+            // 解析Raw数据
+            foregroundBitmap = new WriteableBitmap(
+                        width,
+                        height,
+                        96.0,
+                        96.0,
+                        PixelFormats.Bgra32,
+                        null);
+            foregroundBitmap.WritePixels(
+                new Int32Rect(0, 0,
+                foregroundBitmap.PixelWidth,
+                foregroundBitmap.PixelHeight),
+                rawPixelData,
+                foregroundBitmap.PixelWidth * sizeof(int),
+                0);
+
+            imageSource = foregroundBitmap;
+            
+        }
+
+        public byte[] getBuffer()
+        {
+            MemoryStream ms = new MemoryStream();
+            
+            // 解析为jpeg压缩数据
+            BitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(imageSource));
+            encoder.Save(ms);
+            return ms.GetBuffer();
+        }
+    }
 }
+
+

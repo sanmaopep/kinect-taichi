@@ -27,6 +27,7 @@ namespace KinectCSharp
         private KinectControl kinectControl;
         private FeaturePainter featurePainter;
         private KeyFrameExtract keyFrameExtract;
+        private BitmapSource foregroundBitmap;
 
         // 多线程访问UI控件
         private readonly TaskScheduler _syncContextTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
@@ -58,6 +59,7 @@ namespace KinectCSharp
             kinectControl = new KinectControl();
             kinectControl.InitializeFaculty();
             kinectControl.featureReady += this.featureReady;
+            kinectControl.backgroundReady += this.backgroundReady;
 
             // 初始化渲染
             featurePainter = new FeaturePainter(kinectControl);
@@ -69,6 +71,13 @@ namespace KinectCSharp
             TextConsole.Text = feature.print();
             tbRecordState.Text = "缓存帧数：" + kinectControl.featureBuffer.Count;
             featurePainter.paint(feature);
+        }
+
+        private void backgroundReady(BitmapSource writeableBitmap)
+        {
+            this.foregroundBitmap = writeableBitmap;
+            PeopleImage.Source = writeableBitmap;
+            // PeopleImage.Stretch = Stretch.None;
         }
 
         // Kinect开启关闭控制
@@ -145,6 +154,7 @@ namespace KinectCSharp
                 Feature curr = list[i];
                 await Task.Run(() => Thread.Sleep(DELAY));
                 featureReady(curr);
+                backgroundReady(curr.backgroundRemoved.imageSource);
             }
         }
 

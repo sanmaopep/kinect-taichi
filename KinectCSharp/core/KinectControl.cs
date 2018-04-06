@@ -100,7 +100,6 @@ namespace KinectCSharp.core
                         backgroundBuffer.Add(backgroundRemoved);
                     }
                 }
-               
             }
         }
 

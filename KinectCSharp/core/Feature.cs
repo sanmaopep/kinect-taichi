@@ -138,7 +138,7 @@ namespace KinectCSharp.core
         }
     }
 
-    // 移除背景图片
+    // AR显示
     public class BackgroundRemoved
     {
         // 直接存取rawPixelData会造成浪费大量空间，需要进行png数据压缩！

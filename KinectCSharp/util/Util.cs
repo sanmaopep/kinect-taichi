@@ -37,9 +37,5 @@ namespace KinectCSharp.util
         {
             return util.Util.toDouble((a - b) * (a - b));
         }
-
-
-
-
     }
 }

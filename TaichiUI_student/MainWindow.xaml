@@ -1,12 +1,48 @@
-﻿<Window x:Class="TaichiUI_student.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TaichiUI_student"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+﻿<Window
+    x:Class="TaichiUI_student.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="960.333"
+    Height="780.717"
+    Loaded="WindowLoaded"
+    mc:Ignorable="d">
+    <StackPanel>
+        <DockPanel>
+            <materialDesign:ColorZone
+                Padding="16"
+                materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                DockPanel.Dock="Top"
+                Mode="PrimaryMid">
+                <DockPanel>
+                    <materialDesign:PopupBox
+                        DockPanel.Dock="Right"
+                        PlacementMode="BottomAndAlignRightEdges"
+                        StaysOpen="False">
+                        <StackPanel>
+                            <Button Content="设置动作库地址" />
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="22">
+                        动作列表
+                    </TextBlock>
+                </DockPanel>
+            </materialDesign:ColorZone>
+        </DockPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="1" Padding="10,10,10,10">
+                <ContentControl x:Name="ctlMainContent" />
+            </ScrollViewer>
+        </Grid>
+    </StackPanel>
 </Window>

@@ -1,0 +1,65 @@
+﻿<UserControl
+    x:Class="TaichiUI_student.Components.KungfuMoveCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TaichiUI_student.Components"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Loaded"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+    <Grid>
+        <materialDesign:Card
+            Width="200"
+            MaxHeight="400"
+            Margin="10,10,10,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="140" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image
+                    Width="196"
+                    Height="140"
+                    Source="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike933%2C5%2C5%2C933%2C330/sign=96d78dcdb67eca80060831b5f04afcb8/bf096b63f6246b6028f5999aedf81a4c500fa260.jpg"
+                    Stretch="UniformToFill" />
+                <StackPanel Grid.Row="1" Margin="8,24,8,0">
+                    <TextBlock x:Name="tbTitle" FontWeight="Bold">
+                        金刚捣碓
+                    </TextBlock>
+                    <TextBlock
+                        x:Name="tbDescription"
+                        VerticalAlignment="Center"
+                        TextWrapping="Wrap">
+                        金刚捣碓是太极拳基本动作之一。有平心静气....
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="2"
+                    Margin="8"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="30"
+                        Padding="2,0,2,0"
+                        materialDesign:RippleAssist.IsCentered="True"
+                        Style="{StaticResource MaterialDesignToolButton}"
+                        ToolTip="练习模式">
+                        <materialDesign:PackIcon Kind="Run" />
+                    </Button>
+                    <Button
+                        Width="30"
+                        Padding="2,0,2,0"
+                        materialDesign:RippleAssist.IsCentered="True"
+                        Style="{StaticResource MaterialDesignToolButton}"
+                        ToolTip="实战模式">
+                        <materialDesign:PackIcon Kind="RunFast" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

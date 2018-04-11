@@ -76,7 +76,7 @@
                 PreviewMouseDown="progress_MouseDown"
                 TickFrequency="5"
                 ValueChanged="progress_ValueChanged"
-                Value="25" />
+                Value="0" />
         </DockPanel>
     </DockPanel>
 </UserControl>

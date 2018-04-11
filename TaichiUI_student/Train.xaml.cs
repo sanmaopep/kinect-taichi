@@ -55,23 +55,36 @@ namespace TaichiUI_student
             // 将数据更新到UI组件上
             imgTeacher.Source = kcTeacher.featureBuffer[0].backgroundRemoved.imageSource;
             progress.Maximum = kcTeacher.featureBuffer.Count - 1;
-            progress.Value = currFrame;
+            progress.Value = currFrame = 0;
 
             // 文字信息
-            tbTeacher.Text = trainModel.currSingleMotionModel.details[0].description;
+            tbTeacher.Text = getMotionDescription(0);
             tbStudent.Text = "右腿架子过高";
         }
 
-        private void btnPlayClick(object sender, RoutedEventArgs e)
+        // 获取描述信息
+        private string getMotionDescription(int frameNum)
         {
-            if (!isPlaying)
+            SingleDetailDescription[] list = trainModel.currSingleMotionModel.details;
+            for(int i = 0;i < list.Length; i++)
             {
-                startPlay();
+                if (frameNum >= list[i].from && frameNum <= list[i].to)
+                {
+                    return list[i].description;
+                }
             }
-            else
-            {
-                stopPlay();
-            }
+
+            return "";
+        }
+
+        // 显示对应的帧
+        private void displayFrame(int frameNum)
+        {
+            List<Feature> list = kcTeacher.featureBuffer;
+            currFrame = frameNum;
+            progress.Value = frameNum;
+            imgTeacher.Source = list[frameNum].backgroundRemoved.imageSource;
+            tbTeacher.Text = getMotionDescription(frameNum);
         }
 
         // 停止播放
@@ -81,7 +94,7 @@ namespace TaichiUI_student
             playBtnIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
         }
 
-        // 播放中
+        // 开始播放
         private async void startPlay()
         {
             isPlaying = true;
@@ -96,13 +109,23 @@ namespace TaichiUI_student
                 }
                 await Task.Run(() => Thread.Sleep(delay));
 
-                Feature curr = list[i];
-                currFrame = i;
-                progress.Value = i;
-                imgTeacher.Source = list[i].backgroundRemoved.imageSource;
+                displayFrame(i);
             }
             currFrame = 0;
             stopPlay();
+        }
+
+        // UI事件绑定
+        private void btnPlayClick(object sender, RoutedEventArgs e)
+        {
+            if (!isPlaying)
+            {
+                startPlay();
+            }
+            else
+            {
+                stopPlay();
+            }
         }
 
         private void progress_MouseDown(object sender, MouseButtonEventArgs e)
@@ -114,6 +137,7 @@ namespace TaichiUI_student
         private void progress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             currFrame = (int)e.NewValue;
+            displayFrame(currFrame);
         }
     }
 }

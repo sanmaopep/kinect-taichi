@@ -5,11 +5,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:TaichiUI_student.ViewModels"
     Title="MainWindow"
     Width="960.333"
     Height="780.717"
     Loaded="WindowLoaded"
     mc:Ignorable="d">
+    <Window.DataContext>
+        <model:MainWindowModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
     <DockPanel>
         <materialDesign:ColorZone
             Padding="16"
@@ -25,12 +32,18 @@
                         <Button Content="设置动作库地址" />
                     </StackPanel>
                 </materialDesign:PopupBox>
+                <Button
+                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                    Click="btnHomeBackClick"
+                    DockPanel.Dock="Left"
+                    Visibility="{Binding Path=HomeBackVisible, Converter={StaticResource BoolToVis}}">
+                    <materialDesign:PackIcon Kind="Home" />
+                </Button>
                 <TextBlock
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontSize="22">
-                    动作列表
-                </TextBlock>
+                    FontSize="22"
+                    Text="{Binding Path=Title, Mode=OneWay}" />
             </DockPanel>
         </materialDesign:ColorZone>
         <Grid>
@@ -39,7 +52,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <ScrollViewer Grid.Row="1" Padding="10,10,10,10">
-                <ContentControl x:Name="ctlMainContent" />
+                <ContentControl x:Name="ctlContent" Content="{Binding Path=MainContent, Mode=OneWay}" />
             </ScrollViewer>
         </Grid>
     </DockPanel>

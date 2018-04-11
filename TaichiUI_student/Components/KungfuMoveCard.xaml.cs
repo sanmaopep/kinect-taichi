@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using KinectCore.model;
 using KinectCore.util;
+using TaichiUI_student.ViewModels;
 
 namespace TaichiUI_student.Components
 {
@@ -35,6 +36,7 @@ namespace TaichiUI_student.Components
         public KungfuMoveCard(SingleMotionModel singleMotionModel,string motionLibPath)
         {
             InitializeComponent();
+
             this.singleMotionModel = singleMotionModel;
             this.motionLibPath = motionLibPath;
 
@@ -87,6 +89,24 @@ namespace TaichiUI_student.Components
             {
                 return tbDescription.Text;
             }
+        }
+
+        private void btnPracticeModeClick(object sender, RoutedEventArgs e)
+        {
+            MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
+            mainWindowModel.Title = singleMotionModel.title + "  实战中";
+            mainWindowModel.HomeBackVisible = true;
+            mainWindowModel.MainContent = new Practice();
+            mainWindowModel.practiceModel.currSingleMotionModel = singleMotionModel;
+        }
+
+        private void btnTrainModeClick(object sender, RoutedEventArgs e)
+        {
+            MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
+            mainWindowModel.Title = singleMotionModel.title + "  练习中";
+            mainWindowModel.HomeBackVisible = true;
+            mainWindowModel.MainContent = new Train();
+            mainWindowModel.practiceModel.currSingleMotionModel = singleMotionModel;
         }
     }
 }

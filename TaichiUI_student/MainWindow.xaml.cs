@@ -12,43 +12,37 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TaichiUI_student.Models;
+using TaichiUI_student.ViewModels;
 
 namespace TaichiUI_student
 {
-    public enum ViewItemEnum
-    {
-        HOME = 0,       // 首页
-        TRAIN = 1,      // 练习模式
-        PRACTICE = 2    // 实战模式
-    }
-
 
     public partial class MainWindow : Window
     {
+
+        Home home = new Home();
+
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowModel();
+            switchHome();
         }
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            setContent(ViewItemEnum.HOME);
         }
 
-        public void setContent(ViewItemEnum viewItemEnum)
+        private void btnHomeBackClick(object sender, RoutedEventArgs e)
         {
-            switch (viewItemEnum)
-            {
-                case ViewItemEnum.HOME:
-                    ctlMainContent.Content = new Home();
-                    break;
-                default:
-                    break;
-            }
+            switchHome();
         }
 
-        
+        private void switchHome()
+        {
+            MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
+            mainWindowModel.MainContent = home;
+            mainWindowModel.Title = "动作列表";
+            mainWindowModel.HomeBackVisible = false;
+        }
     }
 }

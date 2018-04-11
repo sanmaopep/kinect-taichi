@@ -28,16 +28,17 @@ namespace TaichiUI_student
 
         private void UserControlLoaded(object sender, RoutedEventArgs e)
         {
+            // 清空原有数据
+            wpKungfuList.Children.Clear();
+
             string motionLibPath = @"../../../MotionDataSet";
             SingleMotionModel[] singleMotionModel = MotionLibsUtil.parseFromFile(motionLibPath);
-            for(int j = 0; j < 20; j++)
+
+            for (int i = 0; i < singleMotionModel.Length; i++)
             {
-                for (int i = 0; i < singleMotionModel.Length; i++)
-                {
-                    wpKungfuList.Children.Add(new KungfuMoveCard(singleMotionModel[i], motionLibPath));
-                }
+                wpKungfuList.Children.Add(new KungfuMoveCard(singleMotionModel[i], motionLibPath));
             }
-           
+
         }
     }
 }

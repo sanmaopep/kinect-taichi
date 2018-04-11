@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using KinectCore.model;
 
 namespace TaichiUI_student.Components
 {
@@ -20,6 +21,10 @@ namespace TaichiUI_student.Components
     /// </summary>
     public partial class KungfuMoveCard : UserControl
     {
+        private const int DESCRIPTION_MAX_LEN = 30;
+
+        private SingleMotionModel singleMotionModel;
+
         private string _title;
         private string _description;
         private ImageSource _picSource;
@@ -27,6 +32,23 @@ namespace TaichiUI_student.Components
         public KungfuMoveCard()
         {
             InitializeComponent();
+        }
+
+        public KungfuMoveCard(SingleMotionModel singleMotionModel)
+        {
+            InitializeComponent();
+            this.singleMotionModel = singleMotionModel;
+            this.title = singleMotionModel.title;
+
+            // 字符串长度控制
+            if(singleMotionModel.description.Length > DESCRIPTION_MAX_LEN)
+            {
+                this.description = singleMotionModel.description.Substring(0, DESCRIPTION_MAX_LEN) + "...";
+            }
+            else
+            {
+                this.description = singleMotionModel.description;
+            }
         }
 
         public string title

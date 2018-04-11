@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TaichiUI_student.Components;
+using KinectCore.model;
+using KinectCore.util;
 
 namespace TaichiUI_student
 {
@@ -26,9 +28,11 @@ namespace TaichiUI_student
 
         private void UserControlLoaded(object sender, RoutedEventArgs e)
         {
-            for(int i = 0;i < 20; i++)
+            string filePath = @"../../../MotionDataSet/motions.json";
+            SingleMotionModel[] singleMotionModel = MotionLibsUtil.parseFromFile(filePath);
+            for (int i = 0;i < singleMotionModel.Length; i++)
             {
-                wpKungfuList.Children.Add(new KungfuMoveCard());
+                wpKungfuList.Children.Add(new KungfuMoveCard(singleMotionModel[i]));
             }
         }
     }

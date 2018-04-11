@@ -51,6 +51,7 @@
     <Compile Include="KeyFrameExtractTests.cs" />
     <Compile Include="DTWTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MotionLibsUtilTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

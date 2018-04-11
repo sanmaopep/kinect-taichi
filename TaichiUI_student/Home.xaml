@@ -9,7 +9,5 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Loaded="UserControlLoaded"
     mc:Ignorable="d">
-    <WrapPanel x:Name="wpKungfuList">
-        <localc:KungfuMoveCard />
-    </WrapPanel>
+    <WrapPanel x:Name="wpKungfuList" />
 </UserControl>

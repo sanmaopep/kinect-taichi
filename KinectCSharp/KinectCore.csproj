@@ -48,6 +48,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Microsoft.Kinect.Toolkit.BackgroundRemoval.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Numerics" />
@@ -73,6 +76,8 @@
     <Compile Include="core\DTW.cs" />
     <Compile Include="core\FeaturePainter.cs" />
     <Compile Include="core\KeyFrameExtract.cs" />
+    <Compile Include="model\SingleMotionModel.cs" />
+    <Compile Include="util\MotionLibsUtil.cs" />
     <Compile Include="util\Util.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

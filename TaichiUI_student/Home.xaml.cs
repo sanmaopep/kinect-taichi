@@ -30,10 +30,14 @@ namespace TaichiUI_student
         {
             string motionLibPath = @"../../../MotionDataSet";
             SingleMotionModel[] singleMotionModel = MotionLibsUtil.parseFromFile(motionLibPath);
-            for (int i = 0;i < singleMotionModel.Length; i++)
+            for(int j = 0; j < 20; j++)
             {
-                wpKungfuList.Children.Add(new KungfuMoveCard(singleMotionModel[i], motionLibPath));
+                for (int i = 0; i < singleMotionModel.Length; i++)
+                {
+                    wpKungfuList.Children.Add(new KungfuMoveCard(singleMotionModel[i], motionLibPath));
+                }
             }
+           
         }
     }
 }

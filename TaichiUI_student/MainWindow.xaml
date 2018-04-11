@@ -10,31 +10,29 @@
     Height="780.717"
     Loaded="WindowLoaded"
     mc:Ignorable="d">
-    <StackPanel>
-        <DockPanel>
-            <materialDesign:ColorZone
-                Padding="16"
-                materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                DockPanel.Dock="Top"
-                Mode="PrimaryMid">
-                <DockPanel>
-                    <materialDesign:PopupBox
-                        DockPanel.Dock="Right"
-                        PlacementMode="BottomAndAlignRightEdges"
-                        StaysOpen="False">
-                        <StackPanel>
-                            <Button Content="设置动作库地址" />
-                        </StackPanel>
-                    </materialDesign:PopupBox>
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="22">
-                        动作列表
-                    </TextBlock>
-                </DockPanel>
-            </materialDesign:ColorZone>
-        </DockPanel>
+    <DockPanel>
+        <materialDesign:ColorZone
+            Padding="16"
+            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+            DockPanel.Dock="Top"
+            Mode="PrimaryMid">
+            <DockPanel>
+                <materialDesign:PopupBox
+                    DockPanel.Dock="Right"
+                    PlacementMode="BottomAndAlignRightEdges"
+                    StaysOpen="False">
+                    <StackPanel>
+                        <Button Content="设置动作库地址" />
+                    </StackPanel>
+                </materialDesign:PopupBox>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="22">
+                    动作列表
+                </TextBlock>
+            </DockPanel>
+        </materialDesign:ColorZone>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -44,5 +42,5 @@
                 <ContentControl x:Name="ctlMainContent" />
             </ScrollViewer>
         </Grid>
-    </StackPanel>
+    </DockPanel>
 </Window>

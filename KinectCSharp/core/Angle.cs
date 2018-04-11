@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KinectCSharp.core
+namespace KinectCore.core
 {
     using Microsoft.Kinect;
     using MathNet.Numerics.LinearAlgebra.Double;

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KinectCSharp.core
+namespace KinectCore.core
 {
     using util;
-
     public class KeyFrameExtract
     {
         private List<Feature> originBuffer;
@@ -135,7 +134,7 @@ namespace KinectCSharp.core
         }
         private double diffSquare(float a, float b)
         {
-            return util.Util.toDouble((a - b) * (a - b));
+            return Util.toDouble((a - b) * (a - b));
         }
     }
 }

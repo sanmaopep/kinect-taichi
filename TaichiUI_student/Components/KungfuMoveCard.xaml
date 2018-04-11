@@ -22,6 +22,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Image
+                    x:Name="imgKunfu"
                     Width="196"
                     Height="140"
                     Source="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike933%2C5%2C5%2C933%2C330/sign=96d78dcdb67eca80060831b5f04afcb8/bf096b63f6246b6028f5999aedf81a4c500fa260.jpg"

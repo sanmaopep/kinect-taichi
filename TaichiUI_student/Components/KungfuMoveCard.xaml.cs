@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using KinectCore.model;
+using KinectCore.util;
 
 namespace TaichiUI_student.Components
 {
@@ -24,24 +25,22 @@ namespace TaichiUI_student.Components
         private const int DESCRIPTION_MAX_LEN = 30;
 
         private SingleMotionModel singleMotionModel;
-
-        private string _title;
-        private string _description;
-        private ImageSource _picSource;
+        private string motionLibPath;
 
         public KungfuMoveCard()
         {
             InitializeComponent();
         }
 
-        public KungfuMoveCard(SingleMotionModel singleMotionModel)
+        public KungfuMoveCard(SingleMotionModel singleMotionModel,string motionLibPath)
         {
             InitializeComponent();
             this.singleMotionModel = singleMotionModel;
-            this.title = singleMotionModel.title;
+            this.motionLibPath = motionLibPath;
 
+            this.title = singleMotionModel.title;
             // 字符串长度控制
-            if(singleMotionModel.description.Length > DESCRIPTION_MAX_LEN)
+            if (singleMotionModel.description.Length > DESCRIPTION_MAX_LEN)
             {
                 this.description = singleMotionModel.description.Substring(0, DESCRIPTION_MAX_LEN) + "...";
             }
@@ -49,18 +48,32 @@ namespace TaichiUI_student.Components
             {
                 this.description = singleMotionModel.description;
             }
+
+            // 设置ImageSource
+            this.picSource = MotionLibsUtil.getPicSource(motionLibPath, singleMotionModel);
         }
 
         public string title
         {
             set
             {
-                _title = value;
-                tbTitle.Text = _title;
+                tbTitle.Text = value;
             }
             get
             {
-                return _title;
+                return tbTitle.Text;
+            }
+        }
+        
+        public ImageSource picSource
+        {
+            set
+            {
+                imgKunfu.Source = value;
+            }
+            get
+            {
+                return imgKunfu.Source;
             }
         }
 
@@ -68,12 +81,11 @@ namespace TaichiUI_student.Components
         {
             set
             {
-                _description = value;
-                tbDescription.Text = _description;
+                tbDescription.Text = value;
             }
             get
             {
-                return _description;
+                return tbDescription.Text;
             }
         }
     }

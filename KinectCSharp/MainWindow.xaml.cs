@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KinectCSharp
+namespace KinectCore
 {
     using core;
     using util;

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KinectCSharp.core
+namespace KinectCore.core
 {
     using Microsoft.Kinect;
     using System.Collections.ObjectModel;
     using Microsoft.Kinect.Toolkit;
     using Microsoft.Kinect.Toolkit.BackgroundRemoval;
     using System.IO;
-    using KinectCSharp.util;
+    using KinectCore.util;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
@@ -205,6 +205,32 @@ namespace KinectCSharp.core
         public bool isSensorOpen()
         {
             return KinectControl.sensorOpen;
+        }
+
+        // 从文件加载固定个数，并不进行计算
+        public void loadFramesFromFile(string filePath,int frameNum)
+        {
+            FileStream fs = new FileStream(filePath, FileMode.Open);
+            LZ4Stream lz4s = new LZ4Stream(fs, LZ4StreamMode.Decompress);
+
+            Feature featureTemp = new Feature();
+
+            try
+            {
+                for(int i = 0;i < frameNum;i++)
+                {
+                    featureTemp.parseFromStream(lz4s);
+                    // 记住要注意深拷贝！！！
+                    featureBuffer.Add(featureTemp.clone());
+                }
+            }
+            catch (EndOfStreamException exception)
+            {
+                // DO NOTHING NOW
+            }
+
+            lz4s.Close();
+            fs.Close();
         }
 
         // 从文件加载

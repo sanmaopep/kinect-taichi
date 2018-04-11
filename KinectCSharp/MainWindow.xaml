@@ -1,22 +1,109 @@
-﻿<Window x:Class="KinectCSharp.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KinectCSharp"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="524" Width="774" Closing="WindowClosing" Loaded="WindowLoaded">
+﻿<Window
+    x:Class="KinectCore.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:KinectCSharp"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="774"
+    Height="524"
+    Closing="WindowClosing"
+    Loaded="WindowLoaded"
+    mc:Ignorable="d">
     <Grid>
-        <Image x:Name="PeopleImage" HorizontalAlignment="Left" Height="266" VerticalAlignment="Top" Width="455" OpacityMask="Black" Margin="312,0,0,0"/>
-        <Image Name="Image" HorizontalAlignment="Left" Height="240" Margin="0,0,-121.333,-169.333" VerticalAlignment="Top" Width="320" Grid.Column="1" Grid.ColumnSpan="2" OpacityMask="Black"/>
-        <TextBlock Name="TextConsole" HorizontalAlignment="Left" Margin="0,245,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="0.338,0.164" Height="240" Width="320" FontWeight="Bold" Foreground="Black" Padding="10"/>
-        <Button x:Name="btnRecordControl" Content="开始录制" HorizontalAlignment="Left" Margin="414,288,0,0" VerticalAlignment="Top" Width="75" Click="btnRecordControlClick"/>
-        <Button x:Name="btnKinectControl" Content="关闭Kinect" HorizontalAlignment="Left" Margin="312,288,0,0" VerticalAlignment="Top" Width="75" Click="btnKinectControlClick"/>
-        <Button Content="保存到文件" HorizontalAlignment="Left" Margin="312,394,0,0" VerticalAlignment="Top" Width="75" Click="btnSaveClick"/>
-        <Button Content="从文件读取并播放" HorizontalAlignment="Left" Margin="404,394,0,0" VerticalAlignment="Top" Width="120" Click="btnReadClick"/>
-        <TextBox x:Name="tbFilePath" HorizontalAlignment="Left" Height="23" Margin="312,353,0,0" TextWrapping="Wrap" Text="../../../MotionDataSet/test.dat" VerticalAlignment="Top" Width="386"/>
-        <TextBlock x:Name="tbRecordState" HorizontalAlignment="Left" TextWrapping="Wrap" Text="缓存帧数：0" VerticalAlignment="Top" Margin="505,290,0,0" Height="19"/>
-        <Button Content="缓冲区数据KMeans迭代一次并播放" HorizontalAlignment="Left" Margin="312,439,0,0" VerticalAlignment="Top" Width="212" Click="btnKmeansClick"/>
-        <Button x:Name="btnClearBuffer" Content="清空缓存" HorizontalAlignment="Left" Margin="594,288,0,0" VerticalAlignment="Top" Width="75" Click="btnClearBufferClick"/>
+        <Image
+            x:Name="PeopleImage"
+            Width="455"
+            Height="266"
+            Margin="312,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            OpacityMask="Black" />
+        <Image
+            Name="Image"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Width="320"
+            Height="240"
+            Margin="0,0,-121.333,-169.333"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            OpacityMask="Black" />
+        <TextBlock
+            Name="TextConsole"
+            Width="320"
+            Height="240"
+            Margin="0,245,0,0"
+            Padding="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontWeight="Bold"
+            Foreground="Black"
+            RenderTransformOrigin="0.338,0.164"
+            Text="TextBlock"
+            TextWrapping="Wrap" />
+        <Button
+            x:Name="btnRecordControl"
+            Width="75"
+            Margin="414,288,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="btnRecordControlClick"
+            Content="开始录制" />
+        <Button
+            x:Name="btnKinectControl"
+            Width="75"
+            Margin="312,288,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="btnKinectControlClick"
+            Content="关闭Kinect" />
+        <Button
+            Width="75"
+            Margin="312,394,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="btnSaveClick"
+            Content="保存到文件" />
+        <Button
+            Width="120"
+            Margin="404,394,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="btnReadClick"
+            Content="从文件读取并播放" />
+        <TextBox
+            x:Name="tbFilePath"
+            Width="386"
+            Height="23"
+            Margin="312,353,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="../../../MotionDataSet/test.dat"
+            TextWrapping="Wrap" />
+        <TextBlock
+            x:Name="tbRecordState"
+            Height="19"
+            Margin="505,290,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="缓存帧数：0"
+            TextWrapping="Wrap" />
+        <Button
+            Width="212"
+            Margin="312,439,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="btnKmeansClick"
+            Content="缓冲区数据KMeans迭代一次并播放" />
+        <Button
+            x:Name="btnClearBuffer"
+            Width="75"
+            Margin="594,288,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="btnClearBufferClick"
+            Content="清空缓存" />
     </Grid>
 </Window>

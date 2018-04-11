@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KinectCSharp.core
+namespace KinectCore.core
 {
+    using util;
     // 动态时间规整算法
     public class DTW
     {
@@ -153,7 +154,7 @@ namespace KinectCSharp.core
 
         private double diffSquare(float a, float b)
         {
-            double ret = util.Util.toDouble((a - b) * (a - b));
+            double ret = Util.toDouble((a - b) * (a - b));
             return ret;
         }
     }

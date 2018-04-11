@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KinectCSharp.util
+namespace KinectCore.util
 {
     using System.IO;
     using Microsoft.Kinect;

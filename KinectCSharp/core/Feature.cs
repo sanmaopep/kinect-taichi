@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace KinectCSharp.core
+namespace KinectCore.core
 {
     using Microsoft.Kinect;
     using System.IO;

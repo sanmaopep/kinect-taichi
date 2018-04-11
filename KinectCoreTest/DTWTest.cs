@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KinectCoreTest
 {
-    using KinectCSharp.core;
+    using KinectCore.core;
 
     [TestClass]
     public class DTWTest

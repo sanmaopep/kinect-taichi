@@ -28,11 +28,11 @@ namespace TaichiUI_student
 
         private void UserControlLoaded(object sender, RoutedEventArgs e)
         {
-            string filePath = @"../../../MotionDataSet/motions.json";
-            SingleMotionModel[] singleMotionModel = MotionLibsUtil.parseFromFile(filePath);
+            string motionLibPath = @"../../../MotionDataSet";
+            SingleMotionModel[] singleMotionModel = MotionLibsUtil.parseFromFile(motionLibPath);
             for (int i = 0;i < singleMotionModel.Length; i++)
             {
-                wpKungfuList.Children.Add(new KungfuMoveCard(singleMotionModel[i]));
+                wpKungfuList.Children.Add(new KungfuMoveCard(singleMotionModel[i], motionLibPath));
             }
         }
     }

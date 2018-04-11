@@ -111,9 +111,9 @@ namespace TaichiUI_student
         }
 
 
-        private void progress_MouseUp(object sender, MouseButtonEventArgs e)
+        private void progress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            currFrame = (int)progress.Value;
+            currFrame = (int)e.NewValue;
         }
     }
 }

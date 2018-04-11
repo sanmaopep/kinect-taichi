@@ -72,10 +72,10 @@
                 DockPanel.Dock="Bottom"
                 Maximum="50"
                 Minimum="0"
-                MouseDown="progress_MouseDown"
-                MouseUp="progress_MouseUp"
                 Orientation="Horizontal"
+                PreviewMouseDown="progress_MouseDown"
                 TickFrequency="5"
+                ValueChanged="progress_ValueChanged"
                 Value="25" />
         </DockPanel>
     </DockPanel>

@@ -11,6 +11,8 @@ namespace TaichiUI_student.ViewModels
 {
     class MainWindowModel : PropertyChange
     {
+
+        public const string MOTION_LIB_PATH = @"../../../MotionDataSet";
         // 组合子ViewModels
         public HomeModel homeModel = new HomeModel();
         public PracticeModel practiceModel = new PracticeModel();

@@ -133,7 +133,6 @@ namespace KinectCore
                 kinectControl.loadFromFile(filePath);
                 playFeatureBuffer(kinectControl.featureBuffer);
             }
-
             catch (Exception exception)
             {
                 MessageBox.Show("读取文件发生错误\n" + exception.ToString());

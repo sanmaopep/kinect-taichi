@@ -96,8 +96,9 @@ namespace TaichiUI_student.Components
             MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
             mainWindowModel.Title = singleMotionModel.title + "  实战中";
             mainWindowModel.HomeBackVisible = true;
-            mainWindowModel.MainContent = new Practice();
             mainWindowModel.practiceModel.currSingleMotionModel = singleMotionModel;
+
+            mainWindowModel.MainContent = new Practice();
         }
 
         private void btnTrainModeClick(object sender, RoutedEventArgs e)
@@ -105,8 +106,9 @@ namespace TaichiUI_student.Components
             MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
             mainWindowModel.Title = singleMotionModel.title + "  练习中";
             mainWindowModel.HomeBackVisible = true;
+            mainWindowModel.trainModel.currSingleMotionModel = singleMotionModel;
+
             mainWindowModel.MainContent = new Train();
-            mainWindowModel.practiceModel.currSingleMotionModel = singleMotionModel;
         }
     }
 }

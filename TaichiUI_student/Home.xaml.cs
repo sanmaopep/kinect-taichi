@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using TaichiUI_student.Components;
 using KinectCore.model;
 using KinectCore.util;
+using TaichiUI_student.ViewModels;
 
 namespace TaichiUI_student
 {
@@ -31,7 +32,7 @@ namespace TaichiUI_student
             // 清空原有数据
             wpKungfuList.Children.Clear();
 
-            string motionLibPath = @"../../../MotionDataSet";
+            string motionLibPath = MainWindowModel.MOTION_LIB_PATH;
             SingleMotionModel[] singleMotionModel = MotionLibsUtil.parseFromFile(motionLibPath);
 
             for (int i = 0; i < singleMotionModel.Length; i++)

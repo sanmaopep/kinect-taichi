@@ -4,11 +4,59 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TaichiUI_student"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="300"
-    d:DesignWidth="300"
+    Loaded="UserControl_Loaded"
     mc:Ignorable="d">
-    <Grid>
-        <TextBlock>实战模式</TextBlock>
-    </Grid>
+    <DockPanel Margin="50,0,50,0">
+        <Image
+            x:Name="imgDisplay"
+            Width="480"
+            Height="360"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Top"
+            Source="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=612a8b2633fa828bc52e95b19c762a51/a08b87d6277f9e2fda1c122b1f30e924b899f3ec.jpg" />
+
+        <DockPanel
+            Margin="0,20,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            DockPanel.Dock="Top">
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="17"
+                Text="动作吻合:" />
+            <TextBlock
+                x:Name="tbSimilar"
+                Margin="10,0,20,0"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="80" />
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="17"
+                Text="重心平衡:" />
+            <TextBlock
+                x:Name="tbBalance"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="80" />
+        </DockPanel>
+        <TextBlock
+            Margin="0,20,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            DockPanel.Dock="Top"
+            FontSize="17"
+            Text="请摆好动作起始姿势，系统会自动检测并开始评分" />
+        <ProgressBar
+            x:Name="progress"
+            Height="10"
+            Margin="0,20,0,20"
+            DockPanel.Dock="Top"
+            Value="0" />
+
+    </DockPanel>
+
 </UserControl>

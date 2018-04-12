@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,15 @@ namespace TaichiUI_student
         public Practice()
         {
             InitializeComponent();
+        }
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            for(int i = 0;i < 10; i++)
+            {
+                await Task.Run(() => Thread.Sleep(1000));
+                progress.Value = i*10;
+            }
         }
     }
 }

@@ -60,6 +60,7 @@ namespace TaichiUI_student
             // 文字信息
             tbTeacher.Text = getMotionDescription(0);
             tbStudent.Text = "右腿架子过高";
+
         }
 
         // 获取描述信息
@@ -99,6 +100,7 @@ namespace TaichiUI_student
         {
             isPlaying = true;
             playBtnIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
+
             // UI Update
             List<Feature> list = kcTeacher.featureBuffer;
             for (int i = currFrame;i < list.Count; i++)
@@ -138,6 +140,13 @@ namespace TaichiUI_student
         {
             currFrame = (int)e.NewValue;
             displayFrame(currFrame);
+        }
+
+        private void lbSpeed_Selected(object sender, RoutedEventArgs e)
+        {
+            int index = lbSpeed.SelectedIndex;
+            int[] speedTable = new int[3] { 100, 30, 10 };
+            delay = speedTable[index];
         }
     }
 }

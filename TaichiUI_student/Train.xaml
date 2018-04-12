@@ -66,6 +66,22 @@
                     Height="24"
                     Kind="Play" />
             </Button>
+            <ListBox
+                x:Name="lbSpeed"
+                Margin="30,17,0,10"
+                SelectedIndex="0"
+                SelectionChanged="lbSpeed_Selected"
+                Style="{StaticResource MaterialDesignToolToggleListBox}">
+                <ListBoxItem TabIndex="0">
+                    慢
+                </ListBoxItem>
+                <ListBoxItem TabIndex="1">
+                    中
+                </ListBoxItem>
+                <ListBoxItem TabIndex="2">
+                    快
+                </ListBoxItem>
+            </ListBox>
             <Slider
                 x:Name="progress"
                 Margin="30,20,30,20"

@@ -27,7 +27,6 @@ namespace KinectCore
         private KinectControl kinectControl;
         private FeaturePainter featurePainter;
         private KeyFrameExtract keyFrameExtract;
-        private BitmapSource foregroundBitmap;
 
         // 多线程访问UI控件
         private readonly TaskScheduler _syncContextTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
@@ -59,26 +58,28 @@ namespace KinectCore
             kinectControl = new KinectControl();
             kinectControl.InitializeFaculty();
             kinectControl.featureReady += this.featureReady;
-            kinectControl.backgroundReady += this.backgroundReady;
 
             // 初始化渲染
             featurePainter = new FeaturePainter(kinectControl);
             Image.Source = featurePainter.getImageSource();
         }
 
+
+        // Kinect 设备准备好一个特征帧
         private void featureReady(Feature feature)
         {
             TextConsole.Text = feature.print();
             tbRecordState.Text = "缓存帧数：" + kinectControl.featureBuffer.Count;
             featurePainter.paint(feature);
+            // TODO 如果进行JPEG编码就可以实现图片的显示
+            // 不然显示一篇空白
+            // so why?
+            byte[] temp = feature.rgbImage.getBuffer();
+            feature.rgbImage.ParseFromBytes(temp);
+            PeopleImage.Source = feature.rgbImage.imageSource;
         }
 
-        private void backgroundReady(BitmapSource writeableBitmap)
-        {
-            this.foregroundBitmap = writeableBitmap;
-            PeopleImage.Source = writeableBitmap;
-            // PeopleImage.Stretch = Stretch.None;
-        }
+        
 
         // Kinect开启关闭控制
         private void btnKinectControlClick(object sender, RoutedEventArgs e)
@@ -153,7 +154,6 @@ namespace KinectCore
                 Feature curr = list[i];
                 await Task.Run(() => Thread.Sleep(DELAY));
                 featureReady(curr);
-                backgroundReady(curr.backgroundRemoved.imageSource);
             }
         }
 

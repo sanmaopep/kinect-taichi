@@ -30,6 +30,8 @@ namespace TaichiUI_student
         private int delay = 30;
         private int currFrame = 0;
 
+        private BitmapSource currStudentImageSource;
+
 
         public Train()
         {
@@ -53,7 +55,7 @@ namespace TaichiUI_student
             }
 
             // 将数据更新到UI组件上
-            imgTeacher.Source = kcTeacher.featureBuffer[0].backgroundRemoved.imageSource;
+            imgTeacher.Source = kcTeacher.featureBuffer[0].rgbImage.imageSource;
             progress.Maximum = kcTeacher.featureBuffer.Count - 1;
             progress.Value = currFrame = 0;
 
@@ -61,6 +63,24 @@ namespace TaichiUI_student
             tbTeacher.Text = getMotionDescription(0);
             tbStudent.Text = "右腿架子过高";
 
+
+            InitializeFaculty();
+        }
+
+        // 收到一个帧
+        private void getStudentFrame(Feature feature)
+        {
+            imgStudent.Source = feature.rgbImage.imageSource;
+        }
+
+
+
+
+        // 初始化Kinect设备
+        private void InitializeFaculty()
+        {
+            kcStudent.InitializeFaculty();
+            kcStudent.featureReady += getStudentFrame;
         }
 
         // 获取描述信息
@@ -78,13 +98,13 @@ namespace TaichiUI_student
             return "";
         }
 
-        // 显示对应的帧
+        // 显示TEACHER对应的帧
         private void displayFrame(int frameNum)
         {
             List<Feature> list = kcTeacher.featureBuffer;
             currFrame = frameNum;
             progress.Value = frameNum;
-            imgTeacher.Source = list[frameNum].backgroundRemoved.imageSource;
+            imgTeacher.Source = list[frameNum].rgbImage.imageSource;
             tbTeacher.Text = getMotionDescription(frameNum);
         }
 

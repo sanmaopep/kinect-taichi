@@ -31,6 +31,7 @@
                 Margin="10,0,20,0"
                 VerticalAlignment="Center"
                 FontSize="20"
+                Foreground="Red"
                 Text="80" />
             <TextBlock
                 VerticalAlignment="Center"
@@ -41,9 +42,11 @@
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
                 FontSize="20"
+                Foreground="Red"
                 Text="80" />
         </DockPanel>
         <TextBlock
+            x:Name="tbNotice"
             Margin="0,20,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"

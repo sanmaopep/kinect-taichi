@@ -7,14 +7,24 @@ using System.Threading.Tasks;
 namespace KinectCore.core
 {
     using util;
-    // 动态时间规整算法
+
+    // 在Map上行走的方向
+    public enum Direction
+    {
+        NOTHING = -1,
+        UP = 0,
+        RIGHT = 1,
+        UP_RIGHT = 2
+    }
+
+    // TODO 动态时间规整算法
     public class DTW
     {
         private List<Feature> seqA;
         private List<Feature> seqB;
         private double[,] map;
         private double[,] dynamic;  // 动态规划，dynamic[i,j]代表到达i,j所用的最短路长度
-        private int[,] road; // road[i,j]代表到达i,j之前的点(0斜对角，1->i-1,2->j-1)
+        private Direction[,] road; // road[i,j]代表到达i,j之前的点(0斜对角，1->i-1,2->j-1)
         private int[,] roadLen; // 代表到达i,j的路径长度
         
         public DTW(List<Feature> seqA,List<Feature> seqB)
@@ -23,12 +33,12 @@ namespace KinectCore.core
             this.seqB = seqB;
             map = new double[seqA.Count, seqB.Count];
             dynamic = new double[seqA.Count, seqB.Count];
-            road = new int[seqA.Count, seqB.Count];
+            road = new Direction[seqA.Count, seqB.Count];
             roadLen = new int[seqA.Count, seqB.Count];
         }
 
         // 计算相似度对比图
-        private void cacualteMap()
+        public void cacualteMap()
         {
             for (int i =0;i < seqA.Count; i++)
             {
@@ -38,6 +48,7 @@ namespace KinectCore.core
                 }
             }
         }
+
 
         // 直接计算关键帧最小值的总和,规定seqB为关键帧序列
         public double getMinSum()
@@ -60,54 +71,62 @@ namespace KinectCore.core
             return sum/seqB.Count;
         }
 
+        public void dynamicWarpOneRow(int i)
+        {
+            for (int j = 0; j < seqB.Count; j++)
+            {
+                map[i, j] = EDistance(seqA[i], seqB[j]);
+            }
+            for (int j = 0; j < seqB.Count; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    dynamic[i, j] = map[i, j];
+                    roadLen[i, j] = 1;
+                    road[i, j] = Direction.NOTHING;
+                }
+                else if (i == 0)
+                {
+                    dynamic[i, j] = dynamic[i, j - 1] + map[i, j];
+                    roadLen[i, j] = roadLen[i, j - 1] + 1;
+                    road[i, j] = Direction.RIGHT;
+                }
+                else if (j == 0)
+                {
+                    dynamic[i, j] = dynamic[i - 1, j] + map[i, j];
+                    roadLen[i, j] = roadLen[i - 1, j] + 1;
+                    road[i, j] = Direction.UP;
+                }
+                else
+                {
+                    goodMinResult result = goodMin(dynamic[i - 1, j - 1],
+                        dynamic[i - 1, j],
+                        dynamic[i, j - 1]);
+                    road[i, j] = (Direction)(result.which);
+                    dynamic[i, j] = result.min + map[i, j];
+                    switch (road[i, j])
+                    {
+                        case Direction.UP_RIGHT:
+                            roadLen[i, j] = roadLen[i - 1, j - 1] + 1;
+                            break;
+                        case Direction.UP:
+                            roadLen[i, j] = roadLen[i - 1, j] + 1;
+                            break;
+                        case Direction.RIGHT:
+                            roadLen[i, j] = roadLen[i, j - 1] + 1;
+                            break;
+                    }
+                }
+            }
+         }
+
         // 动态规划最短路
         public void dynamicWarp()
         {
             cacualteMap();
             for (int i = 0; i < seqA.Count; i++)
             {
-                for (int j = 0; j < seqB.Count; j++)
-                {
-                    if(i == 0 && j == 0)
-                    {
-                        dynamic[i,j] = map[i,j];
-                        roadLen[i, j] = 1;
-                        road[i, j] = -1;
-                    }
-                    else if(i == 0)
-                    {
-                        dynamic[i, j] = dynamic[i, j - 1] + map[i, j];
-                        roadLen[i, j] = roadLen[i, j - 1] + 1;
-                        road[i, j] = 2;
-                    }
-                    else if(j == 0)
-                    {
-                        dynamic[i, j] = dynamic[i - 1, j] + map[i, j];
-                        roadLen[i, j] = roadLen[i - 1, j] + 1;
-                        road[i, j] = 1;
-                    }
-                    else
-                    {
-                        goodMinResult result = goodMin(dynamic[i - 1, j - 1],
-                            dynamic[i - 1, j],
-                            dynamic[i, j - 1]);
-                        road[i, j] = result.which;
-                        dynamic[i, j] = result.min + map[i,j];
-                        switch (road[i, j])
-                        {
-                            case 0:
-                                roadLen[i, j] = roadLen[i - 1, j - 1] + 1;
-                                break;
-                            case 1:
-                                roadLen[i, j] = roadLen[i - 1, j] + 1;
-                                break;
-                            case 2:
-                                roadLen[i, j] = roadLen[i, j - 1] + 1;
-                                break;
-                        }
-                    }
-
-                }
+                dynamicWarpOneRow(i);
             }
         }
 
@@ -141,7 +160,7 @@ namespace KinectCore.core
             return ret;
         }
 
-        private double EDistance(Feature a,Feature b)
+        public double EDistance(Feature a,Feature b)
         {
             double sum = JointAngle.diffAngle(a.jointAngle,b.jointAngle);
             // 不用计算平方就可以比大小，所以不用Math.sqrt

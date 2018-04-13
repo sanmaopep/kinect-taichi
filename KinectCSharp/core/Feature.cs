@@ -16,7 +16,7 @@ namespace KinectCore.core
         public Skeleton skeleton;
         public bool ok;
         public JointAngle jointAngle;
-        public BackgroundRemoved backgroundRemoved;
+        public RGBImage rgbImage;
 
         // 计算获得的信息
         public Feature()
@@ -39,9 +39,9 @@ namespace KinectCore.core
                 ret.skeleton.Joints[(JointType)i] = joint;
             }
 
-            ret.backgroundRemoved = new BackgroundRemoved();
-            ret.backgroundRemoved.imageSource = backgroundRemoved.imageSource.Clone();
-            ret.backgroundRemoved.imageSource.Freeze();
+            ret.rgbImage = new RGBImage();
+            ret.rgbImage.imageSource = rgbImage.imageSource.Clone();
+            ret.rgbImage.imageSource.Freeze();
             return ret;
         }
 
@@ -60,6 +60,18 @@ namespace KinectCore.core
                 ret += jointAngle.print();
             }
             return ret;
+        }
+
+        // 计算欧氏距离
+        public static double EDistance(Feature a, Feature b)
+        {
+            double sum = JointAngle.diffAngle(a.jointAngle, b.jointAngle);
+            // 不用计算平方就可以比大小，所以不用Math.sqrt
+            if (sum == 0)
+            {
+                return sum;
+            }
+            return Math.Sqrt(sum);
         }
 
         /**
@@ -82,7 +94,7 @@ namespace KinectCore.core
             BinaryReader binaryReader = new BinaryReader(stream);
 
             skeleton = new Skeleton();
-            backgroundRemoved = new BackgroundRemoved();
+            rgbImage = new RGBImage();
 
             const int JOINT_TYPE_LEN = 20;
             for (int i = 0; i < JOINT_TYPE_LEN; i++)
@@ -101,8 +113,8 @@ namespace KinectCore.core
             frameNum = binaryReader.ReadInt64();
             int count = binaryReader.ReadInt32();
             byte[] data = binaryReader.ReadBytes(count);
-            backgroundRemoved.ParseFromBytes(data);
-            backgroundRemoved.imageSource.Freeze();
+            rgbImage.ParseFromBytes(data);
+            rgbImage.imageSource.Freeze();
 
             ok = true;
             return true;
@@ -130,7 +142,7 @@ namespace KinectCore.core
             }
             binaryWriter.Write(frameNum);
 
-            byte[] bytes = backgroundRemoved.getBuffer();
+            byte[] bytes = rgbImage.getBuffer();
             binaryWriter.Write(bytes.Count());
             binaryWriter.Write(bytes);
 
@@ -139,9 +151,9 @@ namespace KinectCore.core
     }
 
     // AR显示
-    public class BackgroundRemoved
+    public class RGBImage
     {
-        // 直接存取rawPixelData会造成浪费大量空间，需要进行png数据压缩！
+        // 直接存取rawPixelData会造成浪费大量空间，需要进行jpeg有损数据压缩！
         public BitmapSource imageSource;
 
         public void ParseFromBytes(byte[] bytes)
@@ -156,29 +168,19 @@ namespace KinectCore.core
             }
         }
 
-        public void ParseRawData(int width,int height,byte[] rawPixelData)
+        // 从colorFrame进行解析
+        public void ParsePixelData(int width,int height,byte[] pixelData, int bytesPerPixel)
         {
-            // 读取Bitmap数据
-            WriteableBitmap foregroundBitmap;
-
             // 解析Raw数据
-            foregroundBitmap = new WriteableBitmap(
+            imageSource = BitmapSource.Create(
                         width,
                         height,
                         96.0,
                         96.0,
-                        PixelFormats.Bgra32,
-                        null);
-            foregroundBitmap.WritePixels(
-                new Int32Rect(0, 0,
-                foregroundBitmap.PixelWidth,
-                foregroundBitmap.PixelHeight),
-                rawPixelData,
-                foregroundBitmap.PixelWidth * sizeof(int),
-                0);
-
-            imageSource = foregroundBitmap;
-            
+                        PixelFormats.Bgr32,
+                        null,
+                        pixelData,
+                        width * bytesPerPixel);
         }
 
         public byte[] getBuffer()
@@ -189,6 +191,7 @@ namespace KinectCore.core
             BitmapEncoder encoder = new JpegBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(imageSource));
             encoder.Save(ms);
+            
             return ms.GetBuffer();
         }
     }

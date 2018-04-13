@@ -33,7 +33,7 @@ namespace KinectCore.util
             string filePath = motionLibPath + "/" + singleMotionModel.data;
             KinectControl kinectControl = new KinectControl();
             kinectControl.loadFramesFromFile(filePath, 1);
-            return kinectControl.featureBuffer[0].backgroundRemoved.imageSource;
+            return kinectControl.featureBuffer[0].rgbImage.imageSource;
         }
     }
 }

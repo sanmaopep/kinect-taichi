@@ -28,33 +28,48 @@ namespace KinectCore.core
         private static bool sensorOpen = false; // 控制一个时候只能初始化一个sensor
 
         public List<Feature> featureBuffer = new List<Feature>();   // Feature的缓存
-        public List<BackgroundRemoved> backgroundBuffer = new List<BackgroundRemoved>();    // 前景缓存
-        
-        public delegate void FeatureReadyDelegate(Feature feature); 
+
+        public delegate void FeatureReadyDelegate(Feature feature);
         public FeatureReadyDelegate featureReady;// Feature 准备好的委托
-
-        private BackgroundRemovedColorStream backgroundRemovedColorStream;
-
-        public delegate void BackgroundReadyDelegate(BitmapSource writeableBitmap);
-        public BackgroundReadyDelegate backgroundReady;// Feature 准备好的委托
 
         public KinectControl()
         {
         }
 
-        // 收到一个骨骼帧的事件处理函数
-        private void HandleSkeletonFrame(SkeletonFrame skeletonFrame)
-        {
-            Skeleton[] skeletons = new Skeleton[0];
-            Feature feature = new Feature();
+        // 像素数据缓存
+        private byte[] pixelData;
+        private ColorImageFormat lastImageFormat = ColorImageFormat.Undefined;
+        public WriteableBitmap outputImage;
 
-            if (skeletonFrame != null)
+        // 收到一个所有帧的处理就函数
+        private void AllFramesReady(object sender, AllFramesReadyEventArgs e)
+        {
+            var colorFrame = e.OpenColorImageFrame();
+            var skeletonFrame = e.OpenSkeletonFrame();
+
+            if (colorFrame != null && skeletonFrame != null)
             {
-                feature.frameNum = skeletonFrame.FrameNumber;
+                Skeleton[] skeletons = new Skeleton[0];
+                Feature feature = new Feature();
+                RGBImage readyImage = new RGBImage();
+
+                // 图片处理
+                bool haveNewFormat = this.lastImageFormat != colorFrame.Format;
+                int width = colorFrame.Width;
+                int height = colorFrame.Height;
+                int bytesPerPixel = colorFrame.BytesPerPixel;
+                if (haveNewFormat)
+                {
+                    pixelData = new byte[colorFrame.PixelDataLength];
+                }
+
+                colorFrame.CopyPixelDataTo(pixelData);
+                readyImage.ParsePixelData(width, height, pixelData, bytesPerPixel);
+                this.lastImageFormat = colorFrame.Format;
+
+                //骨骼处理
                 skeletons = new Skeleton[skeletonFrame.SkeletonArrayLength];
                 skeletonFrame.CopySkeletonDataTo(skeletons);
-                this.backgroundRemovedColorStream.ProcessSkeleton(skeletons, skeletonFrame.Timestamp);
-
 
                 // 找到第一个有数据的骨骼，并存入feature
                 if (skeletons.Length != 0)
@@ -64,70 +79,26 @@ namespace KinectCore.core
                         if (skel.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             feature.skeleton = skel;
-                            backgroundRemovedColorStream.SetTrackedPlayer(skel.TrackingId);
                             break;
                         }
                     }
                 }
+                feature.ok = (feature.skeleton != null);
+
+                feature.caculateAngle();
+                feature.rgbImage = readyImage;
+                this.featureReady(feature);
+
+                // 如果开启录制
+                if (this.record)
+                {
+                    this.featureBuffer.Add(feature.clone());
+                }
+
             }
-            feature.ok = (feature.skeleton != null);
-            feature.caculateAngle();
-            this.featureReady(feature);
-            // 如果开启录制
-            if (this.record)
-            {
-                this.featureBuffer.Add(feature);
-            }
+
         }
 
-        // 收到一个背景去除帧的处理函数
-        private void BackgroundRemovedFrameReady(object sender,BackgroundRemovedColorFrameReadyEventArgs e)
-        {
-            using (var backgroundRemovedFrame = e.OpenBackgroundRemovedColorFrame())
-            {
-                if(backgroundRemovedFrame != null)
-                {
-                    BackgroundRemoved backgroundRemoved = new BackgroundRemoved();
-                    int width = backgroundRemovedFrame.Width;
-                    int height = backgroundRemovedFrame.Height;
-                    byte[] rawPixelData = backgroundRemovedFrame.GetRawPixelData();
-
-                    backgroundRemoved.ParseRawData(width, height, rawPixelData);
-
-                    backgroundReady(backgroundRemoved.imageSource);
-                    if (this.record)
-                    {
-                        backgroundBuffer.Add(backgroundRemoved);
-                    }
-                }
-            }
-        }
-
-        // 收到一个所有帧的处理就函数
-        private void AllFramesReady(object sender,AllFramesReadyEventArgs e)
-        {
-            using (var depthFrame = e.OpenDepthImageFrame())
-            {
-                if (null != depthFrame)
-                {
-                    this.backgroundRemovedColorStream.ProcessDepth(depthFrame.GetRawPixelData(), depthFrame.Timestamp);
-                }
-            }
-            using (var colorFrame = e.OpenColorImageFrame())
-            {
-                if (null != colorFrame)
-                {
-                    this.backgroundRemovedColorStream.ProcessColor(colorFrame.GetRawPixelData(), colorFrame.Timestamp);
-                }
-            }
-            using (var skeletonFrame = e.OpenSkeletonFrame())
-            {
-                if (null != skeletonFrame)
-                {
-                    HandleSkeletonFrame(skeletonFrame);
-                }
-            }
-        }
 
         // 提供sensor访问
         public KinectSensor getSensor()
@@ -157,10 +128,8 @@ namespace KinectCore.core
             {
                 KinectControl.sensorOpen = true;
                 // 打开Color流和深度图像流
-                ColorImageFormat colorImageFormat= ColorImageFormat.RgbResolution640x480Fps30;
-                DepthImageFormat depthImageFormat= DepthImageFormat.Resolution320x240Fps30;
+                ColorImageFormat colorImageFormat = ColorImageFormat.RgbResolution640x480Fps30;
                 this.sensor.ColorStream.Enable(colorImageFormat);
-                this.sensor.DepthStream.Enable(depthImageFormat);
                 // 打开骨骼数据流
                 TransformSmoothParameters parameters = new TransformSmoothParameters();
                 parameters.Smoothing = 0.2f;
@@ -168,11 +137,6 @@ namespace KinectCore.core
                 parameters.Prediction = 0.0f;
                 parameters.JitterRadius = 0.5f;
                 this.sensor.SkeletonStream.Enable(parameters);
-                // 打开背景去除图像流
-                backgroundRemovedColorStream = new BackgroundRemovedColorStream(this.sensor);
-                backgroundRemovedColorStream.Enable(colorImageFormat, depthImageFormat);
-
-                backgroundRemovedColorStream.BackgroundRemovedFrameReady += this.BackgroundRemovedFrameReady;
                 sensor.AllFramesReady += this.AllFramesReady;
 
                 // Start the sensor!
@@ -194,7 +158,7 @@ namespace KinectCore.core
         // 停止设备
         public void stopFaculty()
         {
-            if(null != this.sensor)
+            if (null != this.sensor)
             {
                 this.sensor.Stop();
                 KinectControl.sensorOpen = false;
@@ -208,7 +172,7 @@ namespace KinectCore.core
         }
 
         // 从文件加载固定个数，并不进行计算
-        public void loadFramesFromFile(string filePath,int frameNum)
+        public void loadFramesFromFile(string filePath, int frameNum)
         {
             FileStream fs = new FileStream(filePath, FileMode.Open);
             LZ4Stream lz4s = new LZ4Stream(fs, LZ4StreamMode.Decompress);
@@ -217,7 +181,7 @@ namespace KinectCore.core
 
             try
             {
-                for(int i = 0;i < frameNum;i++)
+                for (int i = 0; i < frameNum; i++)
                 {
                     featureTemp.parseFromStream(lz4s);
                     // 记住要注意深拷贝！！！
@@ -249,14 +213,15 @@ namespace KinectCore.core
                     // 记住要注意深拷贝！！！
                     featureBuffer.Add(featureTemp.clone());
                 }
-            } catch(EndOfStreamException exception)
+            }
+            catch (EndOfStreamException exception)
             {
                 lz4s.Close();
                 fs.Close();
             }
 
             // 计算角度
-            for(int i = 0;i < featureBuffer.Count; i++)
+            for (int i = 0; i < featureBuffer.Count; i++)
             {
                 featureBuffer[i].caculateAngle();
             }
@@ -268,19 +233,15 @@ namespace KinectCore.core
             FileStream fs = new FileStream(filePath, FileMode.Create);
             LZ4Stream lz4s = new LZ4Stream(fs, LZ4StreamMode.Compress);
 
-            for (int i = 0;i < featureBuffer.Count; i++)
+            for (int i = 0; i < featureBuffer.Count; i++)
             {
-                if(i < backgroundBuffer.Count)
-                {
-                    featureBuffer[i].backgroundRemoved = backgroundBuffer[i];
-                }
                 byte[] btData = featureBuffer[i].getByte();
                 lz4s.Write(btData, 0, btData.Length);
             }
             lz4s.Close();
             fs.Close();
         }
-        
+
         // 清空缓存
         public void emptyBuffer()
         {

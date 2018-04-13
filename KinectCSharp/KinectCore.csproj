@@ -76,6 +76,8 @@
     <Compile Include="core\DTW.cs" />
     <Compile Include="core\FeaturePainter.cs" />
     <Compile Include="core\KeyFrameExtract.cs" />
+    <Compile Include="core\MotionQuality.cs" />
+    <Compile Include="core\RealTimeDTW.cs" />
     <Compile Include="model\SingleMotionModel.cs" />
     <Compile Include="util\MotionLibsUtil.cs" />
     <Compile Include="util\Util.cs" />

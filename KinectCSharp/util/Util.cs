@@ -10,6 +10,8 @@ namespace KinectCore.util
     using Microsoft.Kinect;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Media;
 
     class Util
     {
@@ -35,7 +37,8 @@ namespace KinectCore.util
         }
         public static double diffSquare(float a, float b)
         {
-            return util.Util.toDouble((a - b) * (a - b));
+            return toDouble((a - b) * (a - b));
         }
+
     }
 }

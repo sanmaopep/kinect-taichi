@@ -71,11 +71,6 @@ namespace KinectCore
             TextConsole.Text = feature.print();
             tbRecordState.Text = "缓存帧数：" + kinectControl.featureBuffer.Count;
             featurePainter.paint(feature);
-            // TODO 如果进行JPEG编码就可以实现图片的显示
-            // 不然显示一篇空白
-            // so why?
-            byte[] temp = feature.rgbImage.getBuffer();
-            feature.rgbImage.ParseFromBytes(temp);
             PeopleImage.Source = feature.rgbImage.imageSource;
         }
 

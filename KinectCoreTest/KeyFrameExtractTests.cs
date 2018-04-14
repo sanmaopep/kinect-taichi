@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KinectCoreTest
 {
-    [TestClass()]
+    //[TestClass()]
     public class KeyFrameExtractTests
     {
         private const string FILE_PATH = "../../../MotionDataSet/";

@@ -5,7 +5,7 @@ namespace KinectCoreTest
 {
     using KinectCore.core;
 
-    [TestClass]
+    //[TestClass]
     public class DTWTest
     {
         private const string FILE_PATH = "../../../MotionDataSet/";

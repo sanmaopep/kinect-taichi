@@ -32,6 +32,13 @@ namespace TaichiUI_student
             InitializeComponent();
         }
 
+        // 收到一个帧
+        private void getStudentFrame(Feature feature)
+        {
+            imgDisplay.Source = feature.rgbImage.imageSource;
+        }
+
+        // 初始化
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             practiceModel = ((MainWindowModel)DataContext).practiceModel;
@@ -48,11 +55,20 @@ namespace TaichiUI_student
                 MessageBox.Show("读取动作数据发生错误\n" + exception.ToString());
             }
 
+            InitializeFaculty();
+
             for (int i = 0;i < 10; i++)
             {
                 await Task.Run(() => Thread.Sleep(1000));
                 progress.Value = i*10;
             }
+
+        }
+
+        private void InitializeFaculty()
+        {
+            kcStudent.InitializeFaculty();
+            kcStudent.featureReady += this.getStudentFrame;
         }
     }
 }

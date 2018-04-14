@@ -43,13 +43,14 @@
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
                     <Button
+                        x:Name="btnSetting"
                         Width="30"
                         Padding="2,0,2,0"
                         materialDesign:RippleAssist.IsCentered="True"
-                        Click="btnTrainModeClick"
+                        Click="btnSetting_Click"
                         Style="{StaticResource MaterialDesignToolButton}"
                         ToolTip="练习模式">
-                        <materialDesign:PackIcon Kind="Run" />
+                        <materialDesign:PackIcon Kind="Settings" />
                     </Button>
                 </StackPanel>
             </Grid>

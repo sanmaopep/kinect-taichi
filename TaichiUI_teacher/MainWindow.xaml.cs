@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaichiUI_teacher.ViewModels;
 
 namespace TaichiUI_teacher
 {
@@ -20,9 +21,37 @@ namespace TaichiUI_teacher
     /// </summary>
     public partial class MainWindow : Window
     {
+        Home home = new Home();
+
         public MainWindow()
         {
             InitializeComponent();
+            switchHome();
+        }
+
+        private void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void BtnHomeBackClick(object sender, RoutedEventArgs e)
+        {
+            switchHome();
+        }
+
+        private void switchHome()
+        {
+            MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
+            mainWindowModel.MainContent = home;
+            mainWindowModel.Title = "动作列表";
+            mainWindowModel.HomeBackVisible = false;
+        }
+
+        private void BtnNewClick(object sender, RoutedEventArgs e)
+        {
+            MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
+            mainWindowModel.MainContent = new Record();
+            mainWindowModel.Title = "动作录制";
+            mainWindowModel.HomeBackVisible = true;
         }
     }
 }

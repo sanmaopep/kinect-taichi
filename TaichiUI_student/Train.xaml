@@ -7,6 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Loaded="userControlLoaded"
+    Unloaded="UserControl_Unloaded"
     mc:Ignorable="d">
     <DockPanel>
         <Grid Margin="50,50,50,20" DockPanel.Dock="Top">

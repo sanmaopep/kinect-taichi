@@ -1,28 +1,58 @@
-﻿<Window 
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal"
-        TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-        x:Class="TaichiUI_teacher.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TaichiUI_teacher"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="495.605" Width="777.219" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Maximized">
-    <Grid Margin="37,0,30,0.333">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="65*"/>
-            <ColumnDefinition Width="321*"/>
-        </Grid.ColumnDefinitions>
-        <materialDesign:Card Padding="32" Margin="16,16,16,0" Grid.ColumnSpan="2">
-            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>
-        </materialDesign:Card>
-        <Button Content="Confirm" Grid.ColumnSpan="2" Margin="0,218,0,217.333"></Button>
-    </Grid>
+﻿<Window
+    x:Class="TaichiUI_teacher.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TaichiUI_teacher"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:TaichiUI_teacher.ViewModels"
+    Title="MainWindow"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <model:MainWindowModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <DockPanel>
+        <materialDesign:ColorZone
+            Padding="16"
+            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+            DockPanel.Dock="Top"
+            Mode="PrimaryMid">
+            <DockPanel>
+                <materialDesign:PopupBox
+                    DockPanel.Dock="Right"
+                    PlacementMode="BottomAndAlignRightEdges"
+                    StaysOpen="False">
+                    <StackPanel>
+                        <Button Content="设置动作库地址" />
+                        <Button Click="BtnNewClick" Content="添加新动作" />
+                    </StackPanel>
+                </materialDesign:PopupBox>
+                <Button
+                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                    Click="BtnHomeBackClick"
+                    DockPanel.Dock="Left"
+                    Visibility="{Binding Path=HomeBackVisible, Converter={StaticResource BoolToVis}}">
+                    <materialDesign:PackIcon Kind="Home" />
+                </Button>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="22"
+                    Text="{Binding Path=Title, Mode=OneWay}" />
+            </DockPanel>
+        </materialDesign:ColorZone>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="1" Padding="10,10,10,10">
+                <ContentControl x:Name="ctlContent" Content="{Binding Path=MainContent, Mode=OneWay}" />
+            </ScrollViewer>
+        </Grid>
+    </DockPanel>
 </Window>

@@ -1,0 +1,43 @@
+﻿<UserControl
+    x:Class="TaichiUI_teacher.Record"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TaichiUI_teacher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="UserControlLoaded"
+    Unloaded="UserControl_Unloaded"
+    mc:Ignorable="d">
+    <DockPanel>
+        <Grid Margin="50,50,50,20" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Image
+                x:Name="imgSkeleton"
+                Grid.Column="0"
+                Width="480"
+                Height="360"
+                HorizontalAlignment="Center"
+                OpacityMask="Black"
+                Source="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=612a8b2633fa828bc52e95b19c762a51/a08b87d6277f9e2fda1c122b1f30e924b899f3ec.jpg" />
+            <Image
+                x:Name="imgRgb"
+                Grid.Column="1"
+                Width="480"
+                Height="360"
+                HorizontalAlignment="Center"
+                OpacityMask="Black"
+                Source="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=612a8b2633fa828bc52e95b19c762a51/a08b87d6277f9e2fda1c122b1f30e924b899f3ec.jpg" />
+        </Grid>
+        <TextBlock
+            x:Name="tbNotice"
+            Margin="0,20,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            DockPanel.Dock="Top"
+            FontSize="17"
+            Text="10秒后开始录制动作" />
+    </DockPanel>
+</UserControl>

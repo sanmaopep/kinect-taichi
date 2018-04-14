@@ -168,5 +168,10 @@ namespace TaichiUI_student
             int[] speedTable = new int[3] { 100, 30, 10 };
             delay = speedTable[index];
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            kcStudent.stopFaculty();
+        }
     }
 }

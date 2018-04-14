@@ -70,5 +70,10 @@ namespace TaichiUI_student
             kcStudent.InitializeFaculty();
             kcStudent.featureReady += this.getStudentFrame;
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            kcStudent.stopFaculty();
+        }
     }
 }

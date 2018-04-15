@@ -25,6 +25,10 @@ namespace TaichiUI_teacher
         private KinectControl kcRecorder = new KinectControl();
         private FeaturePainter featurePainter;
 
+        // 实验用DIFF
+        private const int DIFF = 100;
+
+
         public Record() => InitializeComponent();
 
         // 收到一个帧
@@ -32,6 +36,30 @@ namespace TaichiUI_teacher
         {
             imgRgb.Source = feature.rgbImage.imageSource;
             featurePainter.paint(feature);
+
+            // 计算运动量
+            double sum = 0;
+            int count = kcRecorder.featureBuffer.Count;
+            if(count < DIFF + 1)
+            {
+                tbNotice.Text = "运动量计算 帧数不够";
+                return;
+            }
+            for (int j = count - DIFF; j < count; j++)
+            {
+                Feature before = kcRecorder.featureBuffer[j];
+                before.caculateAngle();
+                sum += Feature.EDistance(before, feature);
+            }
+
+            Console.WriteLine(sum / DIFF);
+            tbNotice.Text = "运动量计算" + sum / DIFF;
+
+
+            if (kcRecorder.featureBuffer.Count > DIFF * 3)
+            {
+                kcRecorder.featureBuffer.RemoveRange(0, DIFF);
+            }
         }
 
         private void UserControlLoaded(object sender, RoutedEventArgs e)
@@ -39,6 +67,9 @@ namespace TaichiUI_teacher
             // 初始化设备
             kcRecorder.InitializeFaculty();
             kcRecorder.featureReady += getRecordFeature;
+            // 实验用
+            kcRecorder.record = true;
+            kcRecorder.recordRgb = false;
 
             // 渲染骨骼
             featurePainter = new FeaturePainter(kcRecorder);

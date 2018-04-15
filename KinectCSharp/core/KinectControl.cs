@@ -25,6 +25,8 @@ namespace KinectCore.core
     {
         private KinectSensor sensor;    // sensor
         public bool record = false; // 控制是否存储到buffer
+        public bool recordRgb = false; // 控制是否存储Rgb图像
+
         private static bool sensorOpen = false; // 控制一个时候只能初始化一个sensor
 
         public List<Feature> featureBuffer = new List<Feature>();   // Feature的缓存
@@ -90,9 +92,14 @@ namespace KinectCore.core
                 this.featureReady(feature);
 
                 // 如果开启录制
-                if (this.record)
+                if (this.record && feature.ok)
                 {
-                    this.featureBuffer.Add(feature.clone());
+                    Feature cloneFeature = feature.clone();
+                    if (!recordRgb)
+                    {
+                        cloneFeature.rgbImage = null;
+                    }
+                    this.featureBuffer.Add(cloneFeature);
                 }
 
             }

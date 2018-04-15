@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,41 +25,34 @@ namespace TaichiUI_teacher
 
         private KinectControl kcRecorder = new KinectControl();
         private FeaturePainter featurePainter;
+        private MotionQuality motionQuality;
+        private const int DELAY_SECONDS = 10;
 
-        // 实验用DIFF
-        private const int DIFF = 100;
+        private bool recordFlag = true; // 控制只录制一次
+        private bool saveFileFlag = true;
 
 
         public Record() => InitializeComponent();
 
         // 收到一个帧
-        private void getRecordFeature(Feature feature)
+        private async void getRecordFeature(Feature feature)
         {
             imgRgb.Source = feature.rgbImage.imageSource;
             featurePainter.paint(feature);
 
-            // 计算运动量
-            double sum = 0;
-            int count = kcRecorder.featureBuffer.Count;
-            if(count < DIFF + 1)
+            if (feature.ok && recordFlag)
             {
-                tbNotice.Text = "运动量计算 帧数不够";
-                return;
-            }
-            for (int j = count - DIFF; j < count; j++)
-            {
-                Feature before = kcRecorder.featureBuffer[j];
-                before.caculateAngle();
-                sum += Feature.EDistance(before, feature);
+                startRecord();
             }
 
-            Console.WriteLine(sum / DIFF);
-            tbNotice.Text = "运动量计算" + sum / DIFF;
-
-
-            if (kcRecorder.featureBuffer.Count > DIFF * 3)
+            if (motionQuality.getLatestQuality() < 10 && saveFileFlag)
             {
-                kcRecorder.featureBuffer.RemoveRange(0, DIFF);
+                saveFileFlag = false;
+                tbNotice.Text = "动作静止，停止录制，正在保存文件";
+                kcRecorder.record = false;
+                kcRecorder.recordRgb = false;
+                await Task.Run(() => kcRecorder.saveToFile(@"../../../MotionDataSet/test3.dat"));
+                tbNotice.Text = "成功保存文件";
             }
         }
 
@@ -67,13 +61,30 @@ namespace TaichiUI_teacher
             // 初始化设备
             kcRecorder.InitializeFaculty();
             kcRecorder.featureReady += getRecordFeature;
-            // 实验用
-            kcRecorder.record = true;
-            kcRecorder.recordRgb = false;
 
             // 渲染骨骼
             featurePainter = new FeaturePainter(kcRecorder);
             imgSkeleton.Source = featurePainter.getImageSource();
+            // 运动量计算
+            motionQuality = new MotionQuality(kcRecorder.featureBuffer);
+
+            tbNotice.Text = "正在检测人物";
+        }
+
+
+        private async void startRecord()
+        {
+            recordFlag = false;
+            for (int i = 0; i < DELAY_SECONDS; i++)
+            {
+                await Task.Run(() => Thread.Sleep(1000));
+                tbNotice.Text = "检测到人物" + (DELAY_SECONDS - i) + "秒后开始录制";
+            }
+
+            kcRecorder.record = true;
+            kcRecorder.recordRgb = true;
+
+            tbNotice.Text = "开始进行动作，当静止时会自动停止录制！";
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

@@ -247,6 +247,7 @@ namespace KinectCore.core
             }
             lz4s.Close();
             fs.Close();
+            MessageBox.Show("保存文件成功");
         }
 
         // 清空缓存

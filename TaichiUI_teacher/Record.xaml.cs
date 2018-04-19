@@ -35,7 +35,7 @@ namespace TaichiUI_teacher
         public Record() => InitializeComponent();
 
         // 收到一个帧
-        private async void getRecordFeature(Feature feature)
+        private void getRecordFeature(Feature feature)
         {
             imgRgb.Source = feature.rgbImage.imageSource;
             featurePainter.paint(feature);
@@ -47,12 +47,7 @@ namespace TaichiUI_teacher
 
             if (motionQuality.getLatestQuality() < 10 && saveFileFlag)
             {
-                saveFileFlag = false;
-                tbNotice.Text = "动作静止，停止录制，正在保存文件";
-                kcRecorder.record = false;
-                kcRecorder.recordRgb = false;
-                await Task.Run(() => kcRecorder.saveToFile(@"../../../MotionDataSet/test3.dat"));
-                tbNotice.Text = "成功保存文件";
+                stopRecord();
             }
         }
 
@@ -71,7 +66,7 @@ namespace TaichiUI_teacher
             tbNotice.Text = "正在检测人物";
         }
 
-
+        // 开始录制
         private async void startRecord()
         {
             recordFlag = false;
@@ -85,6 +80,17 @@ namespace TaichiUI_teacher
             kcRecorder.recordRgb = true;
 
             tbNotice.Text = "开始进行动作，当静止时会自动停止录制！";
+        }
+
+        // 停止录制
+        private async void stopRecord()
+        {
+            saveFileFlag = false;
+            tbNotice.Text = "动作静止，停止录制，正在保存文件";
+            kcRecorder.record = false;
+            kcRecorder.recordRgb = false;
+            await Task.Run(() => kcRecorder.saveToFile(@"../../../MotionDataSet/test3.dat"));
+            tbNotice.Text = "成功保存文件";
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

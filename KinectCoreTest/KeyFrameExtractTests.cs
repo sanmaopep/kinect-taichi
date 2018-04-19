@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KinectCoreTest
 {
-    //[TestClass()]
+    [TestClass()]
     public class KeyFrameExtractTests
     {
         private const string FILE_PATH = "../../../MotionDataSet/";
@@ -18,7 +18,7 @@ namespace KinectCoreTest
         {
             // 获取详细数据
             KinectControl kinectControl = new KinectControl();
-            kinectControl.loadFromFile(FILE_PATH + "motion1.dat");
+            kinectControl.loadFromFile(FILE_PATH + "test3.dat");
             Assert.AreNotEqual(kinectControl.featureBuffer.Count, 0);
             for(int i = 0;i < kinectControl.featureBuffer.Count; i++)
             {
@@ -34,7 +34,7 @@ namespace KinectCoreTest
 
             // 测试两个关键帧之间的差异程度
             KinectControl kinectControlA = new KinectControl();
-            kinectControlA.loadFromFile(FILE_PATH + "motion1.dat");
+            kinectControlA.loadFromFile(FILE_PATH + "test3.dat");
             List<Feature> res;
             List<int> centers;
             KeyFrameExtract keyFrameExtract = new KeyFrameExtract(kinectControlA);

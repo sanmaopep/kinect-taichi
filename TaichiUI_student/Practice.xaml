@@ -37,14 +37,14 @@
             <TextBlock
                 VerticalAlignment="Center"
                 FontSize="17"
-                Text="重心平衡:" />
+                Text="动作进度:" />
             <TextBlock
-                x:Name="tbBalance"
+                x:Name="tbProgess"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
                 FontSize="20"
                 Foreground="Red"
-                Text="80" />
+                Text="80%" />
         </DockPanel>
         <TextBlock
             x:Name="tbNotice"

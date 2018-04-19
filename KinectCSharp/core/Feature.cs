@@ -40,8 +40,11 @@ namespace KinectCore.core
             }
 
             ret.rgbImage = new RGBImage();
-            ret.rgbImage.imageSource = rgbImage.imageSource.Clone();
-            ret.rgbImage.imageSource.Freeze();
+            if(rgbImage.imageSource != null)
+            {
+                ret.rgbImage.imageSource = rgbImage.imageSource.Clone();
+                ret.rgbImage.imageSource.Freeze();
+            }
             return ret;
         }
 
@@ -89,7 +92,7 @@ namespace KinectCore.core
          * */
 
         // 解析byte(true代表解析没结束)
-        public bool parseFromStream(Stream stream)
+        public bool parseFromStream(Stream stream,bool parseJpeg = true)
         {
             BinaryReader binaryReader = new BinaryReader(stream);
 
@@ -113,8 +116,11 @@ namespace KinectCore.core
             frameNum = binaryReader.ReadInt64();
             int count = binaryReader.ReadInt32();
             byte[] data = binaryReader.ReadBytes(count);
-            rgbImage.ParseFromBytes(data);
-            rgbImage.imageSource.Freeze();
+            if (parseJpeg)
+            {
+                rgbImage.ParseFromBytes(data);
+                rgbImage.imageSource.Freeze();
+            }
 
             ok = true;
             return true;

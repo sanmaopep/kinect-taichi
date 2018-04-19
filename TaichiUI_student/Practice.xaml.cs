@@ -25,6 +25,9 @@ namespace TaichiUI_student
         private string motionPath;
         private KinectControl kcStudent = new KinectControl();
         private KinectControl kcTeacher = new KinectControl();
+        private List<Feature> tplFeatures;
+        private CaculusKeyFrameExtract keyFrameExtract;
+        private RealTimeDTW realTimeDTW;
         private int currFrame = 0;
 
         public Practice()
@@ -36,10 +39,19 @@ namespace TaichiUI_student
         private void getStudentFrame(Feature feature)
         {
             imgDisplay.Source = feature.rgbImage.imageSource;
+
+            // 计算进度
+            realTimeDTW.handleNewFrame(feature);
+
+            tbProgess.Text = realTimeDTW.getProgressInt() / tplFeatures.Count + "";
+            progress.Value = realTimeDTW.getProgressInt();
+
         }
 
+        private void caculate
+
         // 初始化
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             practiceModel = ((MainWindowModel)DataContext).practiceModel;
             motionPath = MainWindowModel.MOTION_LIB_PATH +
@@ -48,7 +60,12 @@ namespace TaichiUI_student
             // 读取数据
             try
             {
-                kcTeacher.loadFromFile(motionPath);
+                kcTeacher.loadFromFile(motionPath, false);
+                keyFrameExtract = new CaculusKeyFrameExtract(kcTeacher.featureBuffer);
+                keyFrameExtract.caculate();
+                tplFeatures = keyFrameExtract.getResultFeatures();
+                realTimeDTW = new RealTimeDTW(tplFeatures);
+                progress.Maximum = tplFeatures.Count;
             }
             catch (Exception exception)
             {
@@ -56,13 +73,6 @@ namespace TaichiUI_student
             }
 
             InitializeFaculty();
-
-            for (int i = 0;i < 10; i++)
-            {
-                await Task.Run(() => Thread.Sleep(1000));
-                progress.Value = i*10;
-            }
-
         }
 
         private void InitializeFaculty()

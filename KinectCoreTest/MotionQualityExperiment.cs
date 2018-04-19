@@ -9,7 +9,7 @@ namespace KinectCoreTest
     public class MotionQualityExperiment
     {
         private KinectControl kc = new KinectControl();
-        private const string MOTION_PATH = @"../../../MotionDataSet/test2.dat";
+        private const string MOTION_PATH = @"../../../MotionDataSet/test3.dat";
 
 
         [TestInitialize]
@@ -43,7 +43,7 @@ namespace KinectCoreTest
             }
         }
 
-        // 30帧内平均值差异
+        // DIFF帧内平均值差异
         [TestMethod]
         public void moreFrameAverageExperiment()
         {

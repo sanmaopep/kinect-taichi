@@ -10,7 +10,7 @@ namespace KinectCore.core
     public class MotionQuality
     {
         public List<Feature> featureBuffer;
-        private const int DIFF = 100;
+        public int DIFF = 100;
 
         public MotionQuality(List<Feature> featureBuffer)
         {

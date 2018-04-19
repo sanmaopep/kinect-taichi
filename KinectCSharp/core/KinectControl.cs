@@ -205,7 +205,7 @@ namespace KinectCore.core
         }
 
         // 从文件加载
-        public void loadFromFile(string filePath)
+        public void loadFromFile(string filePath,bool parseJpeg = true)
         {
             FileStream fs = new FileStream(filePath, FileMode.Open);
             LZ4Stream lz4s = new LZ4Stream(fs, LZ4StreamMode.Decompress);
@@ -216,7 +216,7 @@ namespace KinectCore.core
             {
                 while (true)
                 {
-                    featureTemp.parseFromStream(lz4s);
+                    featureTemp.parseFromStream(lz4s, parseJpeg);
                     // 记住要注意深拷贝！！！
                     featureBuffer.Add(featureTemp.clone());
                 }

@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="core\CaculusKeyFrameExtract.cs" />
     <Compile Include="core\DTW.cs" />
     <Compile Include="core\FeaturePainter.cs" />
     <Compile Include="core\KeyFrameExtract.cs" />

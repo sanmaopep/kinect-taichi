@@ -26,7 +26,7 @@ namespace KinectCore
     {
         private KinectControl kinectControl;
         private FeaturePainter featurePainter;
-        private KeyFrameExtract keyFrameExtract;
+        private CaculusKeyFrameExtract keyFrameExtract;
 
         // 多线程访问UI控件
         private readonly TaskScheduler _syncContextTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
@@ -170,10 +170,10 @@ namespace KinectCore
         {
             if (keyFrameExtract == null)
             {
-                keyFrameExtract = new KeyFrameExtract(this.kinectControl);
+                keyFrameExtract = new CaculusKeyFrameExtract(this.kinectControl.featureBuffer);
             }
-            keyFrameExtract.OneInterationKMeans();
-            playFeatureBuffer(keyFrameExtract.caculateResultBuffer(),500);
+            keyFrameExtract.caculate();
+            playFeatureBuffer(keyFrameExtract.getResultFeatures(),500);
         }
 
         private void btnClearBufferClick(object sender, RoutedEventArgs e)

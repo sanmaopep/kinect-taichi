@@ -51,6 +51,12 @@ namespace TaichiUI_student
             tbProgess.Text = realTimeDTW.getProgressInt() / tplFeatures.Count + "";
             progress.Value = realTimeDTW.getProgressInt();
 
+            if (realTimeDTW.getProgressInt() == tplFeatures.Count)
+            {
+                kcStudent.stopFaculty();
+                tbSimilar.Text = realTimeDTW.getScore() + "";
+            }
+
             if (intervalCounter % INTERVAL == 0)
             {
                 await Task.Run(() =>

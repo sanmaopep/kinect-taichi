@@ -111,6 +111,16 @@ namespace KinectCore.core
             road.Clear();
         }
 
+        // 获取得分
+        public double getScore()
+        {
+            if(getAverageSimilarity() > 100)
+            {
+                return 0;
+            }
+            return Math.Floor(100 - getAverageSimilarity());
+        }
+
         // 获取平均相似度
         public double getAverageSimilarity()
         {

@@ -26,6 +26,7 @@ namespace TaichiUI_student
         private string motionPath;
         private KinectControl kcTeacher = new KinectControl();
         private KinectControl kcStudent = new KinectControl();
+        private TrainAnalysis trainAnalysis;
         private bool isPlaying = false;
         private int delay = 30;
         private int currFrame = 0;
@@ -41,7 +42,7 @@ namespace TaichiUI_student
         private void userControlLoaded(object sender, RoutedEventArgs e)
         {
             trainModel = ((MainWindowModel)DataContext).trainModel;
-            motionPath = MainWindowModel.MOTION_LIB_PATH + 
+            motionPath = MainWindowModel.MOTION_LIB_PATH +
                 "/" + trainModel.currSingleMotionModel.data;
 
             // 读取数据
@@ -61,8 +62,9 @@ namespace TaichiUI_student
 
             // 文字信息
             tbTeacher.Text = getMotionDescription(0);
-            tbStudent.Text = "右腿架子过高";
 
+            // 初始化训练分析器
+            trainAnalysis = new TrainAnalysis(kcTeacher.featureBuffer);
 
             InitializeFaculty();
         }
@@ -71,6 +73,7 @@ namespace TaichiUI_student
         private void getStudentFrame(Feature feature)
         {
             imgStudent.Source = feature.rgbImage.imageSource;
+            tbStudent.Text = trainAnalysis.Analysis(currFrame, feature);
         }
 
 
@@ -87,7 +90,7 @@ namespace TaichiUI_student
         private string getMotionDescription(int frameNum)
         {
             SingleDetailDescription[] list = trainModel.currSingleMotionModel.details;
-            for(int i = 0;i < list.Length; i++)
+            for (int i = 0; i < list.Length; i++)
             {
                 if (frameNum >= list[i].from && frameNum <= list[i].to)
                 {
@@ -123,7 +126,7 @@ namespace TaichiUI_student
 
             // UI Update
             List<Feature> list = kcTeacher.featureBuffer;
-            for (int i = currFrame;i < list.Count; i++)
+            for (int i = currFrame; i < list.Count; i++)
             {
                 if (!isPlaying)
                 {
@@ -133,7 +136,10 @@ namespace TaichiUI_student
 
                 displayFrame(i);
             }
-            currFrame = 0;
+            if (currFrame == list.Count)
+            {
+                currFrame = 0;
+            }
             stopPlay();
         }
 

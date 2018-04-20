@@ -48,7 +48,7 @@ namespace TaichiUI_student
         private async void caculateScore(Feature feature)
         {
             await Task.Run(() => realTimeDTW.handleNewFrame(feature));
-            tbProgess.Text = realTimeDTW.getProgressInt() / tplFeatures.Count + "";
+            tbProgess.Text = 100 * realTimeDTW.getProgressInt() / tplFeatures.Count + "%";
             progress.Value = realTimeDTW.getProgressInt();
 
             if (realTimeDTW.getProgressInt() == tplFeatures.Count)

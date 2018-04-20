@@ -17,8 +17,8 @@ namespace KinectCore.core
         public Vector4 x, y, z;
 
         // 各个关节角度
-        public float ElobwLeft;
-        public float ElobwRight;
+        public float ElbowLeft;
+        public float ElbowRight;
         public float KneeLeft;
         public float KneeRight;
         // public float WristLeft;
@@ -41,8 +41,8 @@ namespace KinectCore.core
             }
             caculateXYZ();
 
-            ElobwLeft = getAngle(JointType.ElbowLeft, JointType.WristLeft, JointType.ShoulderLeft);
-            ElobwRight = getAngle(JointType.ElbowRight, JointType.WristRight, JointType.ShoulderRight);
+            ElbowLeft = getAngle(JointType.ElbowLeft, JointType.WristLeft, JointType.ShoulderLeft);
+            ElbowRight = getAngle(JointType.ElbowRight, JointType.WristRight, JointType.ShoulderRight);
             KneeLeft = getAngle(JointType.KneeLeft, JointType.AnkleLeft, JointType.HipLeft);
             KneeRight = getAngle(JointType.KneeRight, JointType.AnkleRight, JointType.HipRight);
             Head = getAngle(JointType.ShoulderCenter, JointType.Head, JointType.Spine);
@@ -55,7 +55,7 @@ namespace KinectCore.core
 
         public JointAngle()
         {
-            ElobwLeft = ElobwRight = KneeLeft = KneeRight = Head = Spine = 0;
+            ElbowLeft = ElbowRight = KneeLeft = KneeRight = Head = Spine = 0;
             Vector4 zero = new Vector4();
             zero.X = zero.Y = zero.Z = 0;
             ShoulderLeft = ShoulderRight = HipLeft = HipRight = zero;
@@ -64,8 +64,8 @@ namespace KinectCore.core
         public string print()
         {
             string ret = "";
-            ret += "左肘：" + Math.Round(ElobwLeft) + "\n";
-            ret += "右肘：" + Math.Round(ElobwRight) + "\n";
+            ret += "左肘：" + Math.Round(ElbowLeft) + "\n";
+            ret += "右肘：" + Math.Round(ElbowRight) + "\n";
             ret += "左膝：" + Math.Round(KneeLeft) + "\n";
             ret += "右膝：" + Math.Round(KneeRight) + "\n";
             ret += "脖子：" + Math.Round(Head) + "\n";
@@ -82,8 +82,8 @@ namespace KinectCore.core
         public string printSimple()
         {
             string ret = "";
-            ret += Math.Round(ElobwLeft) + ",";
-            ret += Math.Round(ElobwRight) + ",";
+            ret += Math.Round(ElbowLeft) + ",";
+            ret += Math.Round(ElbowRight) + ",";
             ret += Math.Round(KneeLeft) + ",";
             ret += Math.Round(KneeRight) + ",";
             ret += Math.Round(Head) + ",";
@@ -107,8 +107,8 @@ namespace KinectCore.core
 
             for(int i = 0;i < jointAngles.Count; i++)
             {
-                jointAngle.ElobwLeft += jointAngles[i].ElobwLeft;
-                jointAngle.ElobwRight += jointAngles[i].ElobwRight;
+                jointAngle.ElbowLeft += jointAngles[i].ElbowLeft;
+                jointAngle.ElbowRight += jointAngles[i].ElbowRight;
                 jointAngle.KneeLeft += jointAngles[i].KneeLeft;
                 jointAngle.KneeRight += jointAngles[i].KneeRight;
                 jointAngle.Head += jointAngles[i].Head;
@@ -131,8 +131,8 @@ namespace KinectCore.core
                 jointAngle.HipRight.Z += jointAngles[i].HipRight.Z;
             }
 
-            jointAngle.ElobwLeft /= jointAngles.Count;
-            jointAngle.ElobwRight /= jointAngles.Count;
+            jointAngle.ElbowLeft /= jointAngles.Count;
+            jointAngle.ElbowRight /= jointAngles.Count;
             jointAngle.KneeLeft /= jointAngles.Count;
             jointAngle.KneeRight /= jointAngles.Count;
             jointAngle.Head /= jointAngles.Count;
@@ -159,8 +159,8 @@ namespace KinectCore.core
         public static double diffAngle(JointAngle a,JointAngle b)
         {
             double sum = 0.0;
-            sum += Util.diffSquare(a.ElobwLeft, b.ElobwLeft);
-            sum += Util.diffSquare(a.ElobwRight, b.ElobwRight);
+            sum += Util.diffSquare(a.ElbowLeft, b.ElbowLeft);
+            sum += Util.diffSquare(a.ElbowRight, b.ElbowRight);
             sum += Util.diffSquare(a.KneeLeft, b.KneeLeft);
             sum += Util.diffSquare(a.KneeRight, b.KneeRight);
             sum += Util.diffSquare(a.Head, b.Head);

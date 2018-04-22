@@ -52,6 +52,9 @@ namespace KinectCore.core
                 curr += refrenceDiff;
             }
 
+            // 第0帧应该加入观察
+            resultIndexs.Add(0);
+
             double caculus = 0;
             for (int i = 0; i < motionQualityList.Count; i++)
             {
@@ -62,6 +65,9 @@ namespace KinectCore.core
                     caculus = 0;
                 }
             }
+
+            // 最后一帧也要加入观察
+            resultIndexs.Add(motionQualityList.Count - 1);
 
             // 实验结果分析
             for (int i = 0; i < resultIndexs.Count; i++)

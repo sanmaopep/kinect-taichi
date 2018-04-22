@@ -18,7 +18,7 @@ namespace KinectCore.core
     // 实时DTW计算
     public class RealTimeDTW
     {
-        public int PROGRESS_THRESHOLD = 80; // 小于该值上升一个模板帧
+        public int PROGRESS_THRESHOLD = 50; // 小于该值上升一个模板帧
         private List<Feature> seqTepl;  // 模板动作
         private List<double[]> dynamic;
         private List<double[]> map;
@@ -33,6 +33,12 @@ namespace KinectCore.core
             road = new List<FDirection[]>();
         }
 
+
+        public bool firstFrameReceive(Feature feature)
+        {
+            return Feature.EDistance(feature, seqTepl[0]) < PROGRESS_THRESHOLD;
+        }
+
         // 处理一个新的帧
         public void handleNewFrame(Feature newFrame)
         {
@@ -42,14 +48,15 @@ namespace KinectCore.core
 
             int lastIndex = dynamic.Count - 1;
 
-            for(int i = 0;i < seqTepl.Count; i++)
+            for (int i = 0; i < seqTepl.Count; i++)
             {
                 mapColumn[i] = Feature.EDistance(seqTepl[i], newFrame);
-                // 进度推进
-                if(mapColumn[i] < PROGRESS_THRESHOLD && progess < seqTepl.Count)
-                {
-                    progess++;
-                }
+            }
+
+            // 进度推进
+            if (progess < seqTepl.Count && mapColumn[progess] < PROGRESS_THRESHOLD)
+            {
+                progess++;
             }
 
 
@@ -112,13 +119,19 @@ namespace KinectCore.core
         }
 
         // 获取得分
+        private int SCORE_THRESHOLD = 25;
         public double getScore()
         {
-            if(getAverageSimilarity() > 100)
+            if (getAverageSimilarity() > 100)
             {
                 return 0;
             }
-            return Math.Floor(100 - getAverageSimilarity());
+            if (getAverageSimilarity() < SCORE_THRESHOLD)
+            {
+                return 100;
+            }
+            // 25以内都算正常的动作
+            return Math.Floor(100 - getAverageSimilarity()) + SCORE_THRESHOLD;
         }
 
         // 获取平均相似度

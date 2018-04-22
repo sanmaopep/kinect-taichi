@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace KinectCore.core
 {
+    //TODO 模板动作角度的存在也要进行判断哦
     public class TrainAnalysis
     {
         private List<Feature> tplFeatures;
-        private float THRESHOLD = 40;
+        private float THRESHOLD = 30;
 
         public TrainAnalysis(List<Feature> tplFeatures)
         {
@@ -21,6 +22,10 @@ namespace KinectCore.core
         public string Analysis(int currFrame, Feature person)
         {
             string res = "";
+            if(person.skeleton == null)
+            {
+                return "没有检测到人体";
+            }
             if (currFrame < 0 || currFrame >= tplFeatures.Count)
             {
                 return res;

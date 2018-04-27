@@ -1,0 +1,71 @@
+﻿<UserControl
+    x:Class="TaichiUI_teacher.MotionSetting"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TaichiUI_teacher"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="UserControlLoaded"
+    Unloaded="UserControl_Unloaded"
+    mc:Ignorable="d">
+    <DockPanel>
+        <Grid Margin="50,50,50,20" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0">
+                <Image
+                    x:Name="imgTeacher"
+                    Width="320"
+                    Height="240"
+                    HorizontalAlignment="Center"
+                    DockPanel.Dock="Top"
+                    Source="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=612a8b2633fa828bc52e95b19c762a51/a08b87d6277f9e2fda1c122b1f30e924b899f3ec.jpg" />
+                <TextBlock
+                    x:Name="tbTeacher"
+                    Width="320"
+                    Height="120"
+                    Padding="10,10,10,10"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    TextWrapping="Wrap" />
+            </DockPanel>
+
+            <DockPanel Grid.Column="1" />
+        </Grid>
+
+        <DockPanel
+            Height="60"
+            Margin="50,20,50,20"
+            DockPanel.Dock="Bottom">
+            <Button
+                x:Name="btnPlay"
+                Click="btnPlayClick"
+                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                ToolTip="MaterialDesignFloatingActionMiniLightButton">
+                <materialDesign:PackIcon
+                    x:Name="playBtnIcon"
+                    Width="24"
+                    Height="24"
+                    Kind="Play" />
+            </Button>
+            <TextBlock Margin="30,20,0,20" Text="当前帧：" />
+            <TextBlock
+                x:Name="tbCurrFrame"
+                Width="30"
+                Margin="0,20,30,20" />
+            <Slider
+                x:Name="progress"
+                Margin="30,20,30,20"
+                DockPanel.Dock="Bottom"
+                Maximum="50"
+                Minimum="0"
+                Orientation="Horizontal"
+                PreviewMouseDown="progress_MouseDown"
+                ValueChanged="progress_ValueChanged"
+                Value="0" />
+        </DockPanel>
+    </DockPanel>
+</UserControl>

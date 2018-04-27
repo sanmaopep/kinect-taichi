@@ -94,7 +94,9 @@ namespace TaichiUI_teacher.Components
             MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
             mainWindowModel.Title = singleMotionModel.title + "  编辑中";
             mainWindowModel.HomeBackVisible = true;
+            mainWindowModel.editModel.currSingleMotionModel = singleMotionModel;
 
+            mainWindowModel.MainContent = new MotionSetting();
         }
     }
 }

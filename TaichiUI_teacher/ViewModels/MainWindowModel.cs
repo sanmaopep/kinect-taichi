@@ -14,6 +14,7 @@ namespace TaichiUI_teacher.ViewModels
         public const string MOTION_LIB_PATH = @"../../../MotionDataSet";
         // 组合子ViewModels
         public HomeModel homeModel = new HomeModel();
+        public EditModel editModel = new EditModel();
         
         // 主窗口相关的类
         private UserControl _MainContent;

@@ -57,6 +57,15 @@ namespace TaichiUI_teacher
             imgTeacher.Source = kcTeacher.featureBuffer[0].rgbImage.imageSource;
             progress.Maximum = kcTeacher.featureBuffer.Count - 1;
             progress.Value = currFrame = 0;
+
+            renderUI();
+        }
+
+        // 渲染数据
+        private void renderUI()
+        {
+            tbName.Text = editModel.currSingleMotionModel.title;
+            tbDescription.Text = editModel.currSingleMotionModel.description;
         }
 
         // 显示TEACHER对应的帧
@@ -74,6 +83,7 @@ namespace TaichiUI_teacher
         {
             isPlaying = false;
             playBtnIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
+
         }
 
         // 开始播放

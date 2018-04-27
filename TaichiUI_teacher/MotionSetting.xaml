@@ -23,17 +23,29 @@
                     HorizontalAlignment="Center"
                     DockPanel.Dock="Top"
                     Source="https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=612a8b2633fa828bc52e95b19c762a51/a08b87d6277f9e2fda1c122b1f30e924b899f3ec.jpg" />
-                <TextBlock
-                    x:Name="tbTeacher"
+                <TextBox
+                    x:Name="tbName"
                     Width="320"
-                    Height="120"
-                    Padding="10,10,10,10"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    TextWrapping="Wrap" />
+                    materialDesign:HintAssist.Hint="动作名"
+                    DockPanel.Dock="Top"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox
+                    x:Name="tbDescription"
+                    Width="320"
+                    VerticalAlignment="Stretch"
+                    materialDesign:HintAssist.Hint="动作描述"
+                    AcceptsReturn="True"
+                    DockPanel.Dock="Top"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto" />
             </DockPanel>
 
-            <DockPanel Grid.Column="1" />
+            <DockPanel Grid.Column="1">
+                <Button DockPanel.Dock="Top">
+                    添加动作描述
+                </Button>
+            </DockPanel>
         </Grid>
 
         <DockPanel

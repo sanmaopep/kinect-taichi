@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaichiUI_teacher.Components;
 using TaichiUI_teacher.ViewModels;
 
 namespace TaichiUI_teacher
@@ -66,6 +67,12 @@ namespace TaichiUI_teacher
         {
             tbName.Text = editModel.currSingleMotionModel.title;
             tbDescription.Text = editModel.currSingleMotionModel.description;
+
+            for(int i = 0; i < editModel.currSingleMotionModel.details.Length; i++)
+            {
+                spDetails.Children.Add(new SingleMotionDetailEditor(editModel.currSingleMotionModel.details[i]));
+            }
+            
         }
 
         // 显示TEACHER对应的帧
@@ -139,6 +146,11 @@ namespace TaichiUI_teacher
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void btnDescClick(object sender, RoutedEventArgs e)
+        {
+            spDetails.Children.Add(new SingleMotionDetailEditor());
         }
     }
 }

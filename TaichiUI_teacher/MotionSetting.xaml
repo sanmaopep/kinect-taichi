@@ -42,9 +42,13 @@
             </DockPanel>
 
             <DockPanel Grid.Column="1">
-                <Button DockPanel.Dock="Top">
+                <Button Click="btnDescClick" DockPanel.Dock="Top">
                     添加动作描述
                 </Button>
+                <StackPanel
+                    x:Name="spDetails"
+                    Margin="0,20,0,0"
+                    Orientation="Vertical" />
             </DockPanel>
         </Grid>
 

@@ -7,5 +7,38 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Grid />
+    <DockPanel>
+        <Button
+            Width="30"
+            Height="30"
+            Margin="0,0,20,0"
+            HorizontalAlignment="Left"
+            Click="btnDeleteClick"
+            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+            ToolTip="MaterialDesignFloatingActionMiniButton">
+            <materialDesign:PackIcon
+                Width="20"
+                Height="20"
+                Kind="Delete" />
+        </Button>
+        <TextBox
+            x:Name="tbStart"
+            Width="50"
+            materialDesign:HintAssist.Hint="开始帧"
+            DockPanel.Dock="Left"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+        <TextBox
+            x:Name="tbEnd"
+            Width="50"
+            materialDesign:HintAssist.Hint="结束帧"
+            DockPanel.Dock="Left"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+        <TextBox
+            x:Name="tbDescription"
+            MinWidth="200"
+            materialDesign:HintAssist.Hint="动作描述"
+            DockPanel.Dock="Left"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+    </DockPanel>
 </UserControl>

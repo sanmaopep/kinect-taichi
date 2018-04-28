@@ -1,4 +1,6 @@
 ﻿using KinectCore.core;
+using KinectCore.model;
+using KinectCore.util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +33,6 @@ namespace TaichiUI_teacher
         private int delay = 30;
         private int currFrame = 0;
 
-        private BitmapSource currStudentImageSource;
-
         public MotionSetting()
         {
             InitializeComponent();
@@ -62,15 +62,46 @@ namespace TaichiUI_teacher
             renderUI();
         }
 
+        // 保存数据
+        private void saveData()
+        {
+            SingleDetailDescription[] details= new SingleDetailDescription[spDetails.Children.Count];
+            for (int i = 0;i < spDetails.Children.Count; i++)
+            {
+                SingleMotionDetailEditor curr = (SingleMotionDetailEditor)spDetails.Children[i];
+                details[i] = curr.getValue();
+            }
+            editModel.currSingleMotionModel.details = details;
+            editModel.currSingleMotionModel.title = tbName.Text;
+            editModel.currSingleMotionModel.description = tbDescription.Text;
+
+            SingleMotionModel[] models = ((MainWindowModel)DataContext).homeModel.singleMotionModels;
+
+            for(int i = 0;i < models.Length; i++)
+            {
+                if(models[i].data == editModel.currSingleMotionModel.data)
+                {
+                    models[i] = editModel.currSingleMotionModel;
+                    break;
+                }
+            }
+
+            MotionLibsUtil.saveToFile(models, MainWindowModel.MOTION_LIB_PATH);
+            MessageBox.Show("保存成功");
+        }
+
         // 渲染数据
         private void renderUI()
         {
             tbName.Text = editModel.currSingleMotionModel.title;
             tbDescription.Text = editModel.currSingleMotionModel.description;
 
-            for(int i = 0; i < editModel.currSingleMotionModel.details.Length; i++)
+            if(editModel.currSingleMotionModel.details != null)
             {
-                spDetails.Children.Add(new SingleMotionDetailEditor(editModel.currSingleMotionModel.details[i]));
+                for (int i = 0; i < editModel.currSingleMotionModel.details.Length; i++)
+                {
+                    spDetails.Children.Add(new SingleMotionDetailEditor(editModel.currSingleMotionModel.details[i]));
+                }
             }
             
         }
@@ -145,12 +176,16 @@ namespace TaichiUI_teacher
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void btnDescClick(object sender, RoutedEventArgs e)
         {
             spDetails.Children.Add(new SingleMotionDetailEditor());
+        }
+
+        private void btnSaveClick(object sender, RoutedEventArgs e)
+        {
+            saveData();
         }
     }
 }

@@ -27,6 +27,13 @@ namespace KinectCore.util
             return parseJson(text);
         }
 
+        public static void saveToFile(SingleMotionModel[] models, string motionLibPath, string motionDescriptionFile = "motions.json")
+        {
+            string filePath = motionLibPath + "/" + motionDescriptionFile;
+            string res = JsonConvert.SerializeObject(models);
+            File.WriteAllText(filePath, res);
+        }
+
 
         public static ImageSource getPicSource(string motionLibPath,SingleMotionModel singleMotionModel)
         {

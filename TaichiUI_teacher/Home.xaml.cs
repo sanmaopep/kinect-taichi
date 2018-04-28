@@ -36,12 +36,12 @@ namespace TaichiUI_teacher
 
             string motionLibPath = MainWindowModel.MOTION_LIB_PATH;
             SingleMotionModel[] singleMotionModel = MotionLibsUtil.parseFromFile(motionLibPath);
+            ((MainWindowModel)DataContext).homeModel.singleMotionModels = singleMotionModel;
 
             for (int i = 0; i < singleMotionModel.Length; i++)
             {
                 wpKungfuList.Children.Add(new KungfuMoveCard(singleMotionModel[i], motionLibPath));
             }
-
         }
     }
 }

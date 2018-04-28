@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KinectCore.model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace TaichiUI_teacher.ViewModels
 {
     class HomeModel : PropertyChange
     {
-
-        
+        public SingleMotionModel[] singleMotionModels;
     }
 }

@@ -1,4 +1,6 @@
 ﻿using KinectCore.core;
+using KinectCore.model;
+using KinectCore.util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaichiUI_teacher.ViewModels;
 
 namespace TaichiUI_teacher
 {
@@ -89,13 +92,38 @@ namespace TaichiUI_teacher
             tbNotice.Text = "动作静止，停止录制，正在保存文件";
             kcRecorder.record = false;
             kcRecorder.recordRgb = false;
-            await Task.Run(() => kcRecorder.saveToFile(@"../../../MotionDataSet/test3.dat"));
+            // 保存到文件
+            string filename = CreateShortToken() + @".dat";
+            await Task.Run(() => kcRecorder.saveToFile(MainWindowModel.MOTION_LIB_PATH + "/" + filename));
+            // 更新motion.json
+            SingleMotionModel[] models = ((MainWindowModel)DataContext).homeModel.singleMotionModels;
+            SingleMotionModel curr = new SingleMotionModel();
+            curr.title = "未命名";
+            curr.description = "未命名";
+            curr.data = filename;
+            List<SingleMotionModel> list = models.ToList();
+            list.Add(curr);
+
+            MotionLibsUtil.saveToFile(list.ToArray(), MainWindowModel.MOTION_LIB_PATH);
+
             tbNotice.Text = "成功保存文件";
         }
+
+
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             kcRecorder.stopFaculty();
+        }
+
+
+        public string CreateShortToken()
+        {
+            var rnd = new Random();
+            var tokenData = new byte[8];
+            rnd.NextBytes(tokenData);
+            var token = Convert.ToBase64String(tokenData).Replace("=", "").Replace("+", "").Replace("/", "");
+            return token;
         }
     }
 }

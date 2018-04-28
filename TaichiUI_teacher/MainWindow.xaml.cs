@@ -21,8 +21,6 @@ namespace TaichiUI_teacher
     /// </summary>
     public partial class MainWindow : Window
     {
-        Home home = new Home();
-
         public MainWindow()
         {
             InitializeComponent();
@@ -41,7 +39,7 @@ namespace TaichiUI_teacher
         private void switchHome()
         {
             MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
-            mainWindowModel.MainContent = home;
+            mainWindowModel.MainContent = new Home();
             mainWindowModel.Title = "动作列表";
             mainWindowModel.HomeBackVisible = false;
         }

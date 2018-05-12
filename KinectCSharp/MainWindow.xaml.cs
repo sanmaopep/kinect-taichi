@@ -155,7 +155,7 @@ namespace KinectCore
         // 录制按钮按下
         private void btnRecordControlClick(object sender, RoutedEventArgs e)
         {
-            if (kinectControl.record)
+            if (kinectControl.recordToBuffer)
             {
                 btnRecordControl.Content = "开始录制";
             }
@@ -163,7 +163,7 @@ namespace KinectCore
             {
                 btnRecordControl.Content = "停止录制";
             }
-            kinectControl.record = !kinectControl.record;
+            kinectControl.recordToBuffer = !kinectControl.recordToBuffer;
         }
 
         private void btnKmeansClick(object sender, RoutedEventArgs e)

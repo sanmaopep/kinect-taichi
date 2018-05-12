@@ -16,6 +16,7 @@ namespace KinectCore.core
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
     using LZ4;
+    using System.Threading;
 
     // TODO 多台Kinect可考虑用OpenMultiSourceFrameReader 
     // https://msdn.microsoft.com/en-us/library/microsoft.kinect.kinectsensor.openmultisourceframereader.aspx
@@ -24,8 +25,7 @@ namespace KinectCore.core
     public class KinectControl
     {
         private KinectSensor sensor;    // sensor
-        public bool record = false; // 控制是否存储到buffer
-        public bool recordRgb = false; // 控制是否存储Rgb图像
+        public bool recordToBuffer = false; // 控制是否存储到buffer（不保存rgb图像）
 
         private static bool sensorOpen = false; // 控制一个时候只能初始化一个sensor
 
@@ -91,15 +91,18 @@ namespace KinectCore.core
                 feature.rgbImage = readyImage;
                 this.featureReady(feature);
 
-                // 如果开启录制
-                if (this.record && feature.ok)
+                // 如果录制到内存缓存
+                if (this.recordToBuffer && feature.ok)
                 {
                     Feature cloneFeature = feature.clone();
-                    if (!recordRgb)
-                    {
-                        cloneFeature.rgbImage = null;
-                    }
+                    cloneFeature.rgbImage = null;
                     this.featureBuffer.Add(cloneFeature);
+                }
+
+                // 如果录制到文件
+                if(this.recordFile && feature.ok)
+                {
+                    recordToFile.pushFeature(feature.clone());
                 }
 
             }
@@ -205,7 +208,7 @@ namespace KinectCore.core
         }
 
         // 从文件加载
-        public void loadFromFile(string filePath,bool parseJpeg = true)
+        public void loadFromFile(string filePath, bool parseJpeg = true)
         {
             FileStream fs = new FileStream(filePath, FileMode.Open);
             LZ4Stream lz4s = new LZ4Stream(fs, LZ4StreamMode.Decompress);
@@ -250,10 +253,82 @@ namespace KinectCore.core
             MessageBox.Show("保存文件成功");
         }
 
+        // 录制到文件
+        private RecordToFile recordToFile;
+        private bool recordFile = false;
+        public void startRecordToFile(string filePath)
+        {
+            recordToFile = new RecordToFile(filePath);
+            recordFile = true;
+            recordToFile.start();
+        }
+
+        public void stopRecordToFile()
+        {
+            recordToFile.stop();
+        }
+
+
         // 清空缓存
         public void emptyBuffer()
         {
             this.featureBuffer.Clear();
+        }
+    }
+
+
+    public class RecordToFile
+    {
+        Thread saveFileThread;
+        FileStream fs;
+        LZ4Stream lz4s;
+        Queue<Feature> featureQueue = new Queue<Feature>();
+
+        public RecordToFile(string filePath)
+        {
+            fs = new FileStream(filePath, FileMode.Create);
+            lz4s = new LZ4Stream(fs, LZ4StreamMode.Compress);
+            saveFileThread = new Thread(new ThreadStart(startRun));
+            saveFileThread.IsBackground = true;
+        }
+
+        public void pushFeature(Feature feature)
+        {
+            featureQueue.Enqueue(feature);
+        }
+
+        public void startRun()
+        {
+            while (true)
+            {
+                if (featureQueue.Count == 0)
+                {
+                    Thread.Sleep(100);
+                    continue;
+                }
+                byte[] btData = featureQueue.Dequeue().getByte();
+                lz4s.Write(btData, 0, btData.Length);
+            }
+        }
+
+        public void start()
+        {
+            saveFileThread.Start();
+        }
+
+        public async void stop()
+        {
+            await Task.Run(() =>
+            {
+                // 等待队列为空
+                while (featureQueue.Count != 0)
+                {
+                    Thread.Sleep(100);
+                }
+            });
+            saveFileThread.Abort();
+            lz4s.Close();
+            fs.Close();
         }
     }
 }

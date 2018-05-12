@@ -207,8 +207,11 @@ namespace KinectCore.core
         public RGBImage clone()
         {
             RGBImage rgbImage = new RGBImage();
-            rgbImage.pixelData = pixelData;
             rgbImage.pixelType = pixelType;
+
+            rgbImage.pixelData = new byte[pixelData.Length];
+            pixelData.CopyTo(rgbImage.pixelData, 0);
+
             return rgbImage;
         }
 
@@ -225,16 +228,27 @@ namespace KinectCore.core
             this.pixelData = pixelData;
         }
 
+
         public byte[] getBuffer()
         {
-            MemoryStream ms = new MemoryStream();
+            if (pixelType == "STATIC")
+            {
+                MemoryStream ms = new MemoryStream();
+                BitmapEncoder encoder = new JpegBitmapEncoder();
 
-            // 解析为jpeg压缩数据
-            BitmapEncoder encoder = new JpegBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(imageSource));
-            encoder.Save(ms);
 
-            return ms.GetBuffer();
+                encoder.Frames.Add(BitmapFrame.Create(BitmapSource.Create(
+                    WIDTH, HEIGHT, 96.0, 96.0,
+                    PixelFormats.Bgr32,
+                    null,
+                    pixelData,
+                    WIDTH * BYTES_PER_PIXEL
+                    )));
+
+                encoder.Save(ms);
+                return ms.GetBuffer();
+            }
+            return new byte[0];
         }
     }
 }

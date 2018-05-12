@@ -29,7 +29,7 @@ namespace TaichiUI_teacher
         private KinectControl kcRecorder = new KinectControl();
         private FeaturePainter featurePainter;
         private MotionQuality motionQuality;
-        private const int DELAY_SECONDS = 20;
+        private const int DELAY_SECONDS = 1;
 
         private bool recordFlag = true; // 控制只录制一次
         private bool saveFileFlag = true;
@@ -75,6 +75,7 @@ namespace TaichiUI_teacher
         }
 
         // 开始录制
+        string filename;
         private async void startRecord()
         {
             recordFlag = false;
@@ -85,8 +86,9 @@ namespace TaichiUI_teacher
             }
 
             tbNotice.Text = "开始进行动作，当静止时会自动停止录制！";
-            kcRecorder.record = true;
-            kcRecorder.recordRgb = true;
+            filename = CreateShortToken() + @".dat";
+            kcRecorder.startRecordToFile(MainWindowModel.MOTION_LIB_PATH + "/" + filename);
+            kcRecorder.recordToBuffer = true;
         }
 
         // 停止录制
@@ -94,11 +96,9 @@ namespace TaichiUI_teacher
         {
             saveFileFlag = false;
             tbNotice.Text = "动作静止，停止录制，正在保存文件";
-            kcRecorder.record = false;
-            kcRecorder.recordRgb = false;
+            kcRecorder.stopRecordToFile();
+            kcRecorder.recordToBuffer = false;
             // 保存到文件
-            string filename = CreateShortToken() + @".dat";
-            await Task.Run(() => kcRecorder.saveToFile(MainWindowModel.MOTION_LIB_PATH + "/" + filename));
             // 更新motion.json
             SingleMotionModel[] models = ((MainWindowModel)DataContext).homeModel.singleMotionModels;
             SingleMotionModel curr = new SingleMotionModel();

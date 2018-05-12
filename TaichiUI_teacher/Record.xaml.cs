@@ -48,7 +48,12 @@ namespace TaichiUI_teacher
                 startRecord();
             }
 
-            if (motionQuality.getLatestQuality() < 10 && saveFileFlag)
+            if (motionQuality.getLatestQuality() != 9999 && saveFileFlag)
+            {
+                tbNotice.Text = "动作静止会停止录制，运动量：" + Math.Floor(motionQuality.getLatestQuality());
+            }
+
+            if (motionQuality.getLatestQuality() < 15 && saveFileFlag)
             {
                 stopRecord();
             }

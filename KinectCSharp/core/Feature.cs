@@ -42,8 +42,7 @@ namespace KinectCore.core
             ret.rgbImage = new RGBImage();
             if (rgbImage.imageSource != null)
             {
-                ret.rgbImage.imageSource = rgbImage.imageSource.Clone();
-                ret.rgbImage.imageSource.Freeze();
+                ret.rgbImage = rgbImage.clone();
             }
             return ret;
         }
@@ -171,44 +170,58 @@ namespace KinectCore.core
         private const int BYTES_PER_PIXEL = 4;
 
         private byte[] pixelData;
-        private BitmapSource _imageSource = null;
+        private string pixelType = null;
+
         public BitmapSource imageSource
         {
             get
             {
-                if (_imageSource != null)
+                if (pixelType == "JPEG")
                 {
-                    return _imageSource;
+                    using (MemoryStream ms = new MemoryStream(pixelData))
+                    {
+                        // jpeg数据解码
+                        BitmapDecoder decoder = new JpegBitmapDecoder(ms,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.OnLoad);
+                        return decoder.Frames[0];
+                    }
                 }
-                writeableBitmap.WritePixels(
-                    new Int32Rect(0, 0, writeableBitmap.PixelWidth, writeableBitmap.PixelHeight),
-                    pixelData,
-                    writeableBitmap.PixelWidth * BYTES_PER_PIXEL,
-                    0);
-                return writeableBitmap;
+                if (pixelType == "STATIC")
+                {
+                    writeableBitmap.WritePixels(
+                        new Int32Rect(0, 0, writeableBitmap.PixelWidth, writeableBitmap.PixelHeight),
+                        pixelData,
+                        writeableBitmap.PixelWidth * BYTES_PER_PIXEL,
+                        0);
+                    return writeableBitmap;
+                }
+                return null;
             }
             set
             {
-                _imageSource = value;
             }
+        }
+
+
+        public RGBImage clone()
+        {
+            RGBImage rgbImage = new RGBImage();
+            rgbImage.pixelData = pixelData;
+            rgbImage.pixelType = pixelType;
+            return rgbImage;
         }
 
         public void ParseFromBytes(byte[] bytes)
         {
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                // jpeg数据解码
-                BitmapDecoder decoder = new JpegBitmapDecoder(ms,
-                    BitmapCreateOptions.PreservePixelFormat,
-                    BitmapCacheOption.OnLoad);
-                imageSource = decoder.Frames[0];
-            }
+            pixelType = "JPEG";
+            this.pixelData = bytes;
         }
 
         // 从colorFrame进行解析
         public void ParsePixelData(byte[] pixelData)
         {
-            // 解析Raw数据
+            pixelType = "STATIC";
             this.pixelData = pixelData;
         }
 

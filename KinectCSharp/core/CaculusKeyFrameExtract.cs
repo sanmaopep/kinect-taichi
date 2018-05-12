@@ -12,7 +12,7 @@ namespace KinectCore.core
         private List<Feature> featureBuffer;
         private List<int> resultIndexs = new List<int>();
         private List<Feature> resultFeatures = new List<Feature>();
-        private const double KEY_FRAME_CACULUS = 60 * 40; //运动量60做30帧动作
+        private const double KEY_FRAME_CACULUS = 60 * 20; //运动量60做30帧动作
         private const double LEAST = 20;    // 小于该运动量忽略加入积分中
 
 

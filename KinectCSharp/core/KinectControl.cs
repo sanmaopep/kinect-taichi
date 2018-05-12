@@ -66,7 +66,7 @@ namespace KinectCore.core
                 }
 
                 colorFrame.CopyPixelDataTo(pixelData);
-                readyImage.ParsePixelData(width, height, pixelData, bytesPerPixel);
+                readyImage.ParsePixelData(pixelData);
                 this.lastImageFormat = colorFrame.Format;
 
                 //骨骼处理

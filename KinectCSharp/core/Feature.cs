@@ -40,7 +40,7 @@ namespace KinectCore.core
             }
 
             ret.rgbImage = new RGBImage();
-            if(rgbImage.imageSource != null)
+            if (rgbImage.imageSource != null)
             {
                 ret.rgbImage.imageSource = rgbImage.imageSource.Clone();
                 ret.rgbImage.imageSource.Freeze();
@@ -57,7 +57,7 @@ namespace KinectCore.core
         public string print()
         {
             string ret = "";
-            ret += "帧数：" + frameNum.ToString()  + "\n";
+            ret += "帧数：" + frameNum.ToString() + "\n";
             if (jointAngle != null)
             {
                 ret += jointAngle.print();
@@ -92,7 +92,7 @@ namespace KinectCore.core
          * */
 
         // 解析byte(true代表解析没结束)
-        public bool parseFromStream(Stream stream,bool parseJpeg = true)
+        public bool parseFromStream(Stream stream, bool parseJpeg = true)
         {
             BinaryReader binaryReader = new BinaryReader(stream);
 
@@ -102,7 +102,7 @@ namespace KinectCore.core
             const int JOINT_TYPE_LEN = 20;
             for (int i = 0; i < JOINT_TYPE_LEN; i++)
             {
-                Joint joint = skeleton.Joints[(JointType)i];        
+                Joint joint = skeleton.Joints[(JointType)i];
                 SkeletonPoint skeletonPoint = new SkeletonPoint();
 
                 skeletonPoint.X = binaryReader.ReadSingle();
@@ -137,7 +137,7 @@ namespace KinectCore.core
             }
 
             const int JOINT_TYPE_LEN = 20;
-            for(int i = 0;i < JOINT_TYPE_LEN; i++)
+            for (int i = 0; i < JOINT_TYPE_LEN; i++)
             {
                 Joint joint = skeleton.Joints[(JointType)i];
 
@@ -159,15 +159,46 @@ namespace KinectCore.core
     // AR显示
     public class RGBImage
     {
-        // 直接存取rawPixelData会造成浪费大量空间，需要进行jpeg有损数据压缩！
-        public BitmapSource imageSource;
+        private static WriteableBitmap writeableBitmap = new WriteableBitmap(
+            WIDTH,
+            HEIGHT,
+            96.0,
+            96.0,
+            PixelFormats.Bgr32,
+            null);
+        private const int WIDTH = 640;
+        private const int HEIGHT = 480;
+        private const int BYTES_PER_PIXEL = 4;
+
+        private byte[] pixelData;
+        private BitmapSource _imageSource = null;
+        public BitmapSource imageSource
+        {
+            get
+            {
+                if (_imageSource != null)
+                {
+                    return _imageSource;
+                }
+                writeableBitmap.WritePixels(
+                    new Int32Rect(0, 0, writeableBitmap.PixelWidth, writeableBitmap.PixelHeight),
+                    pixelData,
+                    writeableBitmap.PixelWidth * BYTES_PER_PIXEL,
+                    0);
+                return writeableBitmap;
+            }
+            set
+            {
+                _imageSource = value;
+            }
+        }
 
         public void ParseFromBytes(byte[] bytes)
         {
-            using(MemoryStream ms = new MemoryStream(bytes))
+            using (MemoryStream ms = new MemoryStream(bytes))
             {
                 // jpeg数据解码
-                BitmapDecoder decoder = new JpegBitmapDecoder(ms, 
+                BitmapDecoder decoder = new JpegBitmapDecoder(ms,
                     BitmapCreateOptions.PreservePixelFormat,
                     BitmapCacheOption.OnLoad);
                 imageSource = decoder.Frames[0];
@@ -175,29 +206,21 @@ namespace KinectCore.core
         }
 
         // 从colorFrame进行解析
-        public void ParsePixelData(int width,int height,byte[] pixelData, int bytesPerPixel)
+        public void ParsePixelData(byte[] pixelData)
         {
             // 解析Raw数据
-            imageSource = BitmapSource.Create(
-                        width,
-                        height,
-                        96.0,
-                        96.0,
-                        PixelFormats.Bgr32,
-                        null,
-                        pixelData,
-                        width * bytesPerPixel);
+            this.pixelData = pixelData;
         }
 
         public byte[] getBuffer()
         {
             MemoryStream ms = new MemoryStream();
-            
+
             // 解析为jpeg压缩数据
             BitmapEncoder encoder = new JpegBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(imageSource));
             encoder.Save(ms);
-            
+
             return ms.GetBuffer();
         }
     }

@@ -18,7 +18,9 @@ namespace KinectCoreTest
         {
             // 获取详细数据
             KinectControl kinectControl = new KinectControl();
-            kinectControl.loadFromFile(FILE_PATH + "test3.dat");
+            // GIUuQOpeDuo.dat
+            // test3.dat
+            kinectControl.loadFromFile(FILE_PATH + "GIUuQOpeDuo.dat");
             Assert.AreNotEqual(kinectControl.featureBuffer.Count, 0);
             for(int i = 0;i < kinectControl.featureBuffer.Count; i++)
             {
@@ -55,8 +57,8 @@ namespace KinectCoreTest
                 Console.WriteLine("差异程度为：");
                 for (int j = 1; j < res.Count; j++)
                 {
-                    Console.Write(centers[j - 1] + " vs " + centers[j] + " : ");
-                    Console.Write(JointAngle.diffAngle(res[j - 1].jointAngle, res[j].jointAngle));
+                    // Console.Write(centers[j - 1] + " vs " + centers[j] + " : ");
+                    Console.Write(Feature.EDistance(res[j - 1], res[j]));
                     Console.Write("\n");
                 }
 

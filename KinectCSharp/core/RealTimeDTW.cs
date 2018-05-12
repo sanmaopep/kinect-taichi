@@ -18,7 +18,7 @@ namespace KinectCore.core
     // 实时DTW计算
     public class RealTimeDTW
     {
-        public int PROGRESS_THRESHOLD = 50; // 小于该值上升一个模板帧
+        public int PROGRESS_THRESHOLD = 70; // 小于该值上升一个模板帧
         private List<Feature> seqTepl;  // 模板动作
         private List<double[]> dynamic;
         private List<double[]> map;

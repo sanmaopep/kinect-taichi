@@ -13,8 +13,10 @@ namespace KinectCoreTest
         private KinectControl kcPerson = new KinectControl();
         private KinectControl kcUnrelated = new KinectControl();
 
+        // GIUuQOpeDuo
         private const string MOTION_PATH1 = @"../../../MotionDataSet/test2.dat";
         private const string MOTION_PATH2 = @"../../../MotionDataSet/test3.dat";
+        // private const string MOTION_PATH2 = @"../../../MotionDataSet/GIUuQOpeDuo.dat";
         private const string MOTION_PATH3 = @"../../../MotionDataSet/test.dat";
 
 
@@ -33,7 +35,7 @@ namespace KinectCoreTest
             MotionQuality motionQuality = new MotionQuality(kcTpl.featureBuffer);
             motionQuality.DIFF = 100;
             const double LEAST = 20;
-            const double KEY_FRAME_CACULUS = 60 * 40; //运动量60做30帧动作
+            const double KEY_FRAME_CACULUS = 60 * 30; //运动量60做30帧动作
             List<double> motionQualityList = new List<double>();
             List<int> resultIndexs = new List<int>();
 
@@ -64,10 +66,11 @@ namespace KinectCoreTest
                 }
             }
 
+
             // 实验结果分析
             for (int i = 0; i < resultIndexs.Count; i++)
             {
-                Console.Write(resultIndexs[i] + " ");
+                //cConsole.Write(resultIndexs[i] + " ");
                 if (i != 0)
                 {
                     Feature before = kcTpl.featureBuffer[resultIndexs[i-1]];

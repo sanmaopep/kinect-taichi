@@ -190,11 +190,11 @@ namespace KinectCore.core
         private void caculateXYZ()
         {
             // 计算x
-            SkeletonPoint leftShoulder = skeleton.Joints[JointType.ShoulderLeft].Position;
-            SkeletonPoint rightShoulder = skeleton.Joints[JointType.ShoulderLeft].Position;
-            x.X = leftShoulder.X = rightShoulder.Y;
-            x.Y = leftShoulder.Y - rightShoulder.Y;
-            x.Z = leftShoulder.Z - rightShoulder.Z;
+            SkeletonPoint leftHip = skeleton.Joints[JointType.HipLeft].Position;
+            SkeletonPoint rightHip = skeleton.Joints[JointType.HipRight].Position;
+            x.X = leftHip.X = rightHip.Y;
+            x.Y = leftHip.Y - rightHip.Y;
+            x.Z = leftHip.Z - rightHip.Z;
             // 计算y
             SkeletonPoint centerShuolder = skeleton.Joints[JointType.ShoulderCenter].Position;
             SkeletonPoint centerHip = skeleton.Joints[JointType.HipCenter].Position;

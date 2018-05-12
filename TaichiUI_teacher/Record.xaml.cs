@@ -29,7 +29,7 @@ namespace TaichiUI_teacher
         private KinectControl kcRecorder = new KinectControl();
         private FeaturePainter featurePainter;
         private MotionQuality motionQuality;
-        private const int DELAY_SECONDS = 10;
+        private const int DELAY_SECONDS = 20;
 
         private bool recordFlag = true; // 控制只录制一次
         private bool saveFileFlag = true;
@@ -79,10 +79,9 @@ namespace TaichiUI_teacher
                 tbNotice.Text = "检测到人物" + (DELAY_SECONDS - i) + "秒后开始录制";
             }
 
+            tbNotice.Text = "开始进行动作，当静止时会自动停止录制！";
             kcRecorder.record = true;
             kcRecorder.recordRgb = true;
-
-            tbNotice.Text = "开始进行动作，当静止时会自动停止录制！";
         }
 
         // 停止录制

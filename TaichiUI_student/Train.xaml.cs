@@ -90,6 +90,10 @@ namespace TaichiUI_student
         private string getMotionDescription(int frameNum)
         {
             SingleDetailDescription[] list = trainModel.currSingleMotionModel.details;
+            if(list == null)
+            {
+                return "";
+            }
             for (int i = 0; i < list.Length; i++)
             {
                 if (frameNum >= list[i].from && frameNum <= list[i].to)

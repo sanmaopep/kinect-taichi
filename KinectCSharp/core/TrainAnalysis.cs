@@ -38,6 +38,10 @@ namespace KinectCore.core
             res += Hip(curr, person);
             res += Knee(curr, person);
 
+            if(res != "")
+            {
+                return res.Substring(0, res.IndexOf(','));
+            }
             return res;
         }
 
@@ -50,11 +54,11 @@ namespace KinectCore.core
             {
                 if (person.jointAngle.ElbowLeft - tpl.jointAngle.ElbowLeft > THRESHOLD)
                 {
-                    res += "左肘张得太开，";
+                    res += "左肘张得太开,";
                 }
                 if (person.jointAngle.ElbowLeft - tpl.jointAngle.ElbowLeft < -THRESHOLD)
                 {
-                    res += "左肘缩得太紧，";
+                    res += "左肘缩得太紧,";
                 }
             }
 
@@ -62,11 +66,11 @@ namespace KinectCore.core
             {
                 if (person.jointAngle.ElbowRight - tpl.jointAngle.ElbowRight > THRESHOLD)
                 {
-                    res += "右肘张得太开，";
+                    res += "右肘张得太开,";
                 }
                 if (person.jointAngle.ElbowRight - tpl.jointAngle.ElbowRight < -THRESHOLD)
                 {
-                    res += "右肘缩得太紧，";
+                    res += "右肘缩得太紧,";
                 }
             }
 
@@ -83,19 +87,19 @@ namespace KinectCore.core
             {
                 if (person.jointAngle.ShoulderLeft.Y - tpl.jointAngle.ShoulderLeft.Y > THRESHOLD)
                 {
-                    res += "左臂位置下降点，";
+                    res += "左臂位置下降点,";
                 }
                 if (person.jointAngle.ShoulderLeft.Y - tpl.jointAngle.ShoulderLeft.Y < -THRESHOLD)
                 {
-                    res += "左臂位置上升点，";
+                    res += "左臂位置上升点,";
                 }
                 //if (person.jointAngle.ShoulderLeft.X - tpl.jointAngle.ShoulderLeft.X > THRESHOLD)
                 //{
-                //    res += "左臂位置后面点，";
+                //    res += "左臂位置后面点,";
                 //}
                 //if (person.jointAngle.ShoulderLeft.X - tpl.jointAngle.ShoulderLeft.X < -THRESHOLD)
                 //{
-                //    res += "左臂位置前面点，";
+                //    res += "左臂位置前面点,";
                 //}
             }
 
@@ -103,19 +107,19 @@ namespace KinectCore.core
             {
                 if (person.jointAngle.ShoulderRight.Y - tpl.jointAngle.ShoulderRight.Y > THRESHOLD)
                 {
-                    res += "右臂位置下降点，";
+                    res += "右臂位置下降点,";
                 }
                 if (person.jointAngle.ShoulderRight.Y - tpl.jointAngle.ShoulderRight.Y < -THRESHOLD)
                 {
-                    res += "右臂位置上升点，";
+                    res += "右臂位置上升点,";
                 }
                 //if (person.jointAngle.ShoulderRight.X - tpl.jointAngle.ShoulderRight.X > THRESHOLD)
                 //{
-                //    res += "右臂位置后面点，";
+                //    res += "右臂位置后面点,";
                 //}
                 //if (person.jointAngle.ShoulderRight.X - tpl.jointAngle.ShoulderRight.X < -THRESHOLD)
                 //{
-                //    res += "右臂位置前面点，";
+                //    res += "右臂位置前面点,";
                 //}
             }
 
@@ -133,12 +137,12 @@ namespace KinectCore.core
                 if (person.jointAngle.ShoulderLeft.X - tpl.jointAngle.ShoulderLeft.X > THRESHOLD
                     && person.jointAngle.ShoulderRight.X - tpl.jointAngle.ShoulderRight.X > THRESHOLD)
                 {
-                    res += "身体左转一点，";
+                    res += "身体左转一点,";
                 }
                 if (person.jointAngle.ShoulderLeft.X - tpl.jointAngle.ShoulderLeft.X < -THRESHOLD
                     && person.jointAngle.ShoulderRight.X - tpl.jointAngle.ShoulderRight.X < -THRESHOLD)
                 {
-                    res += "身体右转一点，";
+                    res += "身体右转一点,";
                 }
             }
 
@@ -163,12 +167,12 @@ namespace KinectCore.core
                 if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft > 15
                     || person.jointAngle.KneeRight - tpl.jointAngle.KneeRight > 15)
                 {
-                    res += "膝盖架子太高，";
+                    res += "膝盖架子太高,";
                 }
                 if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft < -THRESHOLD
                     || person.jointAngle.KneeRight - tpl.jointAngle.KneeRight < -THRESHOLD)
                 {
-                    res += "膝盖架子太低，";
+                    res += "膝盖架子太低,";
                 }
             }
             return res;

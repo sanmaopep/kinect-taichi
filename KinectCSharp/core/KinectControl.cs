@@ -89,7 +89,10 @@ namespace KinectCore.core
 
                 feature.caculateAngle();
                 feature.rgbImage = readyImage;
-                this.featureReady(feature);
+                if(this.featureReady != null)
+                {
+                    this.featureReady(feature);
+                }
 
                 // 如果录制到内存缓存
                 if (this.recordToBuffer && feature.ok)
@@ -168,7 +171,7 @@ namespace KinectCore.core
         // 停止设备
         public void stopFaculty()
         {
-            if (null != this.sensor)
+            if (null != this.sensor && sensorOpen)
             {
                 this.sensor.Stop();
                 KinectControl.sensorOpen = false;

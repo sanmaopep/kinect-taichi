@@ -28,7 +28,6 @@ namespace TaichiUI_student
         private List<Feature> tplFeatures;
         private CaculusKeyFrameExtract keyFrameExtract;
         private RealTimeDTW realTimeDTW;
-        private int currFrame = 0;
 
         public Practice()
         {
@@ -116,13 +115,15 @@ namespace TaichiUI_student
 
         private void InitializeFaculty()
         {
-            kcStudent.InitializeFaculty();
             kcStudent.featureReady += this.getStudentFrame;
+            kcStudent.InitializeFaculty();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
+            kcStudent.featureReady -= this.getStudentFrame;
             kcStudent.stopFaculty();
+            kcStudent = null;
         }
     }
 }

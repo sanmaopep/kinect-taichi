@@ -29,7 +29,7 @@ namespace TaichiUI_teacher
         private KinectControl kcRecorder = new KinectControl();
         private FeaturePainter featurePainter;
         private MotionQuality motionQuality;
-        private const int DELAY_SECONDS = 1;
+        private const int DELAY_SECONDS = 10;
 
         private bool recordFlag = true; // 控制只录制一次
         private bool saveFileFlag = true;

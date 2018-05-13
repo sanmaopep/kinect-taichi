@@ -3,6 +3,7 @@ using KinectCore.model;
 using KinectCore.util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -186,6 +187,46 @@ namespace TaichiUI_teacher
         private void btnSaveClick(object sender, RoutedEventArgs e)
         {
             saveData();
+        }
+
+        private void btnDeleteClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("你真的要删除吗？", "此删除不可恢复",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                // 更新JSON索引
+                SingleMotionModel[] models = ((MainWindowModel)DataContext).homeModel.singleMotionModels;
+                List<SingleMotionModel> list = models.ToList();
+                for (int i = 0; i < models.Length; i++)
+                {
+                    if (models[i].data == editModel.currSingleMotionModel.data)
+                    {
+                        list.RemoveAt(i);
+                        break;
+                    }
+                }
+                MotionLibsUtil.saveToFile(list.ToArray(), MainWindowModel.MOTION_LIB_PATH);
+
+                // 删除文件
+                string filename = MainWindowModel.MOTION_LIB_PATH + "/" + editModel.currSingleMotionModel.data;
+                if (File.Exists(filename))
+                {
+                    try
+                    {
+                        File.Delete(filename);
+                    }
+                    catch (IOException exception)
+                    {
+                        Console.WriteLine(exception.Message);
+                        return;
+                    }
+                }
+                MessageBox.Show("删除成功");
+                // 返回首页
+                MainWindowModel mainWindowModel = (MainWindowModel)DataContext;
+                mainWindowModel.MainContent = new Home();
+                mainWindowModel.Title = "动作列表";
+                mainWindowModel.HomeBackVisible = false;
+            }
         }
     }
 }

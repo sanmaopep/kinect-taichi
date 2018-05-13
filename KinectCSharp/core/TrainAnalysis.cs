@@ -22,7 +22,7 @@ namespace KinectCore.core
         public string Analysis(int currFrame, Feature person)
         {
             string res = "";
-            if(person.skeleton == null)
+            if (person.skeleton == null)
             {
                 return "没有检测到人体";
             }
@@ -34,6 +34,7 @@ namespace KinectCore.core
 
             res += Elbow(curr, person);
             res += Shoulder(curr, person);
+            res += Rotate(curr, person);
             res += Hip(curr, person);
             res += Knee(curr, person);
 
@@ -51,7 +52,7 @@ namespace KinectCore.core
                 {
                     res += "左肘张得太开，";
                 }
-                 if (person.jointAngle.ElbowLeft - tpl.jointAngle.ElbowLeft < -THRESHOLD)
+                if (person.jointAngle.ElbowLeft - tpl.jointAngle.ElbowLeft < -THRESHOLD)
                 {
                     res += "左肘缩得太紧，";
                 }
@@ -88,6 +89,14 @@ namespace KinectCore.core
                 {
                     res += "左臂位置上升点，";
                 }
+                //if (person.jointAngle.ShoulderLeft.X - tpl.jointAngle.ShoulderLeft.X > THRESHOLD)
+                //{
+                //    res += "左臂位置后面点，";
+                //}
+                //if (person.jointAngle.ShoulderLeft.X - tpl.jointAngle.ShoulderLeft.X < -THRESHOLD)
+                //{
+                //    res += "左臂位置前面点，";
+                //}
             }
 
             if (person.skeleton.Joints[JointType.ShoulderRight].TrackingState == JointTrackingState.Tracked)
@@ -99,6 +108,37 @@ namespace KinectCore.core
                 if (person.jointAngle.ShoulderRight.Y - tpl.jointAngle.ShoulderRight.Y < -THRESHOLD)
                 {
                     res += "右臂位置上升点，";
+                }
+                //if (person.jointAngle.ShoulderRight.X - tpl.jointAngle.ShoulderRight.X > THRESHOLD)
+                //{
+                //    res += "右臂位置后面点，";
+                //}
+                //if (person.jointAngle.ShoulderRight.X - tpl.jointAngle.ShoulderRight.X < -THRESHOLD)
+                //{
+                //    res += "右臂位置前面点，";
+                //}
+            }
+
+            return res;
+        }
+
+        // 身体旋转分析
+        private string Rotate(Feature tpl, Feature person)
+        {
+            string res = "";
+
+            if (person.skeleton.Joints[JointType.ShoulderLeft].TrackingState == JointTrackingState.Tracked
+                && person.skeleton.Joints[JointType.ShoulderRight].TrackingState == JointTrackingState.Tracked)
+            {
+                if (person.jointAngle.ShoulderLeft.X - tpl.jointAngle.ShoulderLeft.X > THRESHOLD
+                    && person.jointAngle.ShoulderRight.X - tpl.jointAngle.ShoulderRight.X > THRESHOLD)
+                {
+                    res += "身体左转一点，";
+                }
+                if (person.jointAngle.ShoulderLeft.X - tpl.jointAngle.ShoulderLeft.X < -THRESHOLD
+                    && person.jointAngle.ShoulderRight.X - tpl.jointAngle.ShoulderRight.X < -THRESHOLD)
+                {
+                    res += "身体右转一点，";
                 }
             }
 
@@ -120,13 +160,13 @@ namespace KinectCore.core
             if (person.skeleton.Joints[JointType.KneeLeft].TrackingState == JointTrackingState.Tracked
                 && person.skeleton.Joints[JointType.KneeRight].TrackingState == JointTrackingState.Tracked)
             {
-                if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft > THRESHOLD
-                    && person.jointAngle.KneeRight - tpl.jointAngle.KneeRight > THRESHOLD)
+                if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft > 15
+                    || person.jointAngle.KneeRight - tpl.jointAngle.KneeRight > 15)
                 {
                     res += "膝盖架子太高，";
                 }
                 if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft < -THRESHOLD
-                    && person.jointAngle.KneeRight - tpl.jointAngle.KneeRight < -THRESHOLD)
+                    || person.jointAngle.KneeRight - tpl.jointAngle.KneeRight < -THRESHOLD)
                 {
                     res += "膝盖架子太低，";
                 }

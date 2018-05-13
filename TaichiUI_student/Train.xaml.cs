@@ -69,11 +69,17 @@ namespace TaichiUI_student
             InitializeFaculty();
         }
 
+        // 每30帧刷新一次提示问题，防止突变
+        private const int INTERVAL = 30;
+        private int counter = 0;
         // 收到一个帧
         private void getStudentFrame(Feature feature)
         {
             imgStudent.Source = feature.rgbImage.imageSource;
-            tbStudent.Text = trainAnalysis.Analysis(currFrame, feature);
+            if(counter++%INTERVAL == 0)
+            {
+                tbStudent.Text = trainAnalysis.Analysis(currFrame, feature);
+            }
         }
 
 

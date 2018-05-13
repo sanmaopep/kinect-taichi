@@ -30,6 +30,7 @@ namespace TaichiUI_teacher
         private FeaturePainter featurePainter;
         private MotionQuality motionQuality;
         private const int DELAY_SECONDS = 10;
+        private const int MIN_QUALITY = 10;
 
         private bool recordFlag = true; // 控制只录制一次
         private bool saveFileFlag = true;
@@ -53,7 +54,10 @@ namespace TaichiUI_teacher
                 tbNotice.Text = "动作静止会停止录制，运动量：" + Math.Floor(motionQuality.getLatestQuality());
             }
 
-            if (motionQuality.getLatestQuality() < 15 && saveFileFlag)
+            if (motionQuality.getLatestQuality() < MIN_QUALITY 
+                // 防止开头速度过慢导致停止录制
+                && kcRecorder.featureBuffer.Count > 300
+                && saveFileFlag)
             {
                 stopRecord();
             }

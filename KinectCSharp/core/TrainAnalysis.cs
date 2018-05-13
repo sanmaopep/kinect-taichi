@@ -11,7 +11,7 @@ namespace KinectCore.core
     public class TrainAnalysis
     {
         private List<Feature> tplFeatures;
-        private float THRESHOLD = 30;
+        private float THRESHOLD = 20;
 
         public TrainAnalysis(List<Feature> tplFeatures)
         {
@@ -80,11 +80,11 @@ namespace KinectCore.core
 
             if (person.skeleton.Joints[JointType.ShoulderLeft].TrackingState == JointTrackingState.Tracked)
             {
-                if (person.jointAngle.ShoulderLeft.Z - tpl.jointAngle.ShoulderLeft.Z > THRESHOLD)
+                if (person.jointAngle.ShoulderLeft.Y - tpl.jointAngle.ShoulderLeft.Y > THRESHOLD)
                 {
                     res += "左臂位置下降点，";
                 }
-                if (person.jointAngle.ShoulderLeft.Z - tpl.jointAngle.ShoulderLeft.Z < -THRESHOLD)
+                if (person.jointAngle.ShoulderLeft.Y - tpl.jointAngle.ShoulderLeft.Y < -THRESHOLD)
                 {
                     res += "左臂位置上升点，";
                 }
@@ -92,13 +92,13 @@ namespace KinectCore.core
 
             if (person.skeleton.Joints[JointType.ShoulderRight].TrackingState == JointTrackingState.Tracked)
             {
-                if (person.jointAngle.ShoulderRight.Z - tpl.jointAngle.ShoulderRight.Z > THRESHOLD)
+                if (person.jointAngle.ShoulderRight.Y - tpl.jointAngle.ShoulderRight.Y > THRESHOLD)
                 {
-                    res += "左臂位置下降点，";
+                    res += "右臂位置下降点，";
                 }
-                if (person.jointAngle.ShoulderRight.Z - tpl.jointAngle.ShoulderRight.Z < -THRESHOLD)
+                if (person.jointAngle.ShoulderRight.Y - tpl.jointAngle.ShoulderRight.Y < -THRESHOLD)
                 {
-                    res += "左臂位置上升点，";
+                    res += "右臂位置上升点，";
                 }
             }
 
@@ -117,27 +117,18 @@ namespace KinectCore.core
         {
             string res = "";
 
-            if (person.skeleton.Joints[JointType.KneeLeft].TrackingState == JointTrackingState.Tracked)
+            if (person.skeleton.Joints[JointType.KneeLeft].TrackingState == JointTrackingState.Tracked
+                && person.skeleton.Joints[JointType.KneeRight].TrackingState == JointTrackingState.Tracked)
             {
-                if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft > THRESHOLD)
+                if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft > THRESHOLD
+                    && person.jointAngle.KneeRight - tpl.jointAngle.KneeRight > THRESHOLD)
                 {
-                    res += "左膝架子太高，";
+                    res += "膝盖架子太高，";
                 }
-                if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft < -THRESHOLD)
+                if (person.jointAngle.KneeLeft - tpl.jointAngle.KneeLeft < -THRESHOLD
+                    && person.jointAngle.KneeRight - tpl.jointAngle.KneeRight < -THRESHOLD)
                 {
-                    res += "左膝架子太低，";
-                }
-            }
-
-            if (person.skeleton.Joints[JointType.KneeRight].TrackingState == JointTrackingState.Tracked)
-            {
-                if (person.jointAngle.KneeRight - tpl.jointAngle.KneeRight > THRESHOLD)
-                {
-                    res += "右膝架子太高，";
-                }
-                if (person.jointAngle.KneeRight - tpl.jointAngle.KneeRight < -THRESHOLD)
-                {
-                    res += "右膝架子太高，";
+                    res += "膝盖架子太低，";
                 }
             }
             return res;

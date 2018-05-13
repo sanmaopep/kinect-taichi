@@ -122,16 +122,17 @@ namespace KinectCore.core
         private int SCORE_THRESHOLD = 25;
         public double getScore()
         {
-            if (getAverageSimilarity() > 100)
+            double similarity = getAverageSimilarity();
+            if (similarity > 100)
             {
                 return 0;
             }
-            if (getAverageSimilarity() < SCORE_THRESHOLD)
+            if (similarity < SCORE_THRESHOLD)
             {
                 return 100;
             }
             // 25以内都算正常的动作
-            return Math.Floor(100 - getAverageSimilarity()) + SCORE_THRESHOLD;
+            return Math.Floor(100 - similarity) + SCORE_THRESHOLD;
         }
 
         // 获取平均相似度

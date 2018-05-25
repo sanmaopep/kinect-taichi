@@ -277,6 +277,26 @@ namespace KinectCore.core
         {
             this.featureBuffer.Clear();
         }
+
+
+        // 从MSRC数据库CSV文件加载
+        public void loadFromCSV(string filename)
+        {
+            var reader = new StreamReader(File.OpenRead(filename));
+            Feature featureTemp = new Feature();
+
+            while (!reader.EndOfStream)
+            {
+                featureTemp.parseMSRCLine(reader.ReadLine());
+                featureBuffer.Add(featureTemp.clone());
+            }
+
+            // 计算角度
+            for (int i = 0; i < featureBuffer.Count; i++)
+            {
+                featureBuffer[i].caculateAngle();
+            }
+        }
     }
 
 

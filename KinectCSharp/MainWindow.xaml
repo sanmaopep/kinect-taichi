@@ -80,7 +80,7 @@
             Margin="312,353,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Text="../../../MotionDataSet/test.dat"
+            Text="../../../MSRC/P1_1_1_p06.csv"
             TextWrapping="Wrap" />
         <TextBlock
             x:Name="tbRecordState"
@@ -96,7 +96,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="btnKmeansClick"
-            Content="缓冲区数据KMeans迭代一次并播放" />
+            Content="缓冲区数据关键帧提取并播放" />
         <Button
             x:Name="btnClearBuffer"
             Width="75"

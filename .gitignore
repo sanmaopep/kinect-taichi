@@ -262,3 +262,6 @@ __pycache__/
 
 // Kinect record data
 *.dat
+
+// Experiment data
+MSRC/

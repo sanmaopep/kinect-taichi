@@ -35,6 +35,7 @@ namespace KinectCore.core
         {
             MotionQuality motionQuality = new MotionQuality(featureBuffer);
             List<double> motionQualityList = new List<double>();
+            motionQuality.DIFF = 1;
 
             for (int i = 0; i < featureBuffer.Count; i++)
             {

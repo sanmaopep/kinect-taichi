@@ -13,6 +13,5 @@ namespace KinectCoreTest
        
 
 
-        // end
     }
 }

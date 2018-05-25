@@ -15,8 +15,8 @@ namespace KinectCoreTest
 
         // GIUuQOpeDuo
         private const string MOTION_PATH1 = @"../../../MotionDataSet/test2.dat";
-        private const string MOTION_PATH2 = @"../../../MotionDataSet/test3.dat";
-        // private const string MOTION_PATH2 = @"../../../MotionDataSet/GIUuQOpeDuo.dat";
+        //  private const string MOTION_PATH2 = @"../../../MotionDataSet/test3.dat";
+        private const string MOTION_PATH2 = @"../../../MotionDataSet/EyyNAneWyWU.dat";
         private const string MOTION_PATH3 = @"../../../MotionDataSet/test.dat";
 
 
@@ -33,9 +33,9 @@ namespace KinectCoreTest
         public void experimentCaculus()
         {
             MotionQuality motionQuality = new MotionQuality(kcTpl.featureBuffer);
-            motionQuality.DIFF = 100;
+            motionQuality.DIFF = 30;
             const double LEAST = 20;
-            const double KEY_FRAME_CACULUS = 60 * 30; //运动量60做30帧动作
+            const double KEY_FRAME_CACULUS = 30 * 30; //运动量60做30帧动作
             List<double> motionQualityList = new List<double>();
             List<int> resultIndexs = new List<int>();
 

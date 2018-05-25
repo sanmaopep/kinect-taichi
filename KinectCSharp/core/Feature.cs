@@ -40,7 +40,7 @@ namespace KinectCore.core
             }
 
             ret.rgbImage = new RGBImage();
-            if (rgbImage.imageSource != null)
+            if (rgbImage != null && rgbImage.imageSource != null)
             {
                 ret.rgbImage = rgbImage.clone();
             }
@@ -152,6 +152,38 @@ namespace KinectCore.core
             binaryWriter.Write(bytes);
 
             return ms.GetBuffer();
+        }
+
+
+        public void parseMSRCLine(string csvLine)
+        {
+            string[] split = csvLine.Split(' ');
+            skeleton = new Skeleton();
+
+            frameNum = Int64.Parse(split[0]);
+            for (int i = 0; i < 20; i++)
+            {
+                Joint joint = skeleton.Joints[(JointType)i];
+                SkeletonPoint skeletonPoint = new SkeletonPoint();
+
+                skeletonPoint.X = float.Parse(split[i * 4 + 1]);
+                skeletonPoint.Y = float.Parse(split[i * 4 + 2]);
+                skeletonPoint.Z = float.Parse(split[i * 4 + 3]);
+                int trackingState = (int)float.Parse(split[i * 4 + 4]);
+                if(trackingState == 1)
+                {
+                    joint.TrackingState = (JointTrackingState)2;
+                }
+                else
+                {
+                    joint.TrackingState = (JointTrackingState)0;
+
+                }
+                joint.Position = skeletonPoint;
+
+                skeleton.Joints[(JointType)i] = joint;
+            }
+            ok = true;
         }
     }
 

@@ -18,6 +18,7 @@ namespace KinectCore
     using core;
     using util;
     using System.Threading;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -126,8 +127,17 @@ namespace KinectCore
             kinectControl.emptyBuffer();
             try
             {
-                kinectControl.loadFromFile(filePath);
-                playFeatureBuffer(kinectControl.featureBuffer);
+                // 判断文件末尾
+                if(Regex.IsMatch(filePath, @"^*\.csv$"))
+                {
+                    kinectControl.loadFromCSV(filePath);
+                    playFeatureBuffer(kinectControl.featureBuffer);
+                }
+                else
+                {
+                    kinectControl.loadFromFile(filePath);
+                    playFeatureBuffer(kinectControl.featureBuffer);
+                }
             }
             catch (Exception exception)
             {

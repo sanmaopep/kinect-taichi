@@ -55,6 +55,7 @@
     <Compile Include="MotionQualityExperiment.cs" />
     <Compile Include="RealTimeDTWExperiment.cs" />
     <Compile Include="KeyFrameExperiment.cs" />
+    <Compile Include="MSRC_DB_Experiment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

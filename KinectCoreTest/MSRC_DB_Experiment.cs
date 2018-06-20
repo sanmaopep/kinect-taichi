@@ -21,6 +21,12 @@ namespace KinectCoreTest
             { "",""}
         };
 
+        [TestInitialize]
+        public void init()
+        {
+
+        }
+
         [TestMethod]
         public void compareSimilarity(string filename1,string filename2)
         {
@@ -28,6 +34,7 @@ namespace KinectCoreTest
         }
 
 
+        
         private bool match(string filename1,string filename2)
         {
             seqA.loadFromCSV(filename1);

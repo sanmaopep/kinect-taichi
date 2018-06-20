@@ -80,7 +80,7 @@
     <Compile Include="core\MotionQuality.cs" />
     <Compile Include="core\RealTimeDTW.cs" />
     <Compile Include="core\TrainAnalysis.cs" />
-    <Compile Include="model\SingleMotionModel.cs" />
+    <Compile Include="util\model\SingleMotionModel.cs" />
     <Compile Include="util\MotionLibsUtil.cs" />
     <Compile Include="util\Util.cs" />
     <Page Include="MainWindow.xaml">

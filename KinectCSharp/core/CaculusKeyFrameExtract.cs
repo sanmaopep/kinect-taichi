@@ -12,7 +12,7 @@ namespace KinectCore.core
         private List<Feature> featureBuffer;
         private List<int> resultIndexs = new List<int>();
         private List<Feature> resultFeatures = new List<Feature>();
-        private const double KEY_FRAME_CACULUS = 60 * 20; //运动量60做30帧动作
+        private const double KEY_FRAME_CACULUS = 60 * 30; //运动量60做30帧动作
         private const double LEAST = 20;    // 小于该运动量忽略加入积分中
 
 
@@ -35,7 +35,8 @@ namespace KinectCore.core
         {
             MotionQuality motionQuality = new MotionQuality(featureBuffer);
             List<double> motionQualityList = new List<double>();
-            motionQuality.DIFF = 1;
+            // 搞实验数据修改的DIFF
+            // motionQuality.DIFF = 1;
 
             for (int i = 0; i < featureBuffer.Count; i++)
             {
@@ -60,6 +61,7 @@ namespace KinectCore.core
             for (int i = 0; i < motionQualityList.Count; i++)
             {
                 caculus += motionQualityList[i] > LEAST ? motionQualityList[i] : 0;
+                // 扫过多少面积，添加一个关键帧
                 if (caculus > KEY_FRAME_CACULUS)
                 {
                     resultIndexs.Add(i);
